@@ -15,7 +15,20 @@ namespace userdata
     {
 
         //uuidTextBox.Text
-        Config config;
+        public Config config;
+        public json()
+        {
+            string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
+            if (!File.Exists(absolutePath))
+            {
+                UserData userData = new UserData();
+                userData.ResetUUID();
+            }
+            else
+            {
+                getjosn();
+            }
+        }
         public void newjson(UserData userData) //创建无app配置
         {
             config = new Config
@@ -73,6 +86,22 @@ namespace userdata
             {
                 writer.Write(ujson);
             }
+        }
+        public void getjosn()
+        {
+            string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
+            try
+            {
+                string jsonCont = File.ReadAllText(absolutePath);
+                config = JsonConvert.DeserializeObject<Config>(jsonCont);
+                
+            }
+            catch (JsonException je)
+            {
+                // 如果JSON格式不正确，记录错误并返回null
+                Console.WriteLine($"Error while deserializing JSON: {je.Message}");
+            }
+
         }
        
     }

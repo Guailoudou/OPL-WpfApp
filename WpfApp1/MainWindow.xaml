@@ -12,13 +12,13 @@
 
                 <Grid Background="#FFE5E5E5">
                     <Label Content="UUID：" HorizontalAlignment="Left" Margin="28,10,0,0" VerticalAlignment="Top"/>
-                    <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,14,0,0" TextWrapping="Wrap" Text="{Binding Path=uuid, Mode=OneWay}" VerticalAlignment="Top" Width="136"/>
-                    <Button Content="复制UUID" HorizontalAlignment="Left" Margin="213,14,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click"/>
-                    <Button Content="重置UUID" HorizontalAlignment="Left" Margin="275,14,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click"/>
-                    <ListBox Margin="28,41,36,32" SelectionChanged="ListBox_SelectionChanged">
+                    <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="{Binding Path=uuid, Mode=OneWay}" VerticalAlignment="Top" Width="136" Height="22"/>
+                    <Button Content="复制UUID" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24"/>
+                    <Button Content="重置UUID" HorizontalAlignment="Left" Margin="275,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24"/>
+                    <ListBox Margin="28,41,36,32" SelectionChanged="ListBox_SelectionChanged" Name="sdlist">
                         <Border BorderBrush="Black" BorderThickness="1">
                             <Grid Height="63" Width="700" >
-                                <Label Content="名称：***" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top"/>
+                                <Label Content="隧道1" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top"/>
                                 <Label Content="目标UUID：erererererereer" Margin="10,29,538,10"/>
                                 <Label Content="远程端口：25555" HorizontalAlignment="Left" Margin="177,4,0,0" VerticalAlignment="Top"/>
                                 <Label Content="本地端口：25566" Margin="177,32,371,7"/>
@@ -41,8 +41,8 @@
 
 
                     </ListBox>
-                    <Button Content="新建连接" HorizontalAlignment="Left" Margin="641,14,0,0" VerticalAlignment="Top"/>
-                    <Button Content="启动" HorizontalAlignment="Left" Margin="582,14,0,0" VerticalAlignment="Top"/>
+                    <Button Content="新建连接" HorizontalAlignment="Left" Margin="567,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24"/>
+                    <Button Content="启动" HorizontalAlignment="Left" Margin="672,10,0,0" VerticalAlignment="Top" Width="60" Height="24"/>
                 </Grid>
 
             </TabItem>

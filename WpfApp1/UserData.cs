@@ -13,7 +13,7 @@ namespace userdata
     internal class UserData
     {
         public String UUID;
-        Config config;
+        json json = new json();
         private static readonly Random _random = new Random();
         public UserData() {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
@@ -23,17 +23,7 @@ namespace userdata
             }
             else
             {
-                try
-                {
-                    string jsonCont = File.ReadAllText(absolutePath);
-                    config = JsonConvert.DeserializeObject<Config>(jsonCont);
-                    UUID = config.Network.Node;
-                }
-                catch (JsonException je)
-                {
-                    // 如果JSON格式不正确，记录错误并返回null
-                    Console.WriteLine($"Error while deserializing JSON: {je.Message}");
-                }
+                UUID = json.config.Network.Node;
             }
             
         }
