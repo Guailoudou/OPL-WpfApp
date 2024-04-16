@@ -7,11 +7,11 @@ using System.Windows;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("WpfApp1")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OPL联机工具")]
+[assembly: AssemblyDescription("基于openp2p的快捷p2p联机工具")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WpfApp1")]
+[assembly: AssemblyCompany("gldoffice")]
+[assembly: AssemblyProduct("OPL_WpfApp")]
 [assembly: AssemblyCopyright("Copyright ©  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

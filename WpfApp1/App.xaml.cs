@@ -26,6 +26,7 @@ namespace WpfApp1
 
         protected override void OnExit(ExitEventArgs e)
         {
+
             // 应用程序退出时的清理操作
             base.OnExit(e);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,11 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using userdata;
 
 namespace WpfApp1
 {
@@ -22,6 +25,7 @@ namespace WpfApp1
     {
         userdata.UserData userData = new userdata.UserData();
         userdata.json sjson = new userdata.json();
+        bool on=false;
         public MainWindow()
         {
             InitializeComponent();
@@ -35,7 +39,7 @@ namespace WpfApp1
             //userdata.UserData userData = new userdata.UserData();
             //userdata.json sjson = new userdata.json();
             this.DataContext = userData;
-           
+            relist();
             //sjson.newjson(userData);
             //wpfWebBrowser.Navigate("https://blog.gldhn.top/2024/04/15/opl_help/");
         }
@@ -55,6 +59,11 @@ namespace WpfApp1
         private void ResetUUID_Button_Click(object sender, RoutedEventArgs e)
         {
             // 显示确认对话框
+            if (on)
+            {
+                MessageBox.Show("程序在运行，禁止操作!","警告");
+                return;
+            }
             MessageBoxResult result = MessageBox.Show(
                 "你确定要重置吗?会导致失去所有已有隧道配置!",
                 "警告",
@@ -80,10 +89,7 @@ namespace WpfApp1
 
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
+       
 
         private void Form1_Load(object sender, RoutedEventArgs e)
         {
@@ -92,93 +98,256 @@ namespace WpfApp1
         
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (on)
+            {
+                MessageBox.Show("程序在运行，禁止操作!", "警告");
+                return;
+            }
             Add Add = new Add();
             Add.Owner = this;
             Add.Topmost = true;
             Add.ShowDialog();
+            relist();
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (on)
+            {
+                MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
+                relist();
+                return;
+            }
+            var CheckBox = (CheckBox)sender;
+            int index = (int)CheckBox.Tag;
+            sjson.onapp(index);
+        }
+        private void unCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (on)
+            {
+                MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
+                relist();
+                return;
+            }
+            var CheckBox = (CheckBox)sender;
+            int index = (int)CheckBox.Tag;
+            sjson.offapp(index);
+        }
+        private void del(object sender, RoutedEventArgs e)
+        {
+            if (on)
+            {
+                MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
+                relist();
+                return;
+            }
+            var button = (Button)sender;
+            int index = (int)button.Tag;
+            sjson.del(index);
+            relist();
+        }
+        private void edit(object sender, RoutedEventArgs e)
+        {
+            if (on)
+            {
+                MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
+                relist();
+                return;
+            }
+            var button = (Button)sender;
+            int index = (int)button.Tag;
+            //..
+            MessageBox.Show("该功能未完成","提示");
+
         }
         public void relist()
         {
+
             // 获取ListBox控件
             ListBox listBox = this.FindName("sdlist") as ListBox;
-
-            // 创建Border
-            Border border = new Border
+            userdata.json json = new userdata.json();
+            listBox.Items.Clear();
+            int index = 0;
+            if (json.config.Apps != null)
             {
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(1)
-            };
+                foreach(userdata.App app in json.config.Apps)
+                {
+                    // 创建Border
+                    Border border = new Border
+                    {
+                        BorderBrush = Brushes.Black,
+                        BorderThickness = new Thickness(1)
+                    };
 
-            // 创建内部Grid
-            Grid grid = new Grid
-            {
-                Height = 63,
-                Width = 700
-            };
+                    // 创建内部Grid
+                    Grid grid = new Grid
+                    {
+                        Height = 63,
+                        Width = 700
+                    };
 
-            // 添加各个子控件到Grid
-            grid.Children.Add(new Label
+                    // 添加各个子控件到Grid
+                    grid.Children.Add(new Label
+                    {
+                        Content = "隧道",
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(10, 3, 0, 0),
+                        VerticalAlignment = VerticalAlignment.Top
+                    });
+
+                    grid.Children.Add(new Label
+                    {
+                        Content = "目标UUID："+app.PeerNode,
+                        Margin = new Thickness(10, 29, 538, 10)
+                    });
+
+                    grid.Children.Add(new Label
+                    {
+                        Content = "协议：" + app.Protocol,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(290, 4, 0, 0),
+                        VerticalAlignment = VerticalAlignment.Top
+                    });
+
+                    grid.Children.Add(new Label
+                    {
+                        Content = "远程端口："+app.DstPort,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(177, 4, 0, 0),
+                        VerticalAlignment = VerticalAlignment.Top
+                    });
+
+                    grid.Children.Add(new Label
+                    {
+                        Content = "本地端口："+app.SrcPort,
+                        Margin = new Thickness(177, 32, 371, 7)
+                    });
+
+                    CheckBox checkBox = new CheckBox
+                    {
+                        Content = "启用",
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(630, 0, 0, 0),
+                        VerticalAlignment = VerticalAlignment.Center,
+                        IsChecked = app.Enabled==1 ? true : false,
+                        Tag = index
+
+                    };
+                    checkBox.Checked += CheckBox_Checked; // 需要定义CheckBox_Checked事件处理程序
+                    checkBox.Unchecked += unCheckBox_Checked;
+                    grid.Children.Add(checkBox);
+
+                    Button closeButton = new Button
+                    {
+                        Content = " X ",
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(678, 4, 0, 0),
+                        VerticalAlignment = VerticalAlignment.Top,
+                        Tag = index
+                    };
+                    closeButton.Click += del;
+                    grid.Children.Add(closeButton);
+
+                    Button editButton = new Button
+                    {
+                        Content = "编辑",
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(576, 0, 0, 0),
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Tag = index
+                    };
+                    editButton.Click += edit;
+                    grid.Children.Add(editButton);
+
+                    // 将Grid添加到Border
+                    border.Child = grid;
+                    index++;
+                    // 将Border包装在ListBoxItem中并添加到ListBox
+                    ListBoxItem item = new ListBoxItem { Content = border };
+                    listBox.Items.Add(item);
+                }
+            }
+            
+            
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            relist();
+        }
+
+        private void Button_Click_open(object sender, RoutedEventArgs e)
+        {
+            if (process != null && !process.HasExited)
             {
-                Content = "隧道1",
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Margin = new Thickness(10, 3, 0, 0),
-                VerticalAlignment = VerticalAlignment.Top
+                process.CancelOutputRead();
+                process.CancelErrorRead();
+                process.Kill();
+                openbutton.Content = "启动";
+                on = false;
+            }
+            else
+            {
+                open();
+                openbutton.Content = "关闭";
+                on = true;
+            }
+
+        }
+        private Process process;
+        public void open()
+        {
+            // 创建进程对象
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = "bin/openp2p.exe"; // 替换为你的控制台应用路径
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true; // 不显示新的命令行窗口
+
+            process = new Process();
+            process.StartInfo = startInfo;
+
+            // 设置输出数据接收事件
+            process.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                {
+                    Dispatcher.Invoke(() => // 必须在UI线程更新RichTextBox内容
+                    {
+                        richOutput.AppendText(e.Data + Environment.NewLine);
+                        richOutput.ScrollToEnd();
+                    });
+                }
             });
 
-            grid.Children.Add(new Label
+            // 设置错误数据接收事件
+            process.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
             {
-                Content = "目标UUID：erererererereer",
-                Margin = new Thickness(10, 29, 538, 10)
+                if (!string.IsNullOrEmpty(e.Data))
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        richOutput.AppendText("【错误】: " + e.Data + Environment.NewLine);
+                    });
+                }
             });
 
-            grid.Children.Add(new Label
+            // 启动进程并开始接收输出
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+        }
+        protected override void OnClosed(EventArgs e)
+        {
+            if (process != null && !process.HasExited)
             {
-                Content = "远程端口：25555",
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Margin = new Thickness(177, 4, 0, 0),
-                VerticalAlignment = VerticalAlignment.Top
-            });
-
-            grid.Children.Add(new Label
-            {
-                Content = "本地端口：25566",
-                Margin = new Thickness(177, 32, 371, 7)
-            });
-
-            CheckBox checkBox = new CheckBox
-            {
-                Content = "启用",
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Margin = new Thickness(630, 0, 0, 0),
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            checkBox.Checked += CheckBox_Checked; // 需要定义CheckBox_Checked事件处理程序
-            grid.Children.Add(checkBox);
-
-            Button closeButton = new Button
-            {
-                Content = " X ",
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Margin = new Thickness(678, 4, 0, 0),
-                VerticalAlignment = VerticalAlignment.Top
-            };
-            grid.Children.Add(closeButton);
-
-            Button editButton = new Button
-            {
-                Content = "编辑",
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Margin = new Thickness(576, 0, 0, 0),
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            grid.Children.Add(editButton);
-
-            // 将Grid添加到Border
-            border.Child = grid;
-
-            // 将Border包装在ListBoxItem中并添加到ListBox
-            ListBoxItem item = new ListBoxItem { Content = border };
-            listBox.Items.Add(item);
+                process.CancelOutputRead();
+                process.CancelErrorRead();
+                process.Kill();
+            }
+            base.OnClosed(e);
         }
     }
 }

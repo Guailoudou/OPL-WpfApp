@@ -16,15 +16,15 @@ namespace userdata
         json json = new json();
         private static readonly Random _random = new Random();
         public UserData() {
-            string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
-            if (!File.Exists(absolutePath))
-            {
-                ResetUUID();
-            }
-            else
-            {
-                UUID = json.config.Network.Node;
-            }
+            //string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
+            //if (!File.Exists(absolutePath))
+            //{
+            //    ResetUUID();
+            //}
+            //else
+            //{
+            //    UUID = json.config.Network.Node;
+            //}
             
         }
         public void ResetUUID()

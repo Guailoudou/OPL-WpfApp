@@ -14,8 +14,8 @@
                     <Label Content="UUID：" HorizontalAlignment="Left" Margin="28,10,0,0" VerticalAlignment="Top"/>
                     <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="{Binding Path=uuid, Mode=OneWay}" VerticalAlignment="Top" Width="136" Height="22"/>
                     <Button Content="复制UUID" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24"/>
-                    <Button Content="重置UUID" HorizontalAlignment="Left" Margin="275,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24"/>
-                    <ListBox Margin="28,41,36,32" SelectionChanged="ListBox_SelectionChanged" Name="sdlist">
+                    <Button Content="重置程序" HorizontalAlignment="Left" Margin="275,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24"/>
+                    <ListBox Margin="10,41,21,32" SelectionChanged="ListBox_SelectionChanged" Name="sdlist">
                         <Border BorderBrush="Black" BorderThickness="1">
                             <Grid Height="63" Width="700" >
                                 <Label Content="隧道1" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top"/>
@@ -36,13 +36,15 @@
                                 <CheckBox Content="启用" HorizontalAlignment="Left" Margin="630,0,0,0" VerticalAlignment="Center" Checked="CheckBox_Checked"/>
                                 <Button Content=" X " HorizontalAlignment="Left" Margin="678,4,0,0" VerticalAlignment="Top"/>
                                 <Button Content="编辑" HorizontalAlignment="Left" Margin="576,0,0,0" VerticalAlignment="Center"/>
+                                <Label Content="协议：TCp" HorizontalAlignment="Left" Margin="286,4,0,0" VerticalAlignment="Top"/>
                             </Grid>
                         </Border>
 
 
                     </ListBox>
                     <Button Content="新建连接" HorizontalAlignment="Left" Margin="567,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24"/>
-                    <Button Content="启动" HorizontalAlignment="Left" Margin="672,10,0,0" VerticalAlignment="Top" Width="60" Height="24"/>
+                    <Button Content="启动" HorizontalAlignment="Left" Margin="672,10,0,0" VerticalAlignment="Top" Width="60" Height="24" Click="Button_Click_open" Name="openbutton"/>
+                    <Button Content="刷新列表" HorizontalAlignment="Left" Margin="424,10,0,0" VerticalAlignment="Top" Height="24" Width="60" Click="Button_Click_1"/>
                 </Grid>
 
             </TabItem>
@@ -52,7 +54,14 @@
                         <ColumnDefinition/>
 
                     </Grid.ColumnDefinitions>
-                    <Label Content="窗口2" HorizontalAlignment="Center" Margin="0,37,0,0" VerticalAlignment="Top" Grid.Column="3" Height="26" Width="42"/>
+                    <RichTextBox Name="richOutput">
+                        <FlowDocument>
+                            <Paragraph>
+                                <Run Text="log"/>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+
                 </Grid>
             </TabItem>
             <TabItem Header="文档" RenderTransformOrigin="1.927,0.59" Margin="61,-2,-93,0">
@@ -61,7 +70,10 @@
                         <ColumnDefinition/>
 
                     </Grid.ColumnDefinitions>
-                    <WebBrowser x:Name="wpfWebBrowser" />
+                    <TextBlock>
+                        
+                    </TextBlock>
+                    <Label Content="https://blog.gldhn.top/2024/04/15/opl_help/" HorizontalAlignment="Left" Margin="27,35,0,0" VerticalAlignment="Top"/>
 
                 </Grid>
             </TabItem>

@@ -56,9 +56,17 @@ namespace WpfApp1
             {
                 //...
             }
+            
             this.Close();
            
             
+        }
+
+        private void Sport_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox SportText = (TextBox)this.FindName("Sport");
+            TextBox CportText = (TextBox)this.FindName("Cport");
+            CportText.Text = SportText.Text;
         }
     }
 }

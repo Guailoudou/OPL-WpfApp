@@ -23,6 +23,7 @@ namespace userdata
             {
                 UserData userData = new UserData();
                 userData.ResetUUID();
+                newjson(userData);
             }
             else
             {
@@ -47,7 +48,7 @@ namespace userdata
                 },
                 Apps = new List<App> { },
 
-                LogLevel = 1
+                LogLevel = 2
 
             };
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
@@ -86,6 +87,27 @@ namespace userdata
             {
                 writer.Write(ujson);
             }
+        }
+        public void del(int index)
+        {
+            getjosn();
+            config.Apps.RemoveAt(index);
+            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
+            wejson(ujson);
+        }
+        public void onapp(int index)
+        {
+            getjosn();
+            config.Apps[index].Enabled = 1;
+            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
+            wejson(ujson);
+        }
+        public void offapp(int index)
+        {
+            getjosn();
+            config.Apps[index].Enabled = 0;
+            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
+            wejson(ujson);
         }
         public void getjosn()
         {
