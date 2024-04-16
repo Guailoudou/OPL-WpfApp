@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPL WpfApp", "WpfApp1\OPL WpfApp.csproj", "{63EFF868-E6BE-4C21-A4E0-2AF1FD21041D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63EFF868-E6BE-4C21-A4E0-2AF1FD21041D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63EFF868-E6BE-4C21-A4E0-2AF1FD21041D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63EFF868-E6BE-4C21-A4E0-2AF1FD21041D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63EFF868-E6BE-4C21-A4E0-2AF1FD21041D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {37EA707B-98FE-4C8E-9EC0-300A9128AA21}
+	EndGlobalSection
+EndGlobal
