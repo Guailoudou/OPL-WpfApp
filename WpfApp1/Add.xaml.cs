@@ -54,7 +54,8 @@ namespace WpfApp1
             }
             catch (Exception ex)
             {
-                //...
+                MessageBox.Show("错误，异常的输入:"+ex, "警告");
+                
             }
             
             this.Close();
@@ -67,6 +68,11 @@ namespace WpfApp1
             TextBox SportText = (TextBox)this.FindName("Sport");
             TextBox CportText = (TextBox)this.FindName("Cport");
             CportText.Text = SportText.Text;
+        }
+
+        private void Preset(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("未完成的功能", "提示");
         }
     }
 }

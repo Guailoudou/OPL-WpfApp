@@ -18,7 +18,7 @@
             <ComboBoxItem Content="udp"/>
         </ComboBox>
         <Label Content="协议" HorizontalAlignment="Left" Margin="23,124,0,0" VerticalAlignment="Top"/>
-        <Button Content="添加" HorizontalAlignment="Left" Margin="24,172,0,0" VerticalAlignment="Top" Width="176" Height="35" Click="Button_Click"/>
+        <Button Content="保存" HorizontalAlignment="Left" Margin="24,172,0,0" VerticalAlignment="Top" Width="176" Height="35" Click="Button_Click"/>
 
     </Grid>
 </Window>

@@ -157,8 +157,11 @@ namespace WpfApp1
             }
             var button = (Button)sender;
             int index = (int)button.Tag;
-            //..
-            MessageBox.Show("该功能未完成","提示");
+            edit ed = new edit(index);
+            ed.Owner = this;
+            ed.Topmost = true;
+            ed.ShowDialog();
+            relist();
 
         }
         public void relist()
