@@ -67,12 +67,20 @@ namespace userdata
                 SrcPort = cport,
                 DstPort = sport,
                 DstHost = "localhost",
-                Enabled = 0,
+                Enabled = 1,
                 PeerUser = "",
                 RelayNode = ""
 
             };
-            config.Apps.Add(app);
+            if (config.Apps != null)
+                config.Apps.Add(app);
+            else
+            {
+
+                config.Apps = new List<App> { 
+                    app
+                };
+            }
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
         }

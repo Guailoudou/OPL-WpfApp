@@ -285,12 +285,14 @@ namespace WpfApp1
                 process.CancelErrorRead();
                 process.Kill();
                 openbutton.Content = "启动";
+                richOutput.AppendText("----------------------------------程序已停止运行----------------------------------\n");
                 on = false;
             }
             else
             {
                 open();
                 openbutton.Content = "关闭";
+                richOutput.AppendText("----------------------------------程序已开始运行----------------------------------\n");
                 on = true;
             }
 

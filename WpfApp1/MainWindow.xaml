@@ -54,17 +54,15 @@
                         <ColumnDefinition/>
 
                     </Grid.ColumnDefinitions>
-                    <RichTextBox Name="richOutput">
+                    <RichTextBox Name="richOutput" IsReadOnly="True">
                         <FlowDocument>
-                            <Paragraph>
-                                <Run Text="log"/>
-                            </Paragraph>
+                            
                         </FlowDocument>
                     </RichTextBox>
 
                 </Grid>
             </TabItem>
-            <TabItem Header="文档" RenderTransformOrigin="1.927,0.59" Margin="61,-2,-93,0">
+            <TabItem Header="文档" RenderTransformOrigin="1.927,0.59" Margin="61,-2,-93,0" Height="22" VerticalAlignment="Top">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>

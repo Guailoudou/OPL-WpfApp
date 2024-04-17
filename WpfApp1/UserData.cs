@@ -13,19 +13,20 @@ namespace userdata
     internal class UserData
     {
         public String UUID;
-        json json = new json();
+        json json;
         private static readonly Random _random = new Random();
         public UserData() {
-            //string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
-            //if (!File.Exists(absolutePath))
-            //{
-            //    ResetUUID();
-            //}
-            //else
-            //{
-            //    UUID = json.config.Network.Node;
-            //}
-            
+            string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
+            if (!File.Exists(absolutePath))
+            {
+                ResetUUID();
+            }
+            else
+            {
+                json = new json();
+                UUID = json.config.Network.Node;
+            }
+
         }
         public void ResetUUID()
         {
