@@ -30,13 +30,15 @@
                         <Border BorderBrush="Black" BorderThickness="1">
                             <Grid Height="63" Width="700" >
                                 <Label Content="名称：***" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top"/>
-                                <Label Content="目标UUID：erererererereer" Margin="10,29,538,10"/>
-                                <Label Content="远程端口：25555" HorizontalAlignment="Left" Margin="177,4,0,0" VerticalAlignment="Top"/>
-                                <Label Content="本地端口：25566" Margin="177,32,371,7"/>
+                                <Label Content="目标UUID：erererererereer" Margin="10,29,505,0"/>
+                                <Label Content="远程端口：25555" HorizontalAlignment="Left" Margin="196,4,0,0" VerticalAlignment="Top"/>
+                                <Label Content="本地端口：25566" Margin="195,32,386,0"/>
                                 <CheckBox Content="启用" HorizontalAlignment="Left" Margin="630,0,0,0" VerticalAlignment="Center" Checked="CheckBox_Checked"/>
                                 <Button Content=" X " HorizontalAlignment="Left" Margin="678,4,0,0" VerticalAlignment="Top"/>
                                 <Button Content="编辑" HorizontalAlignment="Left" Margin="576,0,0,0" VerticalAlignment="Center"/>
-                                <Label Content="协议：TCp" HorizontalAlignment="Left" Margin="286,4,0,0" VerticalAlignment="Top"/>
+                                <Label Content="协议：TCp" HorizontalAlignment="Left" Margin="310,3,0,0" VerticalAlignment="Top"/>
+                                <Label Content="连接ip:端口->" HorizontalAlignment="Left" Margin="310,32,0,0" VerticalAlignment="Top"/>
+                                <TextBox HorizontalAlignment="Left" Margin="395,36,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
                             </Grid>
                         </Border>
 
@@ -56,7 +58,7 @@
                     </Grid.ColumnDefinitions>
                     <RichTextBox Name="richOutput" IsReadOnly="True">
                         <FlowDocument>
-                            
+
                         </FlowDocument>
                     </RichTextBox>
 
@@ -69,7 +71,7 @@
 
                     </Grid.ColumnDefinitions>
                     <TextBlock>
-                        
+
                     </TextBlock>
                     <Label Content="https://blog.gldhn.top/2024/04/15/opl_help/" HorizontalAlignment="Left" Margin="27,35,0,0" VerticalAlignment="Top"/>
 

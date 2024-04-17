@@ -202,29 +202,46 @@ namespace WpfApp1
                     grid.Children.Add(new Label
                     {
                         Content = "目标UUID："+app.PeerNode,
-                        Margin = new Thickness(10, 29, 538, 10)
+                        Margin = new Thickness(10, 29, 505, 0)
                     });
 
                     grid.Children.Add(new Label
                     {
                         Content = "协议：" + app.Protocol,
                         HorizontalAlignment = HorizontalAlignment.Left,
-                        Margin = new Thickness(290, 4, 0, 0),
+                        Margin = new Thickness(310, 4, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top
+                    });
+
+                    grid.Children.Add(new Label
+                    {
+                        Content = "连接ip:端口->",
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(310, 32, 0, 0),
+                        VerticalAlignment = VerticalAlignment.Top
+                    });
+
+                    grid.Children.Add(new TextBox
+                    {
+                        Text = "127.0.0.1:" + app.SrcPort,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(395, 36, 0, 0),
+                        VerticalAlignment = VerticalAlignment.Top,
+                        IsReadOnly = true
                     });
 
                     grid.Children.Add(new Label
                     {
                         Content = "远程端口："+app.DstPort,
                         HorizontalAlignment = HorizontalAlignment.Left,
-                        Margin = new Thickness(177, 4, 0, 0),
+                        Margin = new Thickness(195, 4, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top
                     });
 
                     grid.Children.Add(new Label
                     {
                         Content = "本地端口："+app.SrcPort,
-                        Margin = new Thickness(177, 32, 371, 7)
+                        Margin = new Thickness(195, 32, 386, 0)
                     });
 
                     CheckBox checkBox = new CheckBox

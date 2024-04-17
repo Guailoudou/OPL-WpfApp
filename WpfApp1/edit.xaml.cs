@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using userdata;
 
 namespace WpfApp1
 {
@@ -52,22 +54,21 @@ namespace WpfApp1
             TextBox SportText = (TextBox)this.FindName("Sport");
             TextBox CportText = (TextBox)this.FindName("Cport");
             ComboBox TypeText = (ComboBox)this.FindName("type");
-            string Suuid = SuuidText.Text;
-            string Type = TypeText.Text;
-            int Sport, Cport;
-            userdata.json json = new userdata.json();
+            json json = new json();
+            json.config.Apps[index].PeerNode = SuuidText.Text;
+            json.config.Apps[index].Protocol = TypeText.Text;
             try
             {
-                Sport = int.Parse(SportText.Text);
-                Cport = int.Parse(CportText.Text);
-                json.del(index);
-                json.newapp(Suuid, Sport, Type, Cport);
+                json.config.Apps[index].DstPort = int.Parse(SportText.Text);
+                json.config.Apps[index].SrcPort = int.Parse(CportText.Text);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("错误，异常的输入:" + ex, "警告");
 
             }
+            string ujson = JsonConvert.SerializeObject(json.config, Formatting.Indented);
+            json.wejson(ujson);
             this.Close();
         }
     }
