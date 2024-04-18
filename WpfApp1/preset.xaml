@@ -1,0 +1,17 @@
+﻿<Window x:Class="OPL_WpfApp.preset"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OPL_WpfApp"
+        mc:Ignorable="d"
+        Title="预设" Height="200" Width="250">
+    <Grid>
+        <Label Content="UUID:" HorizontalAlignment="Left" Margin="24,24,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Name="Suuid" Margin="80,28,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="游戏：" HorizontalAlignment="Left" Margin="23,69,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Name="type" Margin="80,71,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged">
+        </ComboBox>
+        <Button Content="添加" HorizontalAlignment="Left" Margin="46,129,0,0" VerticalAlignment="Top" Height="28" Width="140" Click="Button_Click"/>
+    </Grid>
+</Window>

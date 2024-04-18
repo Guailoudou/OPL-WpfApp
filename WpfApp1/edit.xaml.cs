@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using userdata;
 
-namespace WpfApp1
+namespace OPL_WpfApp
 {
     /// <summary>
     /// edit.xaml 的交互逻辑

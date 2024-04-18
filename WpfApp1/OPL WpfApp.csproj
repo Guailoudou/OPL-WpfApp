@@ -107,6 +107,10 @@
       <DependentUpon>edit.xaml</DependentUpon>
     </Compile>
     <Compile Include="json.cs" />
+    <Compile Include="net.cs" />
+    <Compile Include="preset.xaml.cs">
+      <DependentUpon>preset.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserData.cs" />
     <Page Include="Add.xaml">
       <SubType>Designer</SubType>
@@ -128,6 +132,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="preset.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

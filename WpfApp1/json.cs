@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Newtonsoft.Json;
-using WpfApp1;
+using static OPL_WpfApp.MainWindow;
 
 namespace userdata
 {
@@ -32,6 +32,7 @@ namespace userdata
         }
         public void newjson(UserData userData) //创建无app配置
         {
+            Logger.Log("[执行]创建新的配置-" + userData.UUID);
             config = new Config
             {
                 Network = new Network
@@ -55,9 +56,10 @@ namespace userdata
             wejson(ujson);
             
         }
-        public void newapp(string suuid,int sport, string type,int cport=0,string appname="***")
+        public void newapp(string suuid,int sport, string type,int cport=0,string appname="自定义")
         {
-            if(cport == 0)cport = sport-1;
+            Logger.Log("[执行]创建新的隧道"+suuid+":"+sport+"--"+type+">>"+cport);
+            if (cport == 0)cport = sport-1;
             App app = new App
             {
                 AppName = appname,
@@ -98,6 +100,7 @@ namespace userdata
         }
         public void del(int index)
         {
+            Logger.Log("[执行]删除隧道 序号:"+index);
             getjosn();
             config.Apps.RemoveAt(index);
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
@@ -129,7 +132,7 @@ namespace userdata
             catch (JsonException je)
             {
                 // 如果JSON格式不正确，记录错误并返回null
-                Console.WriteLine($"Error while deserializing JSON: {je.Message}");
+                Logger.Log($"Error while deserializing JSON: {je.Message}");
             }
 
         }
@@ -169,5 +172,25 @@ namespace userdata
         public Network Network { get; set; }
         public List<App> Apps { get; set; }
         public int LogLevel { get; set; }
+    }
+
+    public class preset
+    {
+        public string Name { get; set; }
+        public string Note { get; set; }
+        public List<PrTunnel> tunnel { get; set; }
+    }
+
+    public class PrTunnel
+    {
+        public int Sport { get; set; }
+        public int CPort { get; set; }
+        public string type { get; set;}
+    }
+
+    public class Presets
+    {
+        public List<preset> presets { get; set; }
+        public int version { get; set; }
     }
 }

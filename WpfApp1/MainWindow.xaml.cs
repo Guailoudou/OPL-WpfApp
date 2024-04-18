@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using userdata;
 
-namespace WpfApp1
+namespace OPL_WpfApp
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
@@ -40,6 +41,9 @@ namespace WpfApp1
             //userdata.json sjson = new userdata.json();
             this.DataContext = userData;
             relist();
+            Logger logger = new Logger(richOutput);
+            Net net = new Net();
+            _ = net.GetPreset();
             //sjson.newjson(userData);
             //wpfWebBrowser.Navigate("https://blog.gldhn.top/2024/04/15/opl_help/");
         }
@@ -193,7 +197,7 @@ namespace WpfApp1
                     // 添加各个子控件到Grid
                     grid.Children.Add(new Label
                     {
-                        Content = "隧道",
+                        Content = app.AppName+ "隧道",
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(10, 3, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top
@@ -215,7 +219,7 @@ namespace WpfApp1
 
                     grid.Children.Add(new Label
                     {
-                        Content = "连接ip:端口->",
+                        Content = "连接： ip:端口 ->",
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(310, 32, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top
@@ -225,7 +229,7 @@ namespace WpfApp1
                     {
                         Text = "127.0.0.1:" + app.SrcPort,
                         HorizontalAlignment = HorizontalAlignment.Left,
-                        Margin = new Thickness(395, 36, 0, 0),
+                        Margin = new Thickness(415, 36, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top,
                         IsReadOnly = true
                     });
@@ -305,14 +309,23 @@ namespace WpfApp1
                 process.CancelErrorRead();
                 process.Kill();
                 openbutton.Content = "启动";
-                richOutput.AppendText("----------------------------------程序已停止运行----------------------------------\n");
+                Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
                 on = false;
             }
             else
             {
-                open();
+                string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
+                if (!File.Exists(absolutePath))
+                {
+                    MessageBox.Show("程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单", "警告");
+                    Logger.Log("[警告]程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单");
+                    return;
+
+                }else open();
+                
+                
                 openbutton.Content = "关闭";
-                richOutput.AppendText("----------------------------------程序已开始运行----------------------------------\n");
+                Logger.Log("[提示]----------------------------------程序已开始运行----------------------------------");
                 on = true;
             }
 
@@ -324,6 +337,8 @@ namespace WpfApp1
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "bin/openp2p.exe"; // 替换为你的控制台应用路径
             startInfo.RedirectStandardOutput = true;
+            startInfo.StandardOutputEncoding = Encoding.UTF8;
+            startInfo.StandardErrorEncoding = Encoding.UTF8;
             startInfo.RedirectStandardError = true;
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true; // 不显示新的命令行窗口
@@ -370,6 +385,40 @@ namespace WpfApp1
                 process.Kill();
             }
             base.OnClosed(e);
+        }
+        public class Logger
+        {
+            private static RichTextBox _output;
+
+            public Logger(RichTextBox output)
+            {
+                _output = output;
+            }
+
+            public static void Log(string message)
+            {
+                string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","bin","log","openp2p.log");
+                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(absolutePath));
+                DateTime Date = DateTime.Now;
+                string outmessage = "[" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "]" + message + Environment.NewLine;
+                _output.AppendText(outmessage);
+                AppendTextToFile(absolutePath, outmessage);
+                
+            }
+            public static void AppendTextToFile(string absolutePath, string content)
+            {
+                try
+                {
+                    using (StreamWriter writer = new StreamWriter(absolutePath, append: true, encoding: Encoding.UTF8))
+                    {
+                        writer.Write(content);
+                    }
+                }
+                catch (Exception ex)
+                {
+                   
+                }
+            }
         }
     }
 }

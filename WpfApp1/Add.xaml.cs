@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using userdata;
 
-namespace WpfApp1
+namespace OPL_WpfApp
 {
     /// <summary>
     /// Add.xaml 的交互逻辑
@@ -72,7 +72,11 @@ namespace WpfApp1
 
         private void Preset(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("未完成的功能", "提示");
+            preset ed = new preset();
+            ed.Owner = this;
+            ed.Topmost = true;
+            ed.ShowDialog();
+            this.Close();
         }
     }
 }

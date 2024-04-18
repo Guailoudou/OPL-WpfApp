@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using userdata;
 
 namespace WpfApp1
 {
@@ -16,7 +17,7 @@ namespace WpfApp1
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
+            
             // 应用程序启动时的自定义逻辑
             //var mainWindow = new MainWindow();
             //mainWindow.Show();
