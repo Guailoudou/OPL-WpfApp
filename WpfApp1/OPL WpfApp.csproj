@@ -100,23 +100,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Add.xaml.cs">
+    <Compile Include="cs\Heart.cs" />
+    <Compile Include="minui\Add.xaml.cs">
       <DependentUpon>Add.xaml</DependentUpon>
     </Compile>
-    <Compile Include="edit.xaml.cs">
+    <Compile Include="minui\edit.xaml.cs">
       <DependentUpon>edit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="json.cs" />
-    <Compile Include="net.cs" />
-    <Compile Include="preset.xaml.cs">
+    <Compile Include="cs\json.cs" />
+    <Compile Include="cs\net.cs" />
+    <Compile Include="minui\preset.xaml.cs">
       <DependentUpon>preset.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserData.cs" />
-    <Page Include="Add.xaml">
+    <Compile Include="cs\UserData.cs" />
+    <Page Include="minui\Add.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="edit.xaml">
+    <Page Include="minui\edit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -132,7 +133,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="preset.xaml">
+    <Page Include="minui\preset.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

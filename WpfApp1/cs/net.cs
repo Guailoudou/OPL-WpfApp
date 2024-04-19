@@ -43,6 +43,7 @@ namespace userdata
                     { 
                         Logger.Log("[提示]获取预设完成,当前为最新版本~"); 
                     }
+                    Uplog.Log(presetss.uplog);
                 }
                 else
                 {

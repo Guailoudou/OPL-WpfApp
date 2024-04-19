@@ -66,7 +66,19 @@
                     <TextBox HorizontalAlignment="Left" Margin="156,95,0,0" TextWrapping="Wrap" Text="https://github.com/Guailoudou/OPL-WpfApp" VerticalAlignment="Top" Width="297" IsReadOnly="True"/>
                     <Label Content="开源地址：" HorizontalAlignment="Left" Margin="71,91,0,0" VerticalAlignment="Top"/>
                     <Label Content="基于OPENP2P" HorizontalAlignment="Left" Margin="483,91,0,0" VerticalAlignment="Top"/>
-                    <Label Content="预设隧道为联网获取，需要增加常用预设隧道可以联系作者添加&#xD;&#xA;一般为固定多端口联机游戏，或特殊固定端口用途" HorizontalAlignment="Left" Margin="71,122,0,0" VerticalAlignment="Top" Height="80" Width="637"/>
+                    <Label Content="预设隧道为联网获取，需要增加常用预设隧道可以联系作者添加&#xD;&#xA;一般为固定多端口联机游戏，或特殊固定端口用途" HorizontalAlignment="Left" Margin="71,122,0,0" VerticalAlignment="Top" Height="45" Width="382"/>
+
+                    <Label Content="更新日志：" HorizontalAlignment="Left" Margin="92,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                        <Label.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="0.715"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Label.RenderTransform>
+                    </Label>
+                    <TextBox HorizontalAlignment="Left" Name="uplogbox" Margin="71,203,0,0" TextWrapping="Wrap" Text="联网获取" VerticalAlignment="Top" Width="552" Height="174" IsReadOnly="True"/>
 
                 </Grid>
             </TabItem>
