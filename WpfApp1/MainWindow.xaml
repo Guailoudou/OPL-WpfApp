@@ -12,7 +12,7 @@
 
                 <Grid Background="#FFE5E5E5">
                     <Label Content="UUID：" HorizontalAlignment="Left" Margin="28,10,0,0" VerticalAlignment="Top"/>
-                    <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="{Binding Path=uuid, Mode=OneWay}" VerticalAlignment="Top" Width="136" Height="22"/>
+                    <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22"/>
                     <Button Content="复制UUID" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24"/>
                     <Button Content="重置程序" HorizontalAlignment="Left" Margin="275,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24"/>
                     <ListBox Margin="10,41,21,32" SelectionChanged="ListBox_SelectionChanged" Name="sdlist">

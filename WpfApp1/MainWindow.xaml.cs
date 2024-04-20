@@ -15,8 +15,8 @@ namespace OPL_WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        userdata.UserData userData = new userdata.UserData();
-        userdata.json sjson = new userdata.json();
+        userdata.UserData userData ;
+        userdata.json sjson;
         bool on = false;
         public MainWindow()
         {
@@ -30,14 +30,15 @@ namespace OPL_WpfApp
             this.Top = (screenHeight - windowHeight) / 2;
             //userdata.UserData userData = new userdata.UserData();
             //userdata.json sjson = new userdata.json();
-            this.DataContext = userData;
-            Relist();
             Logger logger = new Logger(richOutput);
             Uplog uplog = new Uplog(uplogbox);
+            this.DataContext = userData;
+            userData = new userdata.UserData();
+            sjson = new userdata.json();
             Net net = new Net();
             _ = net.GetPreset();
-
-            
+            Relist();
+            UUID.Text = sjson.config.Network.Node;
             //sjson.newjson(userData);
             //wpfWebBrowser.Navigate("https://blog.gldhn.top/2024/04/15/opl_help/");
         }
@@ -305,6 +306,8 @@ namespace OPL_WpfApp
                 openbutton.Content = "启动";
                 Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
                 on = false;
+               if(outcheck.udp!=null)foreach(UdpClientKeepAlive app in outcheck.udp)app.StopSendingKeepAlive();
+                
             }
             else
             {
@@ -405,6 +408,7 @@ namespace OPL_WpfApp
                 process.CancelErrorRead();
                 process.Kill();
             }
+            if (outcheck.udp != null) foreach (UdpClientKeepAlive app in outcheck.udp) app.StopSendingKeepAlive();
             base.OnClosed(e);
         }
         public class Logger

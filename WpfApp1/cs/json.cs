@@ -49,7 +49,7 @@ namespace userdata
                 },
                 Apps = new List<App> { },
 
-                LogLevel = 2
+                LogLevel = 1
 
             };
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);

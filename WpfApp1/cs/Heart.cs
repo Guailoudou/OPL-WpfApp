@@ -18,20 +18,50 @@ namespace userdata
     public class outcheck
     {
         public outcheck() { }
+        public static List<UdpClientKeepAlive> udp = new List<UdpClientKeepAlive>();
         public void Check(string m)
         {
-            if (m.Contains("sdwan init ok")) Logger.Log("[提示]程序启动完毕，请耐心等待隧道连接");
-            if(m.Contains("LISTEN ON PORT") && m.Contains("START"))
+            if (m.Contains("autorunApp start")) Logger.Log("[提示]程序启动完毕，请耐心等待隧道连接"); //启动完毕
+            if(m.Contains("LISTEN ON PORT")) //连接成功or断开
             {
                 string pattern = @"PORT\s+(\w+:\d+)";
                 Match match = Regex.Match(m, pattern);
                 if (match.Success)
                 {
                     string portInfo = match.Groups[1].Value;
-                    Logger.Log("[提示]隧道本地端口为 " + portInfo + " 连接成功");
+                    if (m.Contains("START"))
+                    {
+                        Logger.Log("[提示]隧道本地端口为 " + portInfo + " 连接成功");
+                        string[] parts = portInfo.Split(':');
+                        string type = parts[0];
+                        int port = int.Parse(parts[1]);
+                        if (type == "tcp")
+                        {
+                            new TcpClientWithKeepAlive("127.0.0.1",port);
+                        }
+                        else
+                        {
+                            udp.Add(new UdpClientKeepAlive("127.0.0.1", port));
+                        }
+                    }
+                    if (m.Contains("END")) 
+                    {
+                        Logger.Log("[错误]隧道本地端口为 " + portInfo + " 断开连接"); 
+                    }
+
                 }
             }
-            if (m.Contains("it will auto reconnect when peer node online"))
+            if (m.Contains("login ok")) //登录中心成功
+            {
+                string pattern = @"node=(\w+)";
+                Match match = Regex.Match(m, pattern);
+                if (match.Success)
+                {
+                    string id = match.Groups[1].Value;
+                    Logger.Log("[提示]你的实际UUID为"+id);
+                }
+            }
+                if (m.Contains("it will auto reconnect when peer node online"))//对方不在线
             {
                 string pattern = @"INFO\s+(\w+)\s+offline";
                 Match match = Regex.Match(m, pattern);
@@ -47,7 +77,7 @@ namespace userdata
     //tcp心跳
     public class TcpClientWithKeepAlive
     {
-        private const int KEEP_ALIVE_INTERVAL_SEC = 10; // 设置心跳间隔为10秒
+        private const int KEEP_ALIVE_INTERVAL_SEC = 1; // 设置心跳间隔为1秒
         private readonly Socket _client;
         private Thread _keepAliveThread;
 
@@ -60,7 +90,7 @@ namespace userdata
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
                 _client.Connect(endPoint);
 
-                Logger.Log("Connected to {0}:{1}"+ipAddress+ port);
+                Logger.Log("[提示]TCP Connected to "+ipAddress+ port+"开启隧道保活");
 
                 // 启动心跳线程
                 _keepAliveThread = new Thread(SendKeepAliveMessage);
@@ -79,11 +109,19 @@ namespace userdata
             {
                 if (_client.Connected)
                 {
-                    string keepAliveMessage = "KeepAlive";
+                    string keepAliveMessage = "\x00";
                     byte[] buffer = Encoding.ASCII.GetBytes(keepAliveMessage);
-                    _client.Send(buffer);
+                    try
+                    {
+                        _client.Send(buffer);
+                    }catch (SocketException se)
+                    {
+                        //Logger.Log(se.Message);
+                        break;
+                    }
+                    
 
-                    Logger.Log("Sent KeepAlive message at {0}" + DateTime.Now.ToString("HH:mm:ss"));
+                    //Logger.Log("Sent KeepAlive message at {0}" + DateTime.Now.ToString("HH:mm:ss"));
 
                     // 延迟至下一次心跳
                     Thread.Sleep(TimeSpan.FromSeconds(KEEP_ALIVE_INTERVAL_SEC));
@@ -91,7 +129,7 @@ namespace userdata
                 else
                 {
                     // 如果连接已断开，则停止心跳线程
-                    Logger.Log("Connection is not active anymore. Stopping KeepAlive thread.");
+                    //Logger.Log("[提示]连接已断开，tcp心跳保活关闭.");
                     break;
                 }
             }
@@ -102,7 +140,7 @@ namespace userdata
     ///udp心跳
     public class UdpClientKeepAlive
     {
-        private const int KEEP_ALIVE_INTERVAL_SEC = 10; // 设置心跳间隔为10秒
+        private const int KEEP_ALIVE_INTERVAL_SEC = 1; // 设置心跳间隔为10秒
         private readonly UdpClient _udpClient;
         private Timer _keepAliveTimer;
 
@@ -113,7 +151,7 @@ namespace userdata
             try
             {
                 IPEndPoint remoteEP = new IPEndPoint(IPAddress.Parse(ipAddress), port);
-
+                Logger.Log("[提示]UDP Connected to " + ipAddress + port + "开启隧道保活");
                 // 开始发送心跳包
                 StartSendingKeepAlive(remoteEP);
             }
@@ -128,13 +166,13 @@ namespace userdata
             // 创建一个定时器来定期发送心跳包
             _keepAliveTimer = new Timer((state) =>
             {
-                string keepAliveMessage = "KeepAlive";
+                string keepAliveMessage = "\x00";
                 byte[] buffer = Encoding.ASCII.GetBytes(keepAliveMessage);
 
                 // 发送心跳包
                 _udpClient.Send(buffer, buffer.Length, remoteEP);
 
-                Logger.Log("Sent UDP KeepAlive packet at {0}"+DateTime.Now.ToString("HH:mm:ss"));
+                //Logger.Log("Sent UDP KeepAlive packet at {0}"+DateTime.Now.ToString("HH:mm:ss"));
             }, null, TimeSpan.Zero, TimeSpan.FromSeconds(KEEP_ALIVE_INTERVAL_SEC));
         }
 
