@@ -151,7 +151,7 @@ namespace userdata
             try
             {
                 IPEndPoint remoteEP = new IPEndPoint(IPAddress.Parse(ipAddress), port);
-                Logger.Log("[提示]UDP Connected to " + ipAddress + port + "开启隧道保活");
+                Logger.Log("[提示]UDP Connected to " + ipAddress +":"+ port + "开启隧道保活");
                 // 开始发送心跳包
                 StartSendingKeepAlive(remoteEP);
             }
