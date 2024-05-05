@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using userdata;
 
 namespace OPL_WpfApp
@@ -120,6 +123,7 @@ namespace OPL_WpfApp
             var CheckBox = (CheckBox)sender;
             int index = (int)CheckBox.Tag;
             sjson.onapp(index);
+            Relist();
         }
         private void UnCheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -132,6 +136,7 @@ namespace OPL_WpfApp
             var CheckBox = (CheckBox)sender;
             int index = (int)CheckBox.Tag;
             sjson.offapp(index);
+            Relist();
         }
         private void Del(object sender, RoutedEventArgs e)
         {
@@ -163,6 +168,9 @@ namespace OPL_WpfApp
             Relist();
 
         }
+        private Dictionary<string, int> state = new Dictionary<string, int>();
+       // private Dictionary<string, int> statelist = new Dictionary<string, int>();
+        
         public void Relist()
         {
 
@@ -211,7 +219,7 @@ namespace OPL_WpfApp
                         Margin = new Thickness(310, 4, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top
                     });
-
+                    
                     grid.Children.Add(new Label
                     {
                         Content = "连接： ip:端口 ->",
@@ -226,7 +234,11 @@ namespace OPL_WpfApp
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(415, 36, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top,
-                        IsReadOnly = true
+                        IsReadOnly = true,
+                        ToolTip = new ToolTip
+                        {
+                            Content = "这是ip和端口，根据具体游戏填写"
+                        }
                     });
 
                     grid.Children.Add(new Label
@@ -243,6 +255,12 @@ namespace OPL_WpfApp
                         Margin = new Thickness(195, 32, 386, 0)
                     });
 
+                    grid.Children.Add(new Label
+                    {
+                        Content = "状态：",
+                        Margin = new Thickness(477, 1, 0, 0)
+                    });
+
                     CheckBox checkBox = new CheckBox
                     {
                         Content = "启用",
@@ -256,6 +274,27 @@ namespace OPL_WpfApp
                     checkBox.Checked += CheckBox_Checked; // 需要定义CheckBox_Checked事件处理程序
                     checkBox.Unchecked += UnCheckBox_Checked;
                     grid.Children.Add(checkBox);
+                    var clo = Brushes.Gray;
+                    if (on)
+                    {
+                        if (state[app.Protocol + ":" + app.SrcPort] == 1) clo = Brushes.Orange;
+                        if(state[app.Protocol + ":" + app.SrcPort] == 2) clo = Brushes.Green;
+                    }
+                    Ellipse ellipse = new Ellipse
+                    {
+                        Stroke = Brushes.Black,
+                        Fill = clo,
+                        Margin = new Thickness(518, 7, 167, 42),
+                        ToolTip = new ToolTip 
+                        { 
+                            Content="灰色：未启动/未启用 橙色：连接中..  绿色：连接成功"
+                        }
+                    };
+                    grid.Children.Add(ellipse);
+                    //statelist[app.Protocol + ":" + app.SrcPort] = index;    //////////////////////
+                    if(!on)
+                    state[app.Protocol + ":" + app.SrcPort] = app.Enabled;
+
 
                     Button closeButton = new Button
                     {
@@ -263,7 +302,11 @@ namespace OPL_WpfApp
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(678, 4, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top,
-                        Tag = index
+                        Tag = index,
+                        ToolTip = new ToolTip
+                        {
+                            Content = "删除隧道，无法恢复"
+                        }
                     };
                     closeButton.Click += Del;
                     grid.Children.Add(closeButton);
@@ -291,6 +334,8 @@ namespace OPL_WpfApp
 
         }
 
+
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Relist();
@@ -306,7 +351,8 @@ namespace OPL_WpfApp
                 openbutton.Content = "启动";
                 Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
                 on = false;
-               if(outcheck.udp!=null)foreach(UdpClientKeepAlive app in outcheck.udp)app.StopSendingKeepAlive();
+                Relist();
+                if (udp!=null)foreach(UdpClientKeepAlive app in udp)app.StopSendingKeepAlive();
                 
             }
             else
@@ -320,36 +366,52 @@ namespace OPL_WpfApp
 
                 }
                 else Open();
-
-
+                
                 openbutton.Content = "关闭";
                 Logger.Log("[提示]-----------------------程序已开始运行请耐心等待隧道连接----------------------------");
                 on = true;
+                Relist();
                 //StartMon();
             }
 
         }
-        //public async void StartMon()
-        //{
-        //    await Task.Run(async () => await Oph());
-        //}
-        //private async Task Oph()
-        //{
-        //    Logger.Log("[提示]开始监控主程序");
-        //    while(on) {
-        //        await Task.Delay(5000);
-        //        if (process != null && !process.HasExited)
-        //        {
-        //            openbutton.Content = "启动";
-        //            Logger.Log("[警告]-----------------------程序已异常停止运行----------------------------");
-        //            MessageBox.Show("主程序异常停止运行，请尝试新开启", "警告");
-        //            on = false;
+        public static List<UdpClientKeepAlive> udp = new List<UdpClientKeepAlive>();
+        public void Checkopen(string m)
+        {
+            if (m.Contains("LISTEN ON PORT")) //连接成功or断开
+            {
+                string pattern = @"PORT\s+(\w+:\d+)";
+                Match match = Regex.Match(m, pattern);
+                if (match.Success)
+                {
+                    string portInfo = match.Groups[1].Value;
+                    if (m.Contains("START"))
+                    {
+                        Logger.Log("[提示]隧道本地端口为 " + portInfo + " 连接成功");
+                        state[portInfo] = 2;
+                        Relist();
+                        string[] parts = portInfo.Split(':');
+                        string type = parts[0];
+                        int port = int.Parse(parts[1]);
+                        if (type == "tcp")
+                        {
+                            new TcpClientWithKeepAlive("127.0.0.1", port);
+                        }
+                        else
+                        {
+                            udp.Add(new UdpClientKeepAlive("127.0.0.1", port));
+                        }
+                    }
+                    if (m.Contains("END"))
+                    {
+                        Logger.Log("[错误]隧道本地端口为 " + portInfo + " 断开连接");
+                        state[portInfo] = 1;
+                        Relist();
+                    }
 
-        //        }
-        //    }
-        //    Logger.Log("[提示]退出主程序监控");
-
-        //}
+                }
+            }
+        }
         private Process process;
         public void Open()
         {
@@ -378,6 +440,7 @@ namespace OPL_WpfApp
                         richOutput.ScrollToEnd();
 
                         check.Check(e.Data);
+                        Checkopen(e.Data);
                     });
                 }
             });
@@ -390,6 +453,11 @@ namespace OPL_WpfApp
                     Dispatcher.Invoke(() =>
                     {
                         richOutput.AppendText("【错误】: " + e.Data + Environment.NewLine);
+                        openbutton.Content = "启动";
+                        Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
+                        on = false;
+                        Relist();
+                        if (udp != null) foreach (UdpClientKeepAlive app in udp) app.StopSendingKeepAlive();
                     });
                 }
             });
@@ -408,7 +476,7 @@ namespace OPL_WpfApp
                 process.CancelErrorRead();
                 process.Kill();
             }
-            if (outcheck.udp != null) foreach (UdpClientKeepAlive app in outcheck.udp) app.StopSendingKeepAlive();
+            if (udp != null) foreach (UdpClientKeepAlive app in udp) app.StopSendingKeepAlive();
             base.OnClosed(e);
         }
         public class Logger

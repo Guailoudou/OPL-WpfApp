@@ -14,7 +14,11 @@
                     <Label Content="UUID：" HorizontalAlignment="Left" Margin="28,10,0,0" VerticalAlignment="Top"/>
                     <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22"/>
                     <Button Content="复制UUID" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24"/>
-                    <Button Content="重置程序" HorizontalAlignment="Left" Margin="275,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24"/>
+                    <Button Content="重置程序" HorizontalAlignment="Left" Margin="275,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24">
+                        <Button.ToolTip>
+                            <TextBlock Text="这将会重置你的uuid，同时你会失去下面所有隧道！谨慎点击" />
+                        </Button.ToolTip>
+                    </Button>
                     <ListBox Margin="10,41,21,32" SelectionChanged="ListBox_SelectionChanged" Name="sdlist">
                         <Border BorderBrush="Black" BorderThickness="1">
                             <Grid Height="63" Width="700" >
@@ -28,8 +32,11 @@
                                 <Label Content="协议：TCp" HorizontalAlignment="Left" Margin="310,3,0,0" VerticalAlignment="Top"/>
                                 <Label Content="连接ip:端口->" HorizontalAlignment="Left" Margin="310,32,0,0" VerticalAlignment="Top"/>
                                 <TextBox HorizontalAlignment="Left" Margin="395,36,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+                                <Ellipse Stroke="Black" Fill="Black" Margin="518,7,167,42" Name="state0"/>
+                                <Label Content="状态：" HorizontalAlignment="Left" Margin="477,1,0,0" VerticalAlignment="Top" Width="38"/>
                             </Grid>
                         </Border>
+
 
 
                     </ListBox>

@@ -18,39 +18,11 @@ namespace userdata
     public class outcheck
     {
         public outcheck() { }
-        public static List<UdpClientKeepAlive> udp = new List<UdpClientKeepAlive>();
+        
         public void Check(string m)
         {
             if (m.Contains("autorunApp start")) Logger.Log("[提示]程序启动完毕，请耐心等待隧道连接"); //启动完毕
-            if(m.Contains("LISTEN ON PORT")) //连接成功or断开
-            {
-                string pattern = @"PORT\s+(\w+:\d+)";
-                Match match = Regex.Match(m, pattern);
-                if (match.Success)
-                {
-                    string portInfo = match.Groups[1].Value;
-                    if (m.Contains("START"))
-                    {
-                        Logger.Log("[提示]隧道本地端口为 " + portInfo + " 连接成功");
-                        string[] parts = portInfo.Split(':');
-                        string type = parts[0];
-                        int port = int.Parse(parts[1]);
-                        if (type == "tcp")
-                        {
-                            new TcpClientWithKeepAlive("127.0.0.1",port);
-                        }
-                        else
-                        {
-                            udp.Add(new UdpClientKeepAlive("127.0.0.1", port));
-                        }
-                    }
-                    if (m.Contains("END")) 
-                    {
-                        Logger.Log("[错误]隧道本地端口为 " + portInfo + " 断开连接"); 
-                    }
-
-                }
-            }
+            
             if (m.Contains("login ok")) //登录中心成功
             {
                 string pattern = @"node=(\w+)";
@@ -90,7 +62,7 @@ namespace userdata
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
                 _client.Connect(endPoint);
 
-                Logger.Log("[提示]TCP Connected to "+ipAddress+ port+"开启隧道保活");
+                Logger.Log("[提示]TCP Connected to "+ipAddress+":"+port+"开启隧道保活");
 
                 // 启动心跳线程
                 _keepAliveThread = new Thread(SendKeepAliveMessage);
