@@ -193,5 +193,7 @@ namespace userdata
         public List<preset> presets { get; set; }
         public int version { get; set; }
         public string uplog { get; set; }
+        public string upurl { get; set; }
+        public string uphash { get; set; }
     }
 }

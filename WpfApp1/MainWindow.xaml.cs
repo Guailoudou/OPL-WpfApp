@@ -42,14 +42,9 @@ namespace OPL_WpfApp
             _ = net.GetPreset();
             Relist();
             UUID.Text = sjson.config.Network.Node;
-            //sjson.newjson(userData);
-            //wpfWebBrowser.Navigate("https://blog.gldhn.top/2024/04/15/opl_help/");
+            
         }
-        //userdata.UserData userData = new userdata.UserData();
-        //private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-        //    //MessageBox.Show("你左键点击了我", "提示");
-        //}
+
 
         private void CopyUUID_Button_Click(object sender, RoutedEventArgs e)
         {

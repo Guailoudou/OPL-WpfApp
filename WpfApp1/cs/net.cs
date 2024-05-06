@@ -34,10 +34,10 @@ namespace userdata
                     wejson(contentString);
                     getjosn();
                     int v = presetss.version;
-                    if (v > 4)
+                    if (v > 5)
                     {
-                        MessageBox.Show("你的程序不是最新版本哦~，具体请看日志窗口", "提示");
-                        Logger.Log("[提示]获取预设完成,你的程序不是最新版本哦~ 请及时去获取更新 可加qq群873968900获取 也可以关注B站up：乖漏斗 动态获取");
+                        new Updata(presetss.upurl);
+                        Logger.Log("[提示]获取预设完成,你的程序不是最新版本哦~ 开始后台下载更新包");
                     }
                     else 
                     { 

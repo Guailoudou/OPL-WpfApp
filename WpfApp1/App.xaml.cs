@@ -1,8 +1,13 @@
-﻿using System;
+﻿using OPL_WpfApp;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows;
 using userdata;
@@ -27,9 +32,33 @@ namespace WpfApp1
 
         protected override void OnExit(ExitEventArgs e)
         {
-
+            
             // 应用程序退出时的清理操作
             base.OnExit(e);
+            string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "nvb.zip");
+            if (File.Exists(savePath))
+            {
+                Net net = new Net();
+                net.getjosn();
+                string pathToExe = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "updata.exe");
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = pathToExe;
+                startInfo.Arguments = net.presetss.uphash;
+                startInfo.UseShellExecute = true;
+                startInfo.WorkingDirectory = Path.GetDirectoryName(pathToExe);
+
+                try
+                {
+                    Process.Start(startInfo);
+                    Console.WriteLine("更新程序已启动。");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"启动程序时发生错误: {ex.Message}");
+                }
+            }
         }
+
+       
     }
 }
