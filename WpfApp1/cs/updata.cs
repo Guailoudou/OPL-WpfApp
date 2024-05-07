@@ -18,6 +18,7 @@ namespace userdata
             if (!File.Exists(absolutePath))
             {
                 _ = DmAsync(url);
+                _ = Dmupdata("https://file.gldhn.top/file/updata.exe");
             }
         }
         public async Task DmAsync(string url)
@@ -35,6 +36,36 @@ namespace userdata
                     File.WriteAllBytes(savePath, fileBytes);
 
                     Logger.Log($"[提示]ZIP更新文件已成功下载到：{savePath}");
+                }
+                catch (HttpRequestException ex)
+                {
+                    Logger.Log($"下载失败: {ex.Message}");
+                }
+                catch (IOException ex)
+                {
+                    Logger.Log($"文件操作失败: {ex.Message}");
+                }
+            }
+        }
+        public async Task Dmupdata(string url)
+        {
+            string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "updata.exe");
+            if (File.Exists(savePath))
+            {
+                File.Delete(savePath);
+            }
+            //Thread.Sleep(2000);
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    // 发送GET请求获取ZIP文件的字节流
+                    byte[] fileBytes = await client.GetByteArrayAsync(url);
+
+                    // 将字节流写入到本地文件
+                    File.WriteAllBytes(savePath, fileBytes);
+
+                    Logger.Log($"[提示]更新程序已成功下载到：{savePath}");
                 }
                 catch (HttpRequestException ex)
                 {

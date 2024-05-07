@@ -20,6 +20,12 @@ namespace updata
             {
                 filehash = args[0];
             }
+            else
+            {
+                Console.WriteLine("不要直接打开这个，这是自动更新程序，5s后自动关闭");
+                Thread.Sleep(5000);
+                return;
+            }
             if (CalculateMD5Hash(savePath) != filehash)
             {
                 Console.WriteLine("文件校验失败，下次启动重新下载");

@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="联机工具" Height="450" Width="800">
     <Grid>
+        <Label Content="v1.0.1.9" HorizontalAlignment="Left" Margin="732,0,0,0" VerticalAlignment="Top"/>
         <TabControl>
             <TabItem Header="隧道" Margin="-2,-2,-29,0">
 
@@ -86,6 +87,7 @@
                         </Label.RenderTransform>
                     </Label>
                     <TextBox HorizontalAlignment="Left" Name="uplogbox" Margin="71,203,0,0" TextWrapping="Wrap" Text="联网获取" VerticalAlignment="Top" Width="552" Height="174" IsReadOnly="True"/>
+                    
 
                 </Grid>
             </TabItem>

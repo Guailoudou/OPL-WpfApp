@@ -91,9 +91,6 @@ namespace userdata
                         //Logger.Log(se.Message);
                         break;
                     }
-                    
-
-                    //Logger.Log("Sent KeepAlive message at {0}" + DateTime.Now.ToString("HH:mm:ss"));
 
                     // 延迟至下一次心跳
                     Thread.Sleep(TimeSpan.FromSeconds(KEEP_ALIVE_INTERVAL_SEC));
@@ -101,7 +98,6 @@ namespace userdata
                 else
                 {
                     // 如果连接已断开，则停止心跳线程
-                    //Logger.Log("[提示]连接已断开，tcp心跳保活关闭.");
                     break;
                 }
             }

@@ -250,11 +250,21 @@ namespace OPL_WpfApp
                         Margin = new Thickness(195, 32, 386, 0)
                     });
 
-                    grid.Children.Add(new Label
-                    {
-                        Content = "状态：",
-                        Margin = new Thickness(477, 1, 0, 0)
-                    });
+                    //grid.Children.Add(new Label
+                    //{
+                    //    Content = "状态：",
+                    //    VerticalAlignment = VerticalAlignment.Top,
+                    //    HorizontalAlignment = HorizontalAlignment.Left,
+                    //    Margin = new Thickness(477, 0, 0, 0)
+                    //});
+                    //if(on&& state[app.Protocol + ":" + app.SrcPort] == 2) ///////////////////////
+                    //grid.Children.Add(new Label
+                    //{
+                    //    Content = "9999ms",
+                    //    VerticalAlignment = VerticalAlignment.Top,
+                    //    HorizontalAlignment = HorizontalAlignment.Left,
+                    //    Margin = new Thickness(532, 0, 0, 0)
+                    //});
 
                     CheckBox checkBox = new CheckBox
                     {
@@ -286,7 +296,6 @@ namespace OPL_WpfApp
                         }
                     };
                     grid.Children.Add(ellipse);
-                    //statelist[app.Protocol + ":" + app.SrcPort] = index;    //////////////////////
                     if(!on)
                     state[app.Protocol + ":" + app.SrcPort] = app.Enabled;
 

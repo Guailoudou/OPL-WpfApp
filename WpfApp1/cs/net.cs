@@ -34,7 +34,7 @@ namespace userdata
                     wejson(contentString);
                     getjosn();
                     int v = presetss.version;
-                    if (v > 5)
+                    if (v > 6)
                     {
                         new Updata(presetss.upurl);
                         Logger.Log("[提示]获取预设完成,你的程序不是最新版本哦~ 开始后台下载更新包");
