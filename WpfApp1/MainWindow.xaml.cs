@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -40,13 +42,15 @@ namespace OPL_WpfApp
             sjson = new userdata.json();
             Net net = new Net();
             _ = net.GetPreset();
+            _ = net.Getthank(thank);
             Relist();
             UUID.Text = sjson.config.Network.Node;
-            
+            ver.Content = Getversion();
+            //thank.Navigate("https://file.gldhn.top/web/thank/"); 废案，内存占用过高
         }
 
 
-        private void CopyUUID_Button_Click(object sender, RoutedEventArgs e)
+            private void CopyUUID_Button_Click(object sender, RoutedEventArgs e)
         {
             TextBox uuidTextBox = (TextBox)this.FindName("UUID");
             Clipboard.SetText(uuidTextBox.Text);
@@ -90,7 +94,7 @@ namespace OPL_WpfApp
 
         private void Form1_Load(object sender, RoutedEventArgs e)
         {
-            // wpfWebBrowser.Navigate("https://blog.gldhn.top/2024/04/15/opl_help/");
+            // thank.Navigate("https://file.gldhn.top/web/thank/");
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -117,6 +121,7 @@ namespace OPL_WpfApp
             }
             var CheckBox = (CheckBox)sender;
             int index = (int)CheckBox.Tag;
+            
             sjson.onapp(index);
             Relist();
         }
@@ -141,9 +146,22 @@ namespace OPL_WpfApp
                 Relist();
                 return;
             }
-            var button = (Button)sender;
-            int index = (int)button.Tag;
-            sjson.del(index);
+            MessageBoxResult result = MessageBox.Show(
+                "你确定要删除隧道吗，这是不可逆的!",
+                "警告",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Question);
+            if (result == MessageBoxResult.OK)
+            {
+                var button = (Button)sender;
+                int index = (int)button.Tag;
+                sjson.del(index);
+            }
+            else
+            {
+                return;
+            }
+            
             Relist();
         }
         private void Edit(object sender, RoutedEventArgs e)
@@ -166,7 +184,7 @@ namespace OPL_WpfApp
         private Dictionary<string, int> state = new Dictionary<string, int>();
        // private Dictionary<string, int> statelist = new Dictionary<string, int>();
         
-        public void Relist()
+        public void Relist() //刷新列表
         {
 
             // 获取ListBox控件
@@ -250,13 +268,14 @@ namespace OPL_WpfApp
                         Margin = new Thickness(195, 32, 386, 0)
                     });
 
-                    //grid.Children.Add(new Label
-                    //{
-                    //    Content = "状态：",
-                    //    VerticalAlignment = VerticalAlignment.Top,
-                    //    HorizontalAlignment = HorizontalAlignment.Left,
-                    //    Margin = new Thickness(477, 0, 0, 0)
-                    //});
+                    grid.Children.Add(new Label
+                    {
+                        Content = "状态：",
+                        VerticalAlignment = VerticalAlignment.Top,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(477, 0, 0, 0)
+                    });
+
                     //if(on&& state[app.Protocol + ":" + app.SrcPort] == 2) ///////////////////////
                     //grid.Children.Add(new Label
                     //{
@@ -280,7 +299,7 @@ namespace OPL_WpfApp
                     checkBox.Unchecked += UnCheckBox_Checked;
                     grid.Children.Add(checkBox);
                     var clo = Brushes.Gray;
-                    if (on)
+                    if (on&&app.Enabled==1)
                     {
                         if (state[app.Protocol + ":" + app.SrcPort] == 1) clo = Brushes.Orange;
                         if(state[app.Protocol + ":" + app.SrcPort] == 2) clo = Brushes.Green;
@@ -296,8 +315,11 @@ namespace OPL_WpfApp
                         }
                     };
                     grid.Children.Add(ellipse);
-                    if(!on)
-                    state[app.Protocol + ":" + app.SrcPort] = app.Enabled;
+                    if(!on && !state.ContainsKey(app.Protocol + ":" + app.SrcPort))
+                        state[app.Protocol + ":" + app.SrcPort] = app.Enabled;
+                    if (!on && state.ContainsKey(app.Protocol + ":" + app.SrcPort))
+                        if(state[app.Protocol + ":" + app.SrcPort]==0)
+                            state[app.Protocol + ":" + app.SrcPort] = app.Enabled;
 
 
                     Button closeButton = new Button
@@ -337,7 +359,13 @@ namespace OPL_WpfApp
 
 
         }
-
+        private string Getversion() //获取文件版本号
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fileVersionInfo.FileVersion;
+            return version;
+        }
 
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -347,6 +375,12 @@ namespace OPL_WpfApp
 
         private void Button_Click_open(object sender, RoutedEventArgs e)
         {
+            Strapp();
+
+        }
+
+        private void Strapp()
+        {
             if (process != null && !process.HasExited)
             {
                 process.CancelOutputRead();
@@ -354,10 +388,11 @@ namespace OPL_WpfApp
                 process.Kill();
                 openbutton.Content = "启动";
                 Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
+                fstert.Fill = Brushes.Gray;
                 on = false;
                 Relist();
-                if (udp!=null)foreach(UdpClientKeepAlive app in udp)app.StopSendingKeepAlive();
-                
+                if (udp != null) foreach (UdpClientKeepAlive app in udp) app.StopSendingKeepAlive();
+
             }
             else
             {
@@ -370,18 +405,28 @@ namespace OPL_WpfApp
 
                 }
                 else Open();
-                
+
                 openbutton.Content = "关闭";
                 Logger.Log("[提示]-----------------------程序已开始运行请耐心等待隧道连接----------------------------");
+                fstert.Fill = Brushes.Orange;
                 on = true;
                 Relist();
                 //StartMon();
             }
-
         }
         public static List<UdpClientKeepAlive> udp = new List<UdpClientKeepAlive>();
         public void Checkopen(string m)
         {
+            if (m.Contains("autorunApp start"))
+            { 
+                Logger.Log("[提示]程序启动完毕，请耐心等待隧道连接"); //启动完毕
+                fstert.Fill = Brushes.Green;
+            }
+            if (m.Contains("autorunApp end"))
+            {
+                Logger.Log("[提示]程序离线，请检查你的网络设置或查看网络连接是否正常");
+                fstert.Fill = Brushes.Orange;
+            }
             if (m.Contains("LISTEN ON PORT")) //连接成功or断开
             {
                 string pattern = @"PORT\s+(\w+:\d+)";
@@ -415,13 +460,32 @@ namespace OPL_WpfApp
 
                 }
             }
+            if (m.Contains("ERROR P2PNetwork login error"))
+            {
+                Logger.Log("[错误]请检查是否连接网络，或是程序是否拥有网络访问权限！");
+                if (process != null && !process.HasExited)
+                {
+                    Strapp();
+                }
+                    
+            }
+            if (m.Contains("no such host"))
+            {
+                Logger.Log("[错误]请检查DNS是否正确，是否连接网络，或是程序是否拥有网络访问权限！");
+                if (process != null && !process.HasExited)
+                {
+                    Strapp();
+                }
+
+            }
+
         }
         private Process process;
         public void Open()
         {
             // 创建进程对象
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "bin/openp2p.exe"; // 替换为你的控制台应用路径
+            startInfo.FileName = "bin/openp2p.exe"; // 控制台应用路径
             startInfo.RedirectStandardOutput = true;
             startInfo.StandardOutputEncoding = Encoding.UTF8;
             startInfo.StandardErrorEncoding = Encoding.UTF8;
@@ -460,6 +524,7 @@ namespace OPL_WpfApp
                         openbutton.Content = "启动";
                         Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
                         on = false;
+                        fstert.Fill = Brushes.Gray;
                         Relist();
                         if (udp != null) foreach (UdpClientKeepAlive app in udp) app.StopSendingKeepAlive();
                     });

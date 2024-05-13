@@ -5,14 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OPL_WpfApp"
         mc:Ignorable="d"
-        Title="联机工具" Height="450" Width="800">
+        Title="联机工具" Height="450" Width="800" MaxWidth="800" MinWidth="800" MinHeight="250">
     <Grid>
-        <Label Content="v1.0.1.9" HorizontalAlignment="Left" Margin="732,0,0,0" VerticalAlignment="Top"/>
-        <TabControl>
+        <Ellipse Stroke="Black" Fill="Gray" Margin="718,8,0,0" Name="fstert" HorizontalAlignment="Left" VerticalAlignment="Top" Height="10" Width="10"/>
+
+        <Label Content="v1.0.1.9" HorizontalAlignment="Left" Name="ver" Margin="732,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="26" Width="52"/>
+        <TabControl Grid.ColumnSpan="2">
             <TabItem Header="隧道" Margin="-2,-2,-29,0">
 
                 <Grid Background="#FFE5E5E5">
-                    <Label Content="UUID：" HorizontalAlignment="Left" Margin="28,10,0,0" VerticalAlignment="Top"/>
+
+                    <Label Content="UUID：" HorizontalAlignment="Left" Margin="27,9,0,0" VerticalAlignment="Top" Width="42"/>
                     <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22"/>
                     <Button Content="复制UUID" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24"/>
                     <Button Content="重置程序" HorizontalAlignment="Left" Margin="275,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24">
@@ -64,19 +67,20 @@
             <TabItem Header="关于" Margin="61,-2,-91,0">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="53*"/>
+                        <ColumnDefinition Width="741*"/>
 
                     </Grid.ColumnDefinitions>
-                    <TextBox HorizontalAlignment="Left" Margin="146,35,0,0" TextWrapping="Wrap" Text="https://blog.gldhn.top/2024/04/15/opl_help/" VerticalAlignment="Top" Width="297" IsReadOnly="True"/>
-                    <Label Content="文档地址：" HorizontalAlignment="Left" Margin="71,31,0,0" VerticalAlignment="Top"/>
-                    <TextBox HorizontalAlignment="Left" Margin="156,65,0,0" TextWrapping="Wrap" Text="https://space.bilibili.com/496960407" VerticalAlignment="Top" Width="297" IsReadOnly="True"/>
-                    <Label Content="作者： 乖漏斗" HorizontalAlignment="Left" Margin="71,61,0,0" VerticalAlignment="Top"/>
-                    <TextBox HorizontalAlignment="Left" Margin="156,95,0,0" TextWrapping="Wrap" Text="https://github.com/Guailoudou/OPL-WpfApp" VerticalAlignment="Top" Width="297" IsReadOnly="True"/>
-                    <Label Content="开源地址：" HorizontalAlignment="Left" Margin="71,91,0,0" VerticalAlignment="Top"/>
-                    <Label Content="基于OPENP2P" HorizontalAlignment="Left" Margin="483,91,0,0" VerticalAlignment="Top"/>
-                    <Label Content="预设隧道为联网获取，需要增加常用预设隧道可以联系作者添加&#xD;&#xA;一般为固定多端口联机游戏，或特殊固定端口用途" HorizontalAlignment="Left" Margin="71,122,0,0" VerticalAlignment="Top" Height="45" Width="382"/>
+                    <TextBox HorizontalAlignment="Left" Margin="93,35,0,0" TextWrapping="Wrap" Text="https://blog.gldhn.top/2024/04/19/opl_ui/" VerticalAlignment="Top" Width="297" IsReadOnly="True" Grid.Column="1"/>
+                    <Label Content="文档地址：" HorizontalAlignment="Left" Margin="18,31,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <TextBox HorizontalAlignment="Left" Margin="103,65,0,0" TextWrapping="Wrap" Text="https://space.bilibili.com/496960407" VerticalAlignment="Top" Width="297" IsReadOnly="True" Grid.Column="1"/>
+                    <Label Content="作者： 乖漏斗" HorizontalAlignment="Left" Margin="18,61,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <TextBox HorizontalAlignment="Left" Margin="103,95,0,0" TextWrapping="Wrap" Text="https://github.com/Guailoudou/OPL-WpfApp" VerticalAlignment="Top" Width="297" IsReadOnly="True" Grid.Column="1"/>
+                    <Label Content="开源地址：" HorizontalAlignment="Left" Margin="18,91,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="基于OPENP2P" HorizontalAlignment="Left" Margin="405,91,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="预设隧道为联网获取，需要增加常用预设隧道可以联系作者添加&#xD;&#xA;一般为固定多端口联机游戏，或特殊固定端口用途" HorizontalAlignment="Left" Margin="18,122,0,0" VerticalAlignment="Top" Height="45" Width="382" Grid.Column="1"/>
 
-                    <Label Content="更新日志：" HorizontalAlignment="Left" Margin="92,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                    <Label Content="更新日志：" HorizontalAlignment="Left" Margin="39,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
                         <Label.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -86,11 +90,14 @@
                             </TransformGroup>
                         </Label.RenderTransform>
                     </Label>
-                    <TextBox HorizontalAlignment="Left" Name="uplogbox" Margin="71,203,0,0" TextWrapping="Wrap" Text="联网获取" VerticalAlignment="Top" Width="552" Height="174" IsReadOnly="True"/>
-                    
+                    <TextBox HorizontalAlignment="Left" Name="uplogbox" Margin="18,203,0,0" TextWrapping="Wrap" Text="联网获取" VerticalAlignment="Top" Width="552" Height="174" IsReadOnly="True" Grid.Column="1"/>
+                    <TextBox Margin="598,61,10,29" Name="thank"  Text="联网获取" IsReadOnly="True" Grid.Column="1"/>
+                    <Label Content="充电/发电鸣谢" HorizontalAlignment="Left" Margin="598,31,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+
 
                 </Grid>
             </TabItem>
+
         </TabControl>
 
 

@@ -46,7 +46,7 @@ namespace WpfApp1
                 startInfo.Arguments = net.presetss.uphash;
                 startInfo.UseShellExecute = true;
                 startInfo.WorkingDirectory = Path.GetDirectoryName(pathToExe);
-
+                startInfo.CreateNoWindow = true; // 不显示新的命令行窗口
                 try
                 {
                     Process.Start(startInfo);

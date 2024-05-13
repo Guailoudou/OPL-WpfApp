@@ -21,7 +21,7 @@ namespace userdata
         
         public void Check(string m)
         {
-            if (m.Contains("autorunApp start")) Logger.Log("[提示]程序启动完毕，请耐心等待隧道连接"); //启动完毕
+            
             
             if (m.Contains("login ok")) //登录中心成功
             {
