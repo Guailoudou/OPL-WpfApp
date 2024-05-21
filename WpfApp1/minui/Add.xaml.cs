@@ -42,19 +42,20 @@ namespace OPL_WpfApp
             TextBox SportText = (TextBox)this.FindName("Sport");
             TextBox CportText = (TextBox)this.FindName("Cport");
             ComboBox TypeText = (ComboBox)this.FindName("type");
-            string Suuid = SuuidText.Text;
+            string Suuid = SuuidText.Text.Replace(" ", "");
             string Type = TypeText.Text;
             int Sport, Cport;
             json json = new json();
             try
             {
-                Sport = int.Parse(SportText.Text);
-                Cport = int.Parse(CportText.Text);
+                Sport = int.Parse(SportText.Text.Replace(" ", ""));
+                Cport = int.Parse(CportText.Text.Replace(" ", ""));
                 json.newapp(Suuid, Sport, Type, Cport);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("错误，异常的输入:"+ex, "警告");
+                return;
                 
             }
             

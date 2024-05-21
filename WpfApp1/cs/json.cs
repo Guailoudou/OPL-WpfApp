@@ -16,7 +16,7 @@ namespace userdata
     internal class json
     {
 
-        //uuidTextBox.Text
+        int Ologv = 1; //openp2p日志等级
         public Config config;
         public json()
         {
@@ -34,7 +34,7 @@ namespace userdata
         }
         public void newjson(UserData userData) //创建无app配置
         {
-            Logger.Log("[执行]创建新的配置-" + userData.UUID);
+            Logger.Log("[执行]创建新的配置-UID:" + userData.UUID);
             config = new Config
             {
                 Network = new Network
@@ -51,7 +51,7 @@ namespace userdata
                 },
                 Apps = new List<App> { },
 
-                LogLevel = 1
+                LogLevel = Ologv
 
             };
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
@@ -94,6 +94,7 @@ namespace userdata
                     app
                 };
             }
+            config.LogLevel = Ologv;
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
         }
@@ -114,6 +115,7 @@ namespace userdata
             Logger.Log("[执行]删除隧道 序号:"+index);
             getjosn();
             config.Apps.RemoveAt(index);
+            config.LogLevel = Ologv;
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
         }
@@ -131,6 +133,7 @@ namespace userdata
                 }
             }
             config.Apps[index].Enabled = 1;
+            config.LogLevel = Ologv;
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
         }
@@ -138,6 +141,7 @@ namespace userdata
         {
             getjosn();
             config.Apps[index].Enabled = 0;
+            config.LogLevel = Ologv;
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
         }

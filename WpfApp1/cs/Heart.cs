@@ -22,28 +22,25 @@ namespace userdata
         public void Check(string m)
         {
             
-            
-            if (m.Contains("login ok")) //登录中心成功
-            {
-                string pattern = @"node=(\w+)";
-                Match match = Regex.Match(m, pattern);
-                if (match.Success)
-                {
-                    string id = match.Groups[1].Value;
-                    Logger.Log("[提示]你的实际UUID为"+id);
-                }
-            }
-                if (m.Contains("it will auto reconnect when peer node online"))//对方不在线
+            if (m.Contains("it will auto reconnect when peer node online"))//对方不在线
             {
                 string pattern = @"INFO\s+(\w+)\s+offline";
                 Match match = Regex.Match(m, pattern);
                 if (match.Success)
                 {
                     string id = match.Groups[1].Value;
-                    Logger.Log("[错误]" + id + "不在线！请查询对方UUID是否输入错误，询问对方程序是否处于启动状态，当对方在线时会自动进行连接");
-                    MessageBox.Show(id + "不在线！请查询对方UUID是否输入错误，询问对方程序是否处于启动状态","警告");
+                    Logger.Log("[错误]" + id + "不在线！请查询对方UID是否输入错误，询问对方程序是否处于启动状态，当对方在线时会自动进行连接");
+                    MessageBox.Show(id + "不在线！请查询对方UID是否输入错误，询问对方程序是否处于启动状态","警告");
                 }
             }
+            if (m.Contains("peer offline"))//对方不在线
+            {
+                
+                    Logger.Log("[错误]你连接的人不在线！请查询对方UID是否输入错误，询问对方程序是否处于启动状态，当对方在线时会自动进行连接");
+                    //MessageBox.Show("你连接的人不在线！不在线！请查询对方UID是否输入错误，询问对方程序是否处于启动状态", "警告");
+              
+            }
+
         }
     }
     //tcp心跳
@@ -52,6 +49,7 @@ namespace userdata
         private const int KEEP_ALIVE_INTERVAL_SEC = 1; // 设置心跳间隔为1秒
         private readonly Socket _client;
         private Thread _keepAliveThread;
+        private bool _shouldStopKeepAlive = true;
 
         public TcpClientWithKeepAlive(string ipAddress, int port)
         {
@@ -63,7 +61,7 @@ namespace userdata
                 _client.Connect(endPoint);
 
                 Logger.Log("[提示]TCP Connected to "+ipAddress+":"+port+"开启隧道保活");
-
+                _shouldStopKeepAlive = false;
                 // 启动心跳线程
                 _keepAliveThread = new Thread(SendKeepAliveMessage);
                 _keepAliveThread.IsBackground = true;
@@ -77,7 +75,7 @@ namespace userdata
 
         private void SendKeepAliveMessage()
         {
-            while (true)
+            while (!_shouldStopKeepAlive)
             {
                 if (_client.Connected)
                 {
@@ -89,7 +87,7 @@ namespace userdata
                     }catch (SocketException se)
                     {
                         //Logger.Log(se.Message);
-                        break;
+                        //break;
                     }
 
                     // 延迟至下一次心跳
@@ -98,9 +96,26 @@ namespace userdata
                 else
                 {
                     // 如果连接已断开，则停止心跳线程
-                    break;
+                    //break;
                 }
             }
+        }
+        public void StopSendingKeepAlive()
+        {
+            _shouldStopKeepAlive = true;
+            try
+            {
+                _client.Shutdown(SocketShutdown.Both); // 先关闭发送和接收
+            }
+            catch (Exception ex) when (ex is ObjectDisposedException || ex is InvalidOperationException)
+            {
+                // 处理可能的异常情况
+            }
+            finally
+            {
+                _client.Close(); // 然后关闭 Socket
+            }
+            _client?.Close();
         }
     }
 

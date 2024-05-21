@@ -76,7 +76,7 @@ namespace OPL_WpfApp
                 TextBox uuidTextBox = (TextBox)this.FindName("UUID");
                 uuidTextBox.Text = userData.UUID;
                 sjson.newjson(userData);
-                MessageBox.Show("已重置UUID,新的UUID为：" + userData.UUID, "提示");
+                MessageBox.Show("已重置UID,新的UID为：" + userData.UUID, "提示");
             }
             else if (result == MessageBoxResult.Cancel)
             {
@@ -221,7 +221,7 @@ namespace OPL_WpfApp
 
                     grid.Children.Add(new Label
                     {
-                        Content = "目标UUID：" + app.PeerNode,
+                        Content = "目标UID：" + app.PeerNode,
                         Margin = new Thickness(10, 29, 505, 0)
                     });
 
@@ -389,9 +389,11 @@ namespace OPL_WpfApp
                 openbutton.Content = "启动";
                 Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
                 fstert.Fill = Brushes.Gray;
+                state.Clear();
                 on = false;
                 Relist();
-                if (udp != null) foreach (UdpClientKeepAlive app in udp) app.StopSendingKeepAlive();
+                if (udps != null) foreach (UdpClientKeepAlive app in udps) app.StopSendingKeepAlive();
+                if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
 
             }
             else
@@ -414,7 +416,8 @@ namespace OPL_WpfApp
                 //StartMon();
             }
         }
-        public static List<UdpClientKeepAlive> udp = new List<UdpClientKeepAlive>();
+        public static List<UdpClientKeepAlive> udps = new List<UdpClientKeepAlive>();
+        public static List<TcpClientWithKeepAlive> tcps = new List<TcpClientWithKeepAlive>();
         public void Checkopen(string m)
         {
             if (m.Contains("autorunApp start"))
@@ -444,11 +447,11 @@ namespace OPL_WpfApp
                         int port = int.Parse(parts[1]);
                         if (type == "tcp")
                         {
-                            new TcpClientWithKeepAlive("127.0.0.1", port);
+                            tcps.Add(new TcpClientWithKeepAlive("127.0.0.1", port));
                         }
                         else
                         {
-                            udp.Add(new UdpClientKeepAlive("127.0.0.1", port));
+                            udps.Add(new UdpClientKeepAlive("127.0.0.1", port));
                         }
                     }
                     if (m.Contains("END"))
@@ -463,22 +466,36 @@ namespace OPL_WpfApp
             if (m.Contains("ERROR P2PNetwork login error"))
             {
                 Logger.Log("[错误]请检查是否连接网络，或是程序是否拥有网络访问权限！");
-                if (process != null && !process.HasExited)
-                {
-                    Strapp();
-                }
-                    
+                //if (process != null && !process.HasExited)
+                Strapp();
+
             }
             if (m.Contains("no such host"))
             {
                 Logger.Log("[错误]请检查DNS是否正确，是否连接网络，或是程序是否拥有网络访问权限！");
-                if (process != null && !process.HasExited)
-                {
-                    Strapp();
-                }
-
             }
-
+            if (m.Contains("login ok")) //登录中心成功
+            {
+                string pattern = @"node=(\w+)";
+                string upattern = @"user=(\w+)";
+                Match match = Regex.Match(m, pattern);
+                Match umatch = Regex.Match(m, upattern);
+                if (match.Success)
+                {
+                    string id = match.Groups[1].Value;
+                    Logger.Log("[提示]你的实际UID为" + id);
+                }
+                if (umatch.Success)
+                {
+                    string user = umatch.Groups[1].Value;
+                    if (user != "gldoffice")
+                    {
+                        Logger.Log("[严重错误]：这个bug我还不知道怎么修复，希望你可以告诉我你是怎么触发的，程序给你结束了，可以尝试重置程序，或者尝试直接打开bin文件夹直接运行openp2p.exe" );
+                        MessageBox.Show("出bug了！！这个bug我还不知道怎么修复，希望你可以告诉我你是怎么触发的，程序给你结束了，可以尝试重置程序，或者尝试直接打开bin文件夹直接运行openp2p.exe","严重错误");
+                        Strapp();
+                    }
+                }
+            }
         }
         private Process process;
         public void Open()
@@ -518,15 +535,15 @@ namespace OPL_WpfApp
             {
                 if (!string.IsNullOrEmpty(e.Data))
                 {
+                    bool tl = true;
                     Dispatcher.Invoke(() =>
                     {
-                        richOutput.AppendText("【错误】: " + e.Data + Environment.NewLine);
-                        openbutton.Content = "启动";
-                        Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
-                        on = false;
-                        fstert.Fill = Brushes.Gray;
-                        Relist();
-                        if (udp != null) foreach (UdpClientKeepAlive app in udp) app.StopSendingKeepAlive();
+                        Logger.Log("【错误】: " + e.Data + Environment.NewLine);
+                        if (tl)
+                        {
+                            Strapp();
+                            tl= false;
+                        }
                     });
                 }
             });
@@ -545,7 +562,8 @@ namespace OPL_WpfApp
                 process.CancelErrorRead();
                 process.Kill();
             }
-            if (udp != null) foreach (UdpClientKeepAlive app in udp) app.StopSendingKeepAlive();
+            if (udps != null) foreach (UdpClientKeepAlive app in udps) app.StopSendingKeepAlive();
+            if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
             base.OnClosed(e);
         }
         public class Logger

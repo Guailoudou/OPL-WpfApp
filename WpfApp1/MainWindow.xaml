@@ -7,15 +7,15 @@
         mc:Ignorable="d"
         Title="联机工具" Height="450" Width="800" MaxWidth="800" MinWidth="800" MinHeight="250">
     <Grid>
-        <Ellipse Stroke="Black" Fill="Gray" Margin="718,8,0,0" Name="fstert" HorizontalAlignment="Left" VerticalAlignment="Top" Height="10" Width="10"/>
+        <Ellipse Stroke="Black" Fill="Gray" Margin="708,8,0,0" Name="fstert" HorizontalAlignment="Left" VerticalAlignment="Top" Height="10" Width="10"/>
 
-        <Label Content="v1.0.1.9" HorizontalAlignment="Left" Name="ver" Margin="732,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="26" Width="52"/>
+        <Label Content="v1.0.1.9" HorizontalAlignment="Left" Name="ver" Margin="722,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="26" Width="52"/>
         <TabControl Grid.ColumnSpan="2">
             <TabItem Header="隧道" Margin="-2,-2,-29,0">
 
-                <Grid Background="#FFE5E5E5">
+                <Grid Background="#F7F7F7">
 
-                    <Label Content="UUID：" HorizontalAlignment="Left" Margin="27,9,0,0" VerticalAlignment="Top" Width="42"/>
+                    <Label Content="UID：" HorizontalAlignment="Left" Margin="30,9,0,0" VerticalAlignment="Top" Width="42"/>
                     <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22"/>
                     <Button Content="复制UUID" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24"/>
                     <Button Content="重置程序" HorizontalAlignment="Left" Margin="275,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24">
@@ -23,11 +23,11 @@
                             <TextBlock Text="这将会重置你的uuid，同时你会失去下面所有隧道！谨慎点击" />
                         </Button.ToolTip>
                     </Button>
-                    <ListBox Margin="10,41,21,32" SelectionChanged="ListBox_SelectionChanged" Name="sdlist">
+                    <ListBox Background="#FFFFFF"  Margin="10,41,21,32" SelectionChanged="ListBox_SelectionChanged" Name="sdlist">
                         <Border BorderBrush="Black" BorderThickness="1">
                             <Grid Height="63" Width="700" >
                                 <Label Content="名称：***" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top"/>
-                                <Label Content="目标UUID：erererererereer" Margin="10,29,505,0"/>
+                                <Label Content="目标UID：erererererereer" Margin="10,29,505,0"/>
                                 <Label Content="远程端口：25555" HorizontalAlignment="Left" Margin="196,4,0,0" VerticalAlignment="Top"/>
                                 <Label Content="本地端口：25566" Margin="195,32,386,0"/>
                                 <CheckBox Content="启用" HorizontalAlignment="Left" Margin="630,0,0,0" VerticalAlignment="Center" Checked="CheckBox_Checked"/>
@@ -65,7 +65,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="关于" Margin="61,-2,-91,0">
-                <Grid Background="#FFE5E5E5">
+                <Grid Background="#F7F7F7">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="53*"/>
                         <ColumnDefinition Width="741*"/>

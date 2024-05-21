@@ -55,12 +55,12 @@ namespace OPL_WpfApp
             TextBox CportText = (TextBox)this.FindName("Cport");
             ComboBox TypeText = (ComboBox)this.FindName("type");
             json json = new json();
-            json.config.Apps[index].PeerNode = SuuidText.Text;
-            json.config.Apps[index].Protocol = TypeText.Text;
+            json.config.Apps[index].PeerNode = SuuidText.Text.Replace(" ", "");
+            json.config.Apps[index].Protocol = TypeText.Text.Replace(" ", "");
             try
             {
-                json.config.Apps[index].DstPort = int.Parse(SportText.Text);
-                json.config.Apps[index].SrcPort = int.Parse(CportText.Text);
+                json.config.Apps[index].DstPort = int.Parse(SportText.Text.Replace(" ", ""));
+                json.config.Apps[index].SrcPort = int.Parse(CportText.Text.Replace(" ", ""));
             }
             catch (Exception ex)
             {
