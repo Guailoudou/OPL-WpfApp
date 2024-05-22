@@ -199,9 +199,16 @@ namespace OPL_WpfApp
                     // 创建Border
                     Border border = new Border
                     {
-                        BorderBrush = Brushes.Black,
-                        BorderThickness = new Thickness(1)
+                        //BorderBrush = Brushes.Black,
+                        BorderThickness = new Thickness(1),
+                        CornerRadius = new CornerRadius(5)
+                       // Background = new SolidColorBrush(Color.FromArgb(Colors.Black))
+                        
                     };
+                    SolidColorBrush brush = new SolidColorBrush(); 
+                    brush.Color = Colors.Black; 
+                    brush.Opacity = 0.05; 
+                    border.Background = brush;
 
                     // 创建内部Grid
                     Grid grid = new Grid

@@ -7,13 +7,29 @@
         mc:Ignorable="d"
         Title="联机工具" Height="450" Width="800" MaxWidth="800" MinWidth="800" MinHeight="250">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
+                <GradientStop Color="#FFD0F3FF" Offset="0"/>
+                <GradientStop Color="White" Offset="0.993"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Ellipse Stroke="Black" Fill="Gray" Margin="708,8,0,0" Name="fstert" HorizontalAlignment="Left" VerticalAlignment="Top" Height="10" Width="10"/>
 
-        <Label Content="v1.0.1.9" HorizontalAlignment="Left" Name="ver" Margin="722,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="26" Width="52"/>
-        <TabControl Grid.ColumnSpan="2">
-            <TabItem Header="隧道" Margin="-2,-2,-29,0">
+        <Label Content="v1.0.1.9" HorizontalAlignment="Left" Name="ver" Margin="722,0,0,0" VerticalAlignment="Top" Height="26" Width="68" Panel.ZIndex="1"/>
+        <TabControl Grid.ColumnSpan="3">
+            
 
-                <Grid Background="#F7F7F7">
+
+
+            <TabItem Header="隧道" Margin="-2,-2,-29,0" Background="{x:Null}" BorderBrush="{x:Null}">
+
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
+                            <GradientStop Color="#FFD0F3FF" Offset="0"/>
+                            <GradientStop Color="White" Offset="0.993"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
 
                     <Label Content="UID：" HorizontalAlignment="Left" Margin="30,9,0,0" VerticalAlignment="Top" Width="42"/>
                     <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22"/>
@@ -23,8 +39,15 @@
                             <TextBlock Text="这将会重置你的uuid，同时你会失去下面所有隧道！谨慎点击" />
                         </Button.ToolTip>
                     </Button>
-                    <ListBox Background="#FFFFFF"  Margin="10,41,21,32" SelectionChanged="ListBox_SelectionChanged" Name="sdlist">
-                        <Border BorderBrush="Black" BorderThickness="1">
+                    <ListBox ScrollViewer.CanContentScroll="False"  Margin="10,41,21,32" SelectionChanged="ListBox_SelectionChanged" Name="sdlist" BorderBrush="{x:Null}">
+                        <ListBox.Background>
+                            <SolidColorBrush Color="White" Opacity="0"/>
+                        </ListBox.Background>
+
+                        <Border BorderThickness="1" CornerRadius="5">
+                            <Border.Background>
+                                <SolidColorBrush Color="Black" Opacity="0.2"/>
+                            </Border.Background>
                             <Grid Height="63" Width="700" >
                                 <Label Content="名称：***" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top"/>
                                 <Label Content="目标UID：erererererereer" Margin="10,29,505,0"/>
@@ -50,7 +73,7 @@
                 </Grid>
 
             </TabItem>
-            <TabItem Header="日志" RenderTransformOrigin="1.927,0.59" Margin="29,-2,-61,0">
+            <TabItem Header="日志" RenderTransformOrigin="1.927,0.59" Margin="29,-2,-61,0" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -64,8 +87,14 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="关于" Margin="61,-2,-91,0">
-                <Grid Background="#F7F7F7">
+            <TabItem Header="关于" Margin="61,-2,-91,0" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
+                            <GradientStop Color="#FFD0F3FF" Offset="0"/>
+                            <GradientStop Color="White" Offset="0.993"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="53*"/>
                         <ColumnDefinition Width="741*"/>
