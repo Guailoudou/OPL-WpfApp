@@ -41,16 +41,24 @@ namespace OPL_WpfApp
             TextBox SuuidText = (TextBox)this.FindName("Suuid");
             TextBox SportText = (TextBox)this.FindName("Sport");
             TextBox CportText = (TextBox)this.FindName("Cport");
+            TextBox Names = (TextBox)this.FindName("names");
             ComboBox TypeText = (ComboBox)this.FindName("type");
             string Suuid = SuuidText.Text.Replace(" ", "");
             string Type = TypeText.Text;
+            string names = Names.Text.Replace(" ", "");
             int Sport, Cport;
             json json = new json();
             try
             {
                 Sport = int.Parse(SportText.Text.Replace(" ", ""));
                 Cport = int.Parse(CportText.Text.Replace(" ", ""));
-                json.newapp(Suuid, Sport, Type, Cport);
+                if(Suuid!=""&&Type!=""&&Sport>0&&Sport<=65535)
+                    json.newapp(Suuid, Sport, Type, Cport,names);
+                else
+                {
+                    MessageBox.Show("存在未填数据或错误数据", "提示");
+                    return;
+                }
             }
             catch (Exception ex)
             {

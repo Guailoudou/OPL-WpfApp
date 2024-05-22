@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -77,6 +78,7 @@ namespace OPL_WpfApp
                 uuidTextBox.Text = userData.UUID;
                 sjson.newjson(userData);
                 MessageBox.Show("已重置UID,新的UID为：" + userData.UUID, "提示");
+                Relist();
             }
             else if (result == MessageBoxResult.Cancel)
             {
@@ -254,6 +256,7 @@ namespace OPL_WpfApp
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(415, 36, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top,
+                        Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7FFFFFFF")),
                         IsReadOnly = true,
                         ToolTip = new ToolTip
                         {
@@ -342,18 +345,38 @@ namespace OPL_WpfApp
                         }
                     };
                     closeButton.Click += Del;
+
+                    SolidColorBrush backgroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3FDDDDDD"));
+                    closeButton.Background = backgroundBrush;
+
+                    // 设置边框刷子和厚度
+                    closeButton.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CC707070"));
+                    closeButton.BorderThickness = new Thickness(1);
+                    // 自定义按钮模板
+                    closeButton.Template = CreateButtonTemplate();
                     grid.Children.Add(closeButton);
 
                     Button editButton = new Button
                     {
-                        Content = "编辑",
+                        Content = " 编辑 ",
                         HorizontalAlignment = HorizontalAlignment.Left,
-                        Margin = new Thickness(576, 0, 0, 0),
+                        Margin = new Thickness(560, 0, 0, 0),
                         VerticalAlignment = VerticalAlignment.Center,
                         Tag = index
+                        //Width = 49,
+                        //Height = 26
                     };
                     editButton.Click += Edit;
+                    //SolidColorBrush backgroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3FDDDDDD"));
+                    editButton.Background = backgroundBrush;
+
+                    // 设置边框刷子和厚度
+                    editButton.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CC707070"));
+                    editButton.BorderThickness = new Thickness(1);
+                    // 自定义按钮模板
+                    editButton.Template = CreateButtonTemplate();
                     grid.Children.Add(editButton);
+
 
                     // 将Grid添加到Border
                     border.Child = grid;
@@ -365,6 +388,25 @@ namespace OPL_WpfApp
             }
 
 
+        }
+        private ControlTemplate CreateButtonTemplate()
+        {
+            ControlTemplate template = new ControlTemplate(typeof(Button));
+            FrameworkElementFactory borderFactory = new FrameworkElementFactory(typeof(Border));
+            borderFactory.SetValue(Border.BorderBrushProperty, new TemplateBindingExtension(BorderBrushProperty));
+            borderFactory.SetValue(Border.BorderThicknessProperty, new TemplateBindingExtension(BorderThicknessProperty));
+            borderFactory.SetValue(Border.CornerRadiusProperty, new CornerRadius(5));
+            //borderFactory.SetValue(Border.BackgroundProperty, new SolidColorBrush(Color.FromArgb(80, 221, 221, 221))); // 注意这里的背景色需要重新定义或引用
+
+            FrameworkElementFactory contentPresenterFactory = new FrameworkElementFactory(typeof(ContentPresenter));
+            contentPresenterFactory.SetBinding(ContentPresenter.ContentProperty, new Binding { Path = new PropertyPath("Content"), RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent) });
+            contentPresenterFactory.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Center);
+            contentPresenterFactory.SetValue(VerticalAlignmentProperty, VerticalAlignment.Center);
+
+            borderFactory.AppendChild(contentPresenterFactory);
+            template.VisualTree = borderFactory;
+
+            return template;
         }
         private string Getversion() //获取文件版本号
         {
@@ -497,8 +539,12 @@ namespace OPL_WpfApp
                     string user = umatch.Groups[1].Value;
                     if (user != "gldoffice")
                     {
-                        Logger.Log("[严重错误]：这个bug我还不知道怎么修复，希望你可以告诉我你是怎么触发的，程序给你结束了，可以尝试重置程序，或者尝试直接打开bin文件夹直接运行openp2p.exe" );
-                        MessageBox.Show("出bug了！！这个bug我还不知道怎么修复，希望你可以告诉我你是怎么触发的，程序给你结束了，可以尝试重置程序，或者尝试直接打开bin文件夹直接运行openp2p.exe","严重错误");
+                       
+                        Logger.Log("[错误]：疑似token丢失，开始自动尝试修复" );
+                        //MessageBox.Show("疑似token丢失，已自动尝试修复", "严重错误");
+                        Strapp();
+                        sjson.ReSetToken(); //修复token
+                        Logger.Log("[提示]：尝试修复完毕");
                         Strapp();
                     }
                 }

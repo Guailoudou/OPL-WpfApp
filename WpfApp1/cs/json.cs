@@ -98,6 +98,15 @@ namespace userdata
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
         }
+        public void ReSetToken()
+        {
+            getjosn();
+            config.Network.Token = 11602319472897248650UL;
+            config.LogLevel = Ologv;
+            config.Network.User = "gldoffice";
+            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
+            wejson(ujson);
+        }
         public void wejson(string ujson) //写入josn
         {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
@@ -119,7 +128,7 @@ namespace userdata
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
         }
-        public void onapp(int index)
+        public void onapp(int index) //开启app
         {
             getjosn();
             
@@ -137,7 +146,7 @@ namespace userdata
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
         }
-        public void offapp(int index)
+        public void offapp(int index) //关闭app
         {
             getjosn();
             config.Apps[index].Enabled = 0;
@@ -145,7 +154,7 @@ namespace userdata
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
         }
-        public void getjosn()
+        public void getjosn() //读取配置
         {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
             try

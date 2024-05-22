@@ -36,9 +36,11 @@ namespace OPL_WpfApp
             TextBox SuuidText = (TextBox)this.FindName("Suuid");
             TextBox SportText = (TextBox)this.FindName("Sport");
             TextBox CportText = (TextBox)this.FindName("Cport");
+            TextBox names = (TextBox)this.FindName("names");
             ComboBox TypeText = (ComboBox)this.FindName("type");
             SportText.Text = json.config.Apps[index].DstPort.ToString();
             CportText.Text = json.config.Apps[index].SrcPort.ToString();
+            names.Text = json.config.Apps[index].AppName;
             SuuidText.Text = json.config.Apps[index].PeerNode;
             TypeText.Text = json.config.Apps[index].Protocol;
         }
@@ -53,10 +55,12 @@ namespace OPL_WpfApp
             TextBox SuuidText = (TextBox)this.FindName("Suuid");
             TextBox SportText = (TextBox)this.FindName("Sport");
             TextBox CportText = (TextBox)this.FindName("Cport");
+            TextBox names = (TextBox)this.FindName("names");
             ComboBox TypeText = (ComboBox)this.FindName("type");
             json json = new json();
             json.config.Apps[index].PeerNode = SuuidText.Text.Replace(" ", "");
             json.config.Apps[index].Protocol = TypeText.Text.Replace(" ", "");
+            json.config.Apps[index].AppName = names.Text.Replace(" ", "");
             try
             {
                 json.config.Apps[index].DstPort = int.Parse(SportText.Text.Replace(" ", ""));
@@ -65,7 +69,7 @@ namespace OPL_WpfApp
             catch (Exception ex)
             {
                 MessageBox.Show("错误，异常的输入:" + ex, "警告");
-
+                return;
             }
             string ujson = JsonConvert.SerializeObject(json.config, Formatting.Indented);
             json.wejson(ujson);

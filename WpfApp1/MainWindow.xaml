@@ -16,8 +16,15 @@
         <Ellipse Stroke="Black" Fill="Gray" Margin="708,8,0,0" Name="fstert" HorizontalAlignment="Left" VerticalAlignment="Top" Height="10" Width="10"/>
 
         <Label Content="v1.0.1.9" HorizontalAlignment="Left" Name="ver" Margin="722,0,0,0" VerticalAlignment="Top" Height="26" Width="68" Panel.ZIndex="1"/>
-        <TabControl Grid.ColumnSpan="3">
+        <TabControl Grid.ColumnSpan="3" BorderBrush="{x:Null}">
+            <TabControl.Background>
+                <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0">
+                    <GradientStop Color="#FFD0F3FF" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.993"/>
+                </LinearGradientBrush>
+            </TabControl.Background>
             
+
 
 
 
@@ -32,9 +39,26 @@
                     </Grid.Background>
 
                     <Label Content="UID：" HorizontalAlignment="Left" Margin="30,9,0,0" VerticalAlignment="Top" Width="42"/>
-                    <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22"/>
-                    <Button Content="复制UUID" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24"/>
-                    <Button Content="重置程序" HorizontalAlignment="Left" Margin="275,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24">
+                    <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22" Background="#7FFFFFFF"/>
+                    <Button Content="复制UID" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24" BorderBrush="#CC707070" Background="#3FDDDDDD" Width="59">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
+                                    <Border.Background>#3FDDDDDD</Border.Background>
+                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Content="重置程序" HorizontalAlignment="Left" Margin="277,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="58">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
+                                    <Border.Background>#3FDDDDDD</Border.Background>
+                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
                         <Button.ToolTip>
                             <TextBlock Text="这将会重置你的uuid，同时你会失去下面所有隧道！谨慎点击" />
                         </Button.ToolTip>
@@ -54,11 +78,20 @@
                                 <Label Content="远程端口：25555" HorizontalAlignment="Left" Margin="196,4,0,0" VerticalAlignment="Top"/>
                                 <Label Content="本地端口：25566" Margin="195,32,386,0"/>
                                 <CheckBox Content="启用" HorizontalAlignment="Left" Margin="630,0,0,0" VerticalAlignment="Center" Checked="CheckBox_Checked"/>
-                                <Button Content=" X " HorizontalAlignment="Left" Margin="678,4,0,0" VerticalAlignment="Top"/>
-                                <Button Content="编辑" HorizontalAlignment="Left" Margin="576,0,0,0" VerticalAlignment="Center"/>
+                                <Button Content=" X " HorizontalAlignment="Left" Margin="678,4,0,0" VerticalAlignment="Top" Background="#3FDDDDDD" BorderBrush="#CC707070"/>
+                                <Button Content="编辑" HorizontalAlignment="Left" Margin="560,0,0,0" VerticalAlignment="Center" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="49" Height="26">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
+                                                <Border.Background>#3FDDDDDD</Border.Background>
+                                                <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
                                 <Label Content="协议：TCp" HorizontalAlignment="Left" Margin="310,3,0,0" VerticalAlignment="Top"/>
                                 <Label Content="连接ip:端口->" HorizontalAlignment="Left" Margin="310,32,0,0" VerticalAlignment="Top"/>
-                                <TextBox HorizontalAlignment="Left" Margin="395,36,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+                                <TextBox HorizontalAlignment="Left" Margin="395,36,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" IsReadOnly="True" Background="#BFFFFFFF"/>
                                 <Ellipse Stroke="Black" Fill="Black" Margin="518,7,167,42" Name="state0"/>
                                 <Label Content="状态：" HorizontalAlignment="Left" Margin="477,1,0,0" VerticalAlignment="Top" Width="38"/>
                             </Grid>
@@ -67,19 +100,52 @@
 
 
                     </ListBox>
-                    <Button Content="新建连接" HorizontalAlignment="Left" Margin="567,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24"/>
-                    <Button Content="启动" HorizontalAlignment="Left" Margin="672,10,0,0" VerticalAlignment="Top" Width="60" Height="24" Click="Button_Click_open" Name="openbutton"/>
-                    <Button Content="刷新列表" HorizontalAlignment="Left" Margin="424,10,0,0" VerticalAlignment="Top" Height="24" Width="60" Click="Button_Click_1"/>
+                    <Button Content="新建连接" HorizontalAlignment="Left" Margin="567,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
+                                    <Border.Background>#3FDDDDDD</Border.Background>
+                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Content="启动" HorizontalAlignment="Left" Margin="672,10,0,0" VerticalAlignment="Top" Width="60" Height="24" Click="Button_Click_open" Name="openbutton" BorderBrush="#CC707070" Background="#3FDDDDDD">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
+                                    <Border.Background>#3FDDDDDD</Border.Background>
+                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Content="刷新列表" HorizontalAlignment="Left" Margin="424,10,0,0" VerticalAlignment="Top" Height="24" Width="60" Click="Button_Click_1" BorderBrush="#CC707070" Background="#3FDDDDDD">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
+                                    <Border.Background>#3FDDDDDD</Border.Background>
+                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
                 </Grid>
 
             </TabItem>
             <TabItem Header="日志" RenderTransformOrigin="1.927,0.59" Margin="29,-2,-61,0" Background="{x:Null}" BorderBrush="{x:Null}">
-                <Grid Background="#FFE5E5E5">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
+                            <GradientStop Color="#FFD0F3FF" Offset="0"/>
+                            <GradientStop Color="White" Offset="0.993"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
 
                     </Grid.ColumnDefinitions>
-                    <RichTextBox Name="richOutput" IsReadOnly="True">
+                    <RichTextBox Name="richOutput" IsReadOnly="True" BorderBrush="{x:Null}" SelectionBrush="Black" Background="{x:Null}" CaretBrush="Black">
                         <FlowDocument>
 
                         </FlowDocument>
@@ -100,11 +166,11 @@
                         <ColumnDefinition Width="741*"/>
 
                     </Grid.ColumnDefinitions>
-                    <TextBox HorizontalAlignment="Left" Margin="93,35,0,0" TextWrapping="Wrap" Text="https://blog.gldhn.top/2024/04/19/opl_ui/" VerticalAlignment="Top" Width="297" IsReadOnly="True" Grid.Column="1"/>
+                    <TextBox HorizontalAlignment="Left" Margin="93,35,0,0" TextWrapping="Wrap" Text="https://blog.gldhn.top/2024/04/19/opl_ui/" VerticalAlignment="Top" Width="297" Background="#7FFFFFFF" IsReadOnly="True" Grid.Column="1"/>
                     <Label Content="文档地址：" HorizontalAlignment="Left" Margin="18,31,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                    <TextBox HorizontalAlignment="Left" Margin="103,65,0,0" TextWrapping="Wrap" Text="https://space.bilibili.com/496960407" VerticalAlignment="Top" Width="297" IsReadOnly="True" Grid.Column="1"/>
+                    <TextBox HorizontalAlignment="Left" Margin="103,65,0,0" TextWrapping="Wrap" Text="https://space.bilibili.com/496960407" VerticalAlignment="Top" Width="297" Background="#7FFFFFFF" IsReadOnly="True" Grid.Column="1"/>
                     <Label Content="作者： 乖漏斗" HorizontalAlignment="Left" Margin="18,61,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                    <TextBox HorizontalAlignment="Left" Margin="103,95,0,0" TextWrapping="Wrap" Text="https://github.com/Guailoudou/OPL-WpfApp" VerticalAlignment="Top" Width="297" IsReadOnly="True" Grid.Column="1"/>
+                    <TextBox HorizontalAlignment="Left" Margin="103,95,0,0" TextWrapping="Wrap" Text="https://github.com/Guailoudou/OPL-WpfApp" VerticalAlignment="Top" Width="297" Background="#7FFFFFFF" IsReadOnly="True" Grid.Column="1"/>
                     <Label Content="开源地址：" HorizontalAlignment="Left" Margin="18,91,0,0" VerticalAlignment="Top" Grid.Column="1"/>
                     <Label Content="基于OPENP2P" HorizontalAlignment="Left" Margin="405,91,0,0" VerticalAlignment="Top" Grid.Column="1"/>
                     <Label Content="预设隧道为联网获取，需要增加常用预设隧道可以联系作者添加&#xD;&#xA;一般为固定多端口联机游戏，或特殊固定端口用途" HorizontalAlignment="Left" Margin="18,122,0,0" VerticalAlignment="Top" Height="45" Width="382" Grid.Column="1"/>
@@ -119,8 +185,8 @@
                             </TransformGroup>
                         </Label.RenderTransform>
                     </Label>
-                    <TextBox HorizontalAlignment="Left" Name="uplogbox" Margin="18,203,0,0" TextWrapping="Wrap" Text="联网获取" VerticalAlignment="Top" Width="552" Height="174" IsReadOnly="True" Grid.Column="1"/>
-                    <TextBox Margin="598,61,10,29" Name="thank"  Text="联网获取" IsReadOnly="True" Grid.Column="1"/>
+                    <TextBox HorizontalAlignment="Left" Background="#7FFFFFFF" Name="uplogbox" Margin="18,203,0,0" TextWrapping="Wrap" Text="联网获取" VerticalAlignment="Top" Width="552" Height="174" IsReadOnly="True" Grid.Column="1"/>
+                    <TextBox Margin="598,61,10,29" Background="#7FFFFFFF" Name="thank"  Text="联网获取" IsReadOnly="True" Grid.Column="1"/>
                     <Label Content="充电/发电鸣谢" HorizontalAlignment="Left" Margin="598,31,0,0" VerticalAlignment="Top" Grid.Column="1"/>
 
 
