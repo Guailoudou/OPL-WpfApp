@@ -174,7 +174,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="关于" Margin="61,-2,-91,0" Background="{x:Null}" BorderBrush="{x:Null}">
-                <Grid>
+                <Grid> 
                     <Grid.Background>
                         <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
                             <GradientStop Color="#FFD0F3FF" Offset="0"/>
