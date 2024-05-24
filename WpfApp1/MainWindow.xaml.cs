@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -46,6 +47,7 @@ namespace OPL_WpfApp
             _ = net.Getthank(thank);
             Relist();
             UUID.Text = sjson.config.Network.Node;
+            share.Text = sjson.config.Network.ShareBandwidth.ToString();
             ver.Content = Getversion();
             //thank.Navigate("https://file.gldhn.top/web/thank/"); 废案，内存占用过高
         }
@@ -208,7 +210,9 @@ namespace OPL_WpfApp
                         
                     };
                     SolidColorBrush brush = new SolidColorBrush(); 
-                    brush.Color = Colors.Black; 
+                    //brush.Color = Colors.Black;
+                    brush.Color = (Color)ColorConverter.ConvertFromString("#CC707070");
+
                     brush.Opacity = 0.05; 
                     border.Background = brush;
 
@@ -626,6 +630,7 @@ namespace OPL_WpfApp
             public Logger(RichTextBox output)
             {
                 _output = output;
+                _output.AppendText(Environment.NewLine);
             }
 
             public static void Log(string message)
@@ -671,6 +676,23 @@ namespace OPL_WpfApp
         private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void share_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string sshare = share.Text;
+            int shares;
+            try
+            {
+                shares = int.Parse(sshare.Replace(" ", ""));
+            }
+            catch {
+                MessageBox.Show("错误的输入", "错误");
+                
+                share.Text = sjson.config.Network.ShareBandwidth.ToString();
+                return;
+            }
+            sjson.Setshare(shares);
         }
     }
 

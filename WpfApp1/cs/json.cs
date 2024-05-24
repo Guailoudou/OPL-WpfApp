@@ -42,7 +42,7 @@ namespace userdata
                     Token = 11602319472897248650UL,
                     Node = userData.UUID,
                     User = "gldoffice",
-                    ShareBandwidth = 100,
+                    ShareBandwidth = 10,
                     ServerHost = "api.openp2p.cn",
                     ServerPort = 27183,
                     UDPPort1 = 27182,
@@ -57,6 +57,12 @@ namespace userdata
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
             
+        }
+        public void Setshare(int n)
+        {
+            config.Network.ShareBandwidth = n;
+            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
+            wejson(ujson);
         }
         public void newapp(string suuid,int sport, string type,int cport=0,string appname="自定义")
         {
@@ -161,7 +167,13 @@ namespace userdata
             {
                 string jsonCont = File.ReadAllText(absolutePath);
                 config = JsonConvert.DeserializeObject<Config>(jsonCont);
-                
+                if (config.Network.ShareBandwidth == 100) { 
+                    config.Network.ShareBandwidth = 10;
+                    string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
+                    wejson(ujson);
+                }
+
+
             }
             catch (JsonException je)
             {
