@@ -7,9 +7,21 @@
         mc:Ignorable="d"
         Title="联机工具" Height="450" Width="800" MaxWidth="800" MinWidth="800" MinHeight="250">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
+                <GradientStop Color="#FFD0F3FF" Offset="0"/>
+                <GradientStop Color="White" Offset="0.993"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Ellipse Stroke="Black" Fill="Gray" Margin="708,8,0,0" Name="fstert" HorizontalAlignment="Left" VerticalAlignment="Top" Height="10" Width="10" Panel.ZIndex="1"/>
         <Label Content="v1.0.1.9" HorizontalAlignment="Left" Name="ver" Margin="722,0,0,0" VerticalAlignment="Top" Height="26" Width="68" Panel.ZIndex="1"/>
         <TabControl Grid.ColumnSpan="3" BorderBrush="{x:Null}">
+            <TabControl.Background>
+                <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
+                    <GradientStop Color="#FFD0F3FF" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.993"/>
+                </LinearGradientBrush>
+            </TabControl.Background>
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Template">
