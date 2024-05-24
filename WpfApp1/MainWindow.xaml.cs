@@ -211,9 +211,9 @@ namespace OPL_WpfApp
                     };
                     SolidColorBrush brush = new SolidColorBrush(); 
                     //brush.Color = Colors.Black;
-                    brush.Color = (Color)ColorConverter.ConvertFromString("#CC707070");
+                    brush.Color = (Color)ColorConverter.ConvertFromString("#0099ff");
 
-                    brush.Opacity = 0.05; 
+                    brush.Opacity = 0.2; 
                     border.Background = brush;
 
                     // 创建内部Grid
