@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Security.Policy;
 using System.Windows;
+using System.Security.Cryptography;
 using static OPL_WpfApp.MainWindow;
 using System.IO;
 using System.Windows.Controls;
@@ -36,6 +37,10 @@ namespace userdata
                     wejson(contentString);
                     getjosn();
                     int v = presetss.version;
+                    string ophash = presetss.ophash;
+                    string opurl = presetss.opurl;
+                    string opPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
+                    
                     if (v > pvn)
                     {
                         new Updata(presetss.upurl);
@@ -44,6 +49,11 @@ namespace userdata
                     else 
                     { 
                         Logger.Log("[提示]获取预设完成,当前为最新版本~"); 
+                    }
+                    if (CalculateMD5Hash(opPath) != ophash && ophash!=null)
+                    {
+                        new Updata(presetss.opurl, false);
+                        Logger.Log("[提示]你的openp2p不是最新版本哦~ 开始后台下载更新包");
                     }
                     Uplog.Log(presetss.uplog); 
                 }
@@ -119,7 +129,31 @@ namespace userdata
                 Logger.Log($"[错误]请求{url}过程中发生错误：{ex.Message}");
             }
         }
-
+        public static string CalculateMD5Hash(string filePath)
+        {
+            try
+            {
+                using (var md5 = MD5.Create())
+                {
+                    using (var stream = File.OpenRead(filePath))
+                    {
+                        var hashBytes = md5.ComputeHash(stream);
+                        // Convert the byte array to hexadecimal string
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < hashBytes.Length; i++)
+                        {
+                            sb.Append(hashBytes[i].ToString("x2"));
+                        }
+                        return sb.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error computing MD5: {ex.Message}");
+                return null;
+            }
+        }
     }
     public class thanklist
     {

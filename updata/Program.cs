@@ -32,8 +32,8 @@ namespace updata
                 File.Delete(savePath);
                 return;
             }
-            Console.WriteLine("文件校验完成，2s后将进行更新");
-            Thread.Sleep(2000);
+            Console.WriteLine("文件校验完成，1s后将进行更新");
+            Thread.Sleep(1000);
             
             if (File.Exists(savePath))
             {
@@ -76,7 +76,7 @@ namespace updata
                             }
                         }
                         Console.WriteLine("解压完成，更新完毕。");
-                        File.Delete(savePath);
+                        File.Delete(zipPath);
                     }
                     catch (Exception ex)
                     {

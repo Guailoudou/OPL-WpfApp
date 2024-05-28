@@ -36,6 +36,12 @@ namespace WpfApp1
             // 应用程序退出时的清理操作
             base.OnExit(e);
             string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "nvb.zip");
+            string saveOPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.zip");
+            //string opPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
+            if (File.Exists(saveOPath))
+            {
+                ExtractZipAndOverwrite(saveOPath, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"));
+            }
             if (File.Exists(savePath))
             {
                 Net net = new Net();
@@ -58,7 +64,56 @@ namespace WpfApp1
                 }
             }
         }
+        void ExtractZipAndOverwrite(string zipPath, string extractPath)
+        {
+            if (File.Exists(zipPath) && Directory.Exists(extractPath))
+            {
+                try
+                {
+                    // 使用ZipFile.OpenRead打开zip文件，这样不会锁定文件
+                    using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+                    {
+                        foreach (ZipArchiveEntry entry in archive.Entries)
+                        {
+                            // 构建解压后文件的完整路径
+                            string fullFilePath = Path.Combine(extractPath, entry.FullName);
 
-       
+                            // 确保目录存在
+                            if (entry.FullName.EndsWith("/"))
+                            {
+                                Directory.CreateDirectory(fullFilePath);
+                            }
+                            else
+                            {
+                                // 如果文件已存在，则删除旧文件以准备覆盖
+                                if (File.Exists(fullFilePath))
+                                {
+                                    File.Delete(fullFilePath);
+                                }
+
+                                // 解压文件到指定路径
+                                using (Stream inputStream = entry.Open())
+                                using (FileStream outputStream = new FileStream(fullFilePath, FileMode.CreateNew))
+                                {
+                                    inputStream.CopyTo(outputStream);
+                                }
+                            }
+                        }
+                    }
+                    Console.WriteLine("解压完成，更新完毕。");
+                    File.Delete(zipPath);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"解压过程中发生错误: {ex.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("ZIP文件或目标文件夹不存在。");
+            }
+
+        }
+
     }
 }

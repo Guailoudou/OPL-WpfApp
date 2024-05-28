@@ -16,7 +16,7 @@ namespace userdata
     internal class json
     {
 
-        int Ologv = 1; //openp2p日志等级
+        int Ologv = 2; //openp2p日志等级
         public Config config;
         public json()
         {
@@ -241,5 +241,7 @@ namespace userdata
         public string uplog { get; set; }
         public string upurl { get; set; }
         public string uphash { get; set; }
+        public string opurl { get; set; }
+        public string ophash { get; set; }
     }
 }

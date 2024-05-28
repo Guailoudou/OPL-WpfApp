@@ -350,14 +350,14 @@ namespace OPL_WpfApp
                     };
                     closeButton.Click += Del;
 
-                    SolidColorBrush backgroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3FDDDDDD"));
-                    closeButton.Background = backgroundBrush;
+                    //SolidColorBrush backgroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3FDDDDDD"));
+                    //closeButton.Background = backgroundBrush;
 
-                    // 设置边框刷子和厚度
-                    closeButton.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CC707070"));
-                    closeButton.BorderThickness = new Thickness(1);
-                    // 自定义按钮模板
-                    closeButton.Template = CreateButtonTemplate();
+                    //// 设置边框刷子和厚度
+                    //closeButton.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CC707070"));
+                    //closeButton.BorderThickness = new Thickness(1);
+                    //// 自定义按钮模板
+                    //closeButton.Template = CreateButtonTemplate();
                     grid.Children.Add(closeButton);
 
                     Button editButton = new Button
@@ -372,13 +372,13 @@ namespace OPL_WpfApp
                     };
                     editButton.Click += Edit;
                     //SolidColorBrush backgroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3FDDDDDD"));
-                    editButton.Background = backgroundBrush;
+                    //editButton.Background = backgroundBrush;
 
-                    // 设置边框刷子和厚度
-                    editButton.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CC707070"));
-                    editButton.BorderThickness = new Thickness(1);
-                    // 自定义按钮模板
-                    editButton.Template = CreateButtonTemplate();
+                    //// 设置边框刷子和厚度
+                    //editButton.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CC707070"));
+                    //editButton.BorderThickness = new Thickness(1);
+                    //// 自定义按钮模板
+                    //editButton.Template = CreateButtonTemplate();
                     grid.Children.Add(editButton);
 
 
@@ -445,8 +445,8 @@ namespace OPL_WpfApp
                 state.Clear();
                 on = false;
                 Relist();
-                if (udps != null) foreach (UdpClientKeepAlive app in udps) app.StopSendingKeepAlive();
-                if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
+                //if (udps != null) foreach (UdpClientKeepAlive app in udps) app.StopSendingKeepAlive();
+                //if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
 
             }
             else
@@ -495,17 +495,17 @@ namespace OPL_WpfApp
                         Logger.Log("[提示]隧道本地端口为 " + portInfo + " 连接成功");
                         state[portInfo] = 2;
                         Relist();
-                        string[] parts = portInfo.Split(':');
-                        string type = parts[0];
-                        int port = int.Parse(parts[1]);
-                        if (type == "tcp")
-                        {
-                            tcps.Add(new TcpClientWithKeepAlive("127.0.0.1", port));
-                        }
-                        else
-                        {
-                            udps.Add(new UdpClientKeepAlive("127.0.0.1", port));
-                        }
+                        //string[] parts = portInfo.Split(':');
+                        //string type = parts[0];
+                        //int port = int.Parse(parts[1]);
+                        //if (type == "tcp")
+                        //{
+                        //    tcps.Add(new TcpClientWithKeepAlive("127.0.0.1", port));
+                        //}
+                        //else
+                        //{
+                        //    udps.Add(new UdpClientKeepAlive("127.0.0.1", port));
+                        //}
                     }
                     if (m.Contains("END"))
                     {

@@ -25,14 +25,14 @@
         </ComboBox>
         <Label Content="协议*" HorizontalAlignment="Left" Margin="28,158,0,0" VerticalAlignment="Top"/>
         <Button Content="保存" HorizontalAlignment="Left" Margin="29,206,0,0" VerticalAlignment="Top" Width="176" Height="35" Click="Button_Click">
-            <Button.Template>
+            <!--<Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
                         <Border.Background>#3FDDDDDD</Border.Background>
                         <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
-            </Button.Template>
+            </Button.Template>-->
         </Button>
         <Label Content="名称" HorizontalAlignment="Left" Margin="29,27,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" x:Name="names" Margin="85,31,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Background="#3FFFFFFF"/>

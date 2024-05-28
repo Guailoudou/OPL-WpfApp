@@ -22,31 +22,6 @@
                     <GradientStop Color="White" Offset="0.993"/>
                 </LinearGradientBrush>
             </TabControl.Background>
-            <TabControl.Resources>
-                <Style TargetType="TabItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="TabItem">
-                                <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="Gainsboro" CornerRadius="4,4,0,0" Margin="2,0">
-                                    <ContentPresenter x:Name="ContentSite"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        ContentSource="Header"
-                                        Margin="10,2"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="LightSkyBlue" />
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="False">
-                                        <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TabControl.Resources>
             <TabItem Header="隧道" Margin="-2,-2,-29,0" Background="{x:Null}" BorderBrush="{x:Null}">
 
                 <Grid>
@@ -60,7 +35,7 @@
                     <Label Content="UID：" HorizontalAlignment="Left" Margin="30,9,0,0" VerticalAlignment="Top" Width="42"/>
                     <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22" Background="#7FFFFFFF"/>
                     <Button Content="复制UID" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24" BorderBrush="#CC707070" Background="#3FDDDDDD" Width="59">
-                        <Button.Template>
+                        <!--<Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Border BorderBrush="{TemplateBinding Control.BorderBrush}" CornerRadius="5">
                                     <Border.Background>
@@ -69,10 +44,10 @@
                                     <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Border>
                             </ControlTemplate>
-                        </Button.Template>
+                        </Button.Template>-->
                     </Button>
                     <Button Content="重置程序" HorizontalAlignment="Left" Margin="277,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="58">
-                        <Button.Template>
+                        <!--<Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Border BorderBrush="{TemplateBinding Control.BorderBrush}"  CornerRadius="5">
                                     <Border.Background>
@@ -81,7 +56,7 @@
                                     <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Border>
                             </ControlTemplate>
-                        </Button.Template>
+                        </Button.Template>-->
                         <Button.ToolTip>
                             <TextBlock Text="这将会重置你的uuid，同时你会失去下面所有隧道！谨慎点击" />
                         </Button.ToolTip>
@@ -103,7 +78,7 @@
                                 <CheckBox Content="启用" HorizontalAlignment="Left" Margin="630,0,0,0" VerticalAlignment="Center" Checked="CheckBox_Checked"/>
                                 <Button Content=" X " HorizontalAlignment="Left" Margin="678,4,0,0" VerticalAlignment="Top" Background="#3FDDDDDD" BorderBrush="#CC707070"/>
                                 <Button Content="编辑" HorizontalAlignment="Left" Margin="560,0,0,0" VerticalAlignment="Center" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="49" Height="26">
-                                    <Button.Template>
+                                    <!--<Button.Template>
                                         <ControlTemplate TargetType="{x:Type Button}">
                                             <Border BorderBrush="{TemplateBinding Control.BorderBrush}"  CornerRadius="5">
                                                 <Border.Background>
@@ -112,7 +87,7 @@
                                                 <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                             </Border>
                                         </ControlTemplate>
-                                    </Button.Template>
+                                    </Button.Template>-->
                                 </Button>
                                 <Label Content="协议：TCp" HorizontalAlignment="Left" Margin="310,3,0,0" VerticalAlignment="Top"/>
                                 <Label Content="连接ip:端口->" HorizontalAlignment="Left" Margin="310,32,0,0" VerticalAlignment="Top"/>
@@ -126,7 +101,7 @@
 
                     </ListBox>
                     <Button Content="新建连接" HorizontalAlignment="Left" Margin="567,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070">
-                        <Button.Template>
+                        <!--<Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Border BorderBrush="{TemplateBinding Control.BorderBrush}"  CornerRadius="5">
                                     <Border.Background>
@@ -135,10 +110,10 @@
                                     <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Border>
                             </ControlTemplate>
-                        </Button.Template>
+                        </Button.Template>-->
                     </Button>
                     <Button Content="启动" HorizontalAlignment="Left" Margin="672,10,0,0" VerticalAlignment="Top" Width="60" Height="24" Click="Button_Click_open" Name="openbutton" BorderBrush="#CC707070" Background="#3FDDDDDD">
-                        <Button.Template>
+                        <!--<Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Border BorderBrush="{TemplateBinding Control.BorderBrush}"  CornerRadius="5">
                                     <Border.Background>
@@ -147,7 +122,7 @@
                                     <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Border>
                             </ControlTemplate>
-                        </Button.Template>
+                        </Button.Template>-->
                     </Button>
                     <Label Content="共享带宽:" HorizontalAlignment="Center" Margin="0,9,0,0" VerticalAlignment="Top" Width="63"/>
                     <TextBox HorizontalAlignment="Left" x:Name="share" Margin="423,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="38" Height="22" Background="#7FFFFFFF" TextChanged="share_TextChanged" Panel.ZIndex="1"/>
@@ -186,7 +161,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="关于" Margin="61,-2,-91,0" Background="{x:Null}" BorderBrush="{x:Null}">
-                <Grid> 
+                <Grid>
                     <Grid.Background>
                         <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
                             <GradientStop Color="#FFD0F3FF" Offset="0"/>

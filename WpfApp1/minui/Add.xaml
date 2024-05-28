@@ -26,24 +26,24 @@
         </ComboBox>
         <Label Content="协议*" HorizontalAlignment="Left" Margin="23,165,0,0" VerticalAlignment="Top"/>
         <Button Content="添加" HorizontalAlignment="Left" Margin="24,206,0,0" VerticalAlignment="Top" Width="135" Height="35" Click="Button_Click" Background="#3FDDDDDD">
-            <Button.Template>
+            <!--<Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
                         <Border.Background>#3FDDDDDD</Border.Background>
                         <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
-            </Button.Template>
+            </Button.Template>-->
         </Button>
         <Button Content="预设" HorizontalAlignment="Left" Margin="180,206,0,0" VerticalAlignment="Top" Height="35" Width="47" Click="Preset" Background="#3FDDDDDD">
-            <Button.Template>
+            <!--<Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
                         <Border.Background>#3FDDDDDD</Border.Background>
                         <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
-            </Button.Template>
+            </Button.Template>-->
         </Button>
         <Label Content="名称" HorizontalAlignment="Left" Margin="25,28,0,0" VerticalAlignment="Top"/>
         <TextBox Background="#3FFFFFFF" HorizontalAlignment="Left" x:Name="names" Margin="80,30,0,0" TextWrapping="Wrap" Text="自定义" VerticalAlignment="Top" Width="120" Height="25"/>

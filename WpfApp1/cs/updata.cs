@@ -12,18 +12,29 @@ namespace userdata
 {
     internal class Updata
     {
-        public Updata(string url)
+        public Updata(string url, bool big = true)
         {
-            string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "nvb.zip");
-            if (!File.Exists(absolutePath))
+            if (big) 
+            { 
+                string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "nvb.zip");
+                if (!File.Exists(absolutePath))
+                {
+                    _ = DmAsync(url, "nvb.zip"); //更新包 
+                    _ = Dmupdata("https://file.gldhn.top/file/updata.exe"); //用来替换文件的程序
+                }
+            }
+            else
             {
-                _ = DmAsync(url); //更新包 
-                _ = Dmupdata("https://file.gldhn.top/file/updata.exe"); //用来替换文件的程序
+                string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.zip");
+                if (!File.Exists(absolutePath))
+                {
+                    _ = DmAsync(url, "openp2p.zip"); //更新包 
+                }
             }
         }
-        public async Task DmAsync(string url)
+        public async Task DmAsync(string url,string name)
         {
-            string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "nvb.zip");
+            string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", name);
             //Thread.Sleep(2000);
             using (HttpClient client = new HttpClient())
             {
