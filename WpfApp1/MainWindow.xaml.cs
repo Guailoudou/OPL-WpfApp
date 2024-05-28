@@ -393,25 +393,25 @@ namespace OPL_WpfApp
 
 
         }
-        private ControlTemplate CreateButtonTemplate()
-        {
-            ControlTemplate template = new ControlTemplate(typeof(Button));
-            FrameworkElementFactory borderFactory = new FrameworkElementFactory(typeof(Border));
-            borderFactory.SetValue(Border.BorderBrushProperty, new TemplateBindingExtension(BorderBrushProperty));
-            borderFactory.SetValue(Border.BorderThicknessProperty, new TemplateBindingExtension(BorderThicknessProperty));
-            borderFactory.SetValue(Border.CornerRadiusProperty, new CornerRadius(5));
-            //borderFactory.SetValue(Border.BackgroundProperty, new SolidColorBrush(Color.FromArgb(80, 221, 221, 221))); // 注意这里的背景色需要重新定义或引用
+        //private ControlTemplate CreateButtonTemplate()
+        //{
+        //    ControlTemplate template = new ControlTemplate(typeof(Button));
+        //    FrameworkElementFactory borderFactory = new FrameworkElementFactory(typeof(Border));
+        //    borderFactory.SetValue(Border.BorderBrushProperty, new TemplateBindingExtension(BorderBrushProperty));
+        //    borderFactory.SetValue(Border.BorderThicknessProperty, new TemplateBindingExtension(BorderThicknessProperty));
+        //    borderFactory.SetValue(Border.CornerRadiusProperty, new CornerRadius(5));
+        //    //borderFactory.SetValue(Border.BackgroundProperty, new SolidColorBrush(Color.FromArgb(80, 221, 221, 221))); // 注意这里的背景色需要重新定义或引用
 
-            FrameworkElementFactory contentPresenterFactory = new FrameworkElementFactory(typeof(ContentPresenter));
-            contentPresenterFactory.SetBinding(ContentPresenter.ContentProperty, new Binding { Path = new PropertyPath("Content"), RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent) });
-            contentPresenterFactory.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Center);
-            contentPresenterFactory.SetValue(VerticalAlignmentProperty, VerticalAlignment.Center);
+        //    FrameworkElementFactory contentPresenterFactory = new FrameworkElementFactory(typeof(ContentPresenter));
+        //    contentPresenterFactory.SetBinding(ContentPresenter.ContentProperty, new Binding { Path = new PropertyPath("Content"), RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent) });
+        //    contentPresenterFactory.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Center);
+        //    contentPresenterFactory.SetValue(VerticalAlignmentProperty, VerticalAlignment.Center);
 
-            borderFactory.AppendChild(contentPresenterFactory);
-            template.VisualTree = borderFactory;
+        //    borderFactory.AppendChild(contentPresenterFactory);
+        //    template.VisualTree = borderFactory;
 
-            return template;
-        }
+        //    return template;
+        //}
         private string Getversion() //获取文件版本号
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
@@ -520,8 +520,25 @@ namespace OPL_WpfApp
             {
                 Logger.Log("[错误]请检查是否连接网络，或是程序是否拥有网络访问权限！");
                 //if (process != null && !process.HasExited)
+                state.Clear();
+                Relist();
                 Strapp();
 
+            }
+            if(m.Contains("Only one usage of each socket address"))
+            {
+                string pattern = @"(tcp|udp)\s*:\s*(\d+)";
+                Match match = Regex.Match(m, pattern);
+
+                if (match.Success)
+                {
+                    // 提取并输出匹配到的协议和端口号
+                    string protocol = match.Groups[1].Value;
+                    string port = match.Groups[2].Value;
+                    Logger.Log($"[错误]: 本地端口{protocol}:{port}被占用，请更换相关本地端口");
+                    MessageBox.Show($"本地端口{protocol}:{port}被占用，请更换相关本地端口！！", "错误");
+                    Strapp();
+                }
             }
             if (m.Contains("no such host"))
             {

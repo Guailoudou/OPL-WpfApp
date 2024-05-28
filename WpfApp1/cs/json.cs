@@ -172,7 +172,12 @@ namespace userdata
                     string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
                     wejson(ujson);
                 }
-
+                if(config.LogLevel != Ologv) 
+                {
+                    config.LogLevel = Ologv;
+                    string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
+                    wejson(ujson);
+                }
 
             }
             catch (JsonException je)

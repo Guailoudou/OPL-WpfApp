@@ -84,7 +84,7 @@ namespace userdata
                     try
                     {
                         _client.Send(buffer);
-                    }catch (SocketException se)
+                    }catch (SocketException)
                     {
                         //Logger.Log(se.Message);
                         //break;

@@ -19,7 +19,7 @@ namespace userdata
     {
         public async Task GetPreset()
         {
-            int pvn = 14;//协议版本号
+            int pvn = 15;//协议版本号
             Logger.Log("[执行]网络请求文件preset.json");
             string fileurl = "https://file.gldhn.top/file/json/preset.json";
             HttpClient httpClient = new HttpClient();

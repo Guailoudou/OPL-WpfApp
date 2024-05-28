@@ -82,5 +82,25 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!--<Style TargetType="ScrollViewer">
+            <Setter Property="OverridesDefaultStyle" Value="False" />
+            --><!--<Setter Property="CanContentScroll" Value="True" />-->
+            <!--<Setter Property="PanningMode" Value="VerticalFirst" />--><!--
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ScrollContentPresenter CanHorizontallyScroll="True" CanVerticallyScroll="True" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
     </Application.Resources>
 </Application>
