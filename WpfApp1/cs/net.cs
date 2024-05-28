@@ -50,7 +50,7 @@ namespace userdata
                     { 
                         Logger.Log("[提示]获取预设完成,当前为最新版本~"); 
                     }
-                    if (CalculateMD5Hash(opPath) != ophash && ophash!=null)
+                    if ((CalculateMD5Hash(opPath) != ophash && ophash!=null)|| !File.Exists(opPath))
                     {
                         new Updata(presetss.opurl, false);
                         Logger.Log("[提示]你的openp2p不是最新版本哦~ 开始后台下载更新包");

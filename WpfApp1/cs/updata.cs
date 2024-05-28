@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using static OPL_WpfApp.MainWindow;
 
 namespace userdata
@@ -47,6 +48,9 @@ namespace userdata
                     File.WriteAllBytes(savePath, fileBytes);
 
                     Logger.Log($"[提示]ZIP更新文件已成功下载到：{savePath}");
+                    MessageBox.Show("推荐立刻重启软件，完成最后更新，防止出现BUG", "提示");
+
+
                 }
                 catch (HttpRequestException ex)
                 {
