@@ -69,13 +69,15 @@ namespace userdata
             Logger.Log("[执行]创建新的隧道"+suuid+":"+sport+"--"+type+">>"+cport);
             if (cport == 0)cport = sport-1;
             int enabled = 1;
-            foreach (App apps in config.Apps)
-            {
-                if (apps.Enabled == 1 && cport == apps.SrcPort && type == apps.Protocol)
+
+            if (config.Apps != null)
+                foreach (App apps in config.Apps)
                 {
-                    enabled = 0;
+                    if (apps.Enabled == 1 && cport == apps.SrcPort && type == apps.Protocol)
+                    {
+                        enabled = 0;
+                    }
                 }
-            }
 
             App app = new App
             {
