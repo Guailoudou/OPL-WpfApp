@@ -52,11 +52,15 @@ namespace OPL_WpfApp
             {
                 Sport = int.Parse(SportText.Text.Replace(" ", ""));
                 Cport = int.Parse(CportText.Text.Replace(" ", ""));
-                if(Suuid!=""&&Type!=""&&Sport>0&&Sport<=65535)
-                    json.newapp(Suuid, Sport, Type, Cport,names);
+                if (Suuid != "" && Type != "" && Sport > 0 && Sport <= 65535)
+                    if (!json.newapp(Suuid, Sport, Type, Cport, names)) return; 
+                    else 
+                    {
+                        this.Close();
+                    }
                 else
                 {
-                    MessageBox.Show("存在未填数据或错误数据", "提示");
+                    MessageBox.Show("存在未填数据或错误数据 端口正常范围为0-65535", "提示");
                     return;
                 }
             }
@@ -67,7 +71,7 @@ namespace OPL_WpfApp
                 
             }
             
-            this.Close();
+            
            
             
         }

@@ -64,8 +64,14 @@ namespace userdata
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
         }
-        public void newapp(string suuid,int sport, string type,int cport=0,string appname="自定义")
+        public bool newapp(string suuid,int sport, string type,int cport=0,string appname="自定义")
         {
+            if (suuid == config.Network.Node)
+            {
+                Logger.Log("[错误]自己连自己？");
+                MessageBox.Show("不能自己连自己啊！！这无异于试图左脚踩右脚升天！！", "错误");
+                return false;
+            }
             Logger.Log("[执行]创建新的隧道"+suuid+":"+sport+"--"+type+">>"+cport);
             if (cport == 0)cport = sport-1;
             int enabled = 1;
@@ -105,6 +111,7 @@ namespace userdata
             config.LogLevel = Ologv;
             string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
             wejson(ujson);
+            return true;
         }
         public void ReSetToken()
         {

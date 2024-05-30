@@ -19,14 +19,14 @@ namespace userdata
     {
         public async Task GetPreset()
         {
-            int pvn = 16;//协议版本号
+            int pvn = 17;//协议版本号
             Logger.Log("[执行]网络请求文件preset.json");
             string fileurl = "https://file.gldhn.top/file/json/preset.json";
             HttpClient httpClient = new HttpClient();
             try
             {
                 // 发起GET请求
-                
+
                 HttpResponseMessage response = await httpClient.GetAsync(fileurl);
 
                 // 检查响应状态是否成功
@@ -40,32 +40,32 @@ namespace userdata
                     string ophash = presetss.ophash;
                     string opurl = presetss.opurl;
                     string opPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
-                    
+
                     if (v > pvn)
                     {
                         new Updata(presetss.upurl);
                         Logger.Log("[提示]获取预设完成,你的程序不是最新版本哦~ 开始后台下载更新包");
                     }
-                    else 
-                    { 
-                        Logger.Log("[提示]获取预设完成,当前为最新版本~"); 
+                    else
+                    {
+                        Logger.Log("[提示]获取预设完成,当前为最新版本~");
                     }
-                    if ((CalculateMD5Hash(opPath) != ophash && ophash!=null)|| !File.Exists(opPath))
+                    if ((CalculateMD5Hash(opPath) != ophash && ophash != null) || !File.Exists(opPath))
                     {
                         new Updata(presetss.opurl, false);
                         Logger.Log("[提示]你的openp2p不是最新版本哦~ 开始后台下载更新包");
                     }
-                    Uplog.Log(presetss.uplog); 
+                    Uplog.Log(presetss.uplog);
                 }
                 else
                 {
-                    Logger.Log($"[错误]请求{fileurl}失败，状态码：{response.StatusCode}");
+                    Logger.Log($"[错误]请求{fileurl}失败，状态码：{response.StatusCode}  可尝试设置hosts来保障连接的可行性：\r\n172.64.32.5 file.gldhn.top\r\n172.64.32.5 blog.gldhn.top");
                     //Console.WriteLine($"请求失败，状态码：{response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
-                Logger.Log($"[错误]请求{fileurl}过程中发生错误：" + ex.Message);
+                Logger.Log($"[错误]请求{fileurl}过程中发生错误：{ex.Message} 可尝试设置hosts来保障连接的可行性：\r\n172.64.32.5 file.gldhn.top\r\n172.64.32.5 blog.gldhn.top "  );
             }
         }
         public void wejson(string ujson) //写入josn

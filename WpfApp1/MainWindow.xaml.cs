@@ -446,7 +446,7 @@ namespace OPL_WpfApp
                 on = false;
                 Relist();
                 //if (udps != null) foreach (UdpClientKeepAlive app in udps) app.StopSendingKeepAlive();
-                //if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
+                if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
 
             }
             else
@@ -495,13 +495,13 @@ namespace OPL_WpfApp
                         Logger.Log("[提示]隧道本地端口为 " + portInfo + " 连接成功");
                         state[portInfo] = 2;
                         Relist();
-                        //string[] parts = portInfo.Split(':');
-                        //string type = parts[0];
-                        //int port = int.Parse(parts[1]);
-                        //if (type == "tcp")
-                        //{
-                        //    tcps.Add(new TcpClientWithKeepAlive("127.0.0.1", port));
-                        //}
+                        string[] parts = portInfo.Split(':');
+                        string type = parts[0];
+                        int port = int.Parse(parts[1]);
+                        if (type == "tcp")
+                        {
+                            tcps.Add(new TcpClientWithKeepAlive("127.0.0.1", port));
+                        }
                         //else
                         //{
                         //    udps.Add(new UdpClientKeepAlive("127.0.0.1", port));

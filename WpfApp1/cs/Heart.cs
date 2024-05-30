@@ -50,9 +50,13 @@ namespace userdata
         private readonly Socket _client;
         private Thread _keepAliveThread;
         private bool _shouldStopKeepAlive = true;
+        private string ipAddress;
+        private int port;
 
         public TcpClientWithKeepAlive(string ipAddress, int port)
         {
+            this.ipAddress = ipAddress;
+            this.port = port;
             _client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             try
@@ -95,7 +99,8 @@ namespace userdata
                 }
                 else
                 {
-                    // 如果连接已断开，则停止心跳线程
+                    IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+                    _client.Connect(endPoint);
                     //break;
                 }
             }

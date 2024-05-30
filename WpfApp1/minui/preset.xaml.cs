@@ -70,7 +70,7 @@ namespace OPL_WpfApp
             Logger.Log(net.presetss.presets[Map[game]].Note);
             foreach (PrTunnel key in net.presetss.presets[Map[game]].tunnel)
             {
-                json.newapp(Suuid.Text.Replace(" ", ""), key.Sport, key.type, key.CPort,game);
+                if(!json.newapp(Suuid.Text.Replace(" ", ""), key.Sport, key.type, key.CPort,game))return;
                 
             }
             Logger.Log("已自动添加预设" + game);
