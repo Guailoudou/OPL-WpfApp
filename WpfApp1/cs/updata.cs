@@ -48,8 +48,8 @@ namespace userdata
                     File.WriteAllBytes(savePath, fileBytes);
 
                     Logger.Log($"[提示]ZIP更新文件已成功下载到：{savePath}");
-
-                    MessageBox.Show("更新包下载完毕，推荐立刻重启软件，完成最后更新，防止出现BUG", "提示");
+                    if(name== "openp2p.zip")
+                        MessageBox.Show("更新包下载完毕，推荐立刻重启软件，完成最后更新，防止出现BUG", "提示");
 
 
                 }

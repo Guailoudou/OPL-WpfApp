@@ -56,8 +56,17 @@ namespace OPL_WpfApp
             private void CopyUUID_Button_Click(object sender, RoutedEventArgs e)
         {
             TextBox uuidTextBox = (TextBox)this.FindName("UUID");
-            Clipboard.SetText(uuidTextBox.Text);
+            try
+            {
+                Clipboard.SetText(uuidTextBox.Text);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"[错误]复制失败：{ex.Message}");
+                MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
+            }
             MessageBox.Show("复制成功", "提示");
+
         }
 
         private void ResetUUID_Button_Click(object sender, RoutedEventArgs e)
@@ -521,6 +530,7 @@ namespace OPL_WpfApp
                 Logger.Log("[错误]请检查是否连接网络，或是程序是否拥有网络访问权限！");
                 //if (process != null && !process.HasExited)
                 state.Clear();
+                on = false;
                 Relist();
                 Strapp();
 

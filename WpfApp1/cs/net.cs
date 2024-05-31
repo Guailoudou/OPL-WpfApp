@@ -19,7 +19,7 @@ namespace userdata
     {
         public async Task GetPreset()
         {
-            int pvn = 17;//协议版本号
+            int pvn = 18;//协议版本号
             Logger.Log("[执行]网络请求文件preset.json");
             string fileurl = "https://file.gldhn.top/file/json/preset.json";
             HttpClient httpClient = new HttpClient();
@@ -59,13 +59,13 @@ namespace userdata
                 }
                 else
                 {
-                    Logger.Log($"[错误]请求{fileurl}失败，状态码：{response.StatusCode}  可尝试设置hosts来保障连接的可行性：\r\n172.64.32.5 file.gldhn.top\r\n172.64.32.5 blog.gldhn.top");
+                    Logger.Log($"[错误]请求{fileurl}失败，状态码：{response.StatusCode}  可尝试设置hosts来保障连接的可行性：\n172.64.32.5 file.gldhn.top\n172.64.32.5 blog.gldhn.top");
                     //Console.WriteLine($"请求失败，状态码：{response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
-                Logger.Log($"[错误]请求{fileurl}过程中发生错误：{ex.Message} 可尝试设置hosts来保障连接的可行性：\r\n172.64.32.5 file.gldhn.top\r\n172.64.32.5 blog.gldhn.top "  );
+                Logger.Log($"[错误]请求{fileurl}过程中发生错误：{ex.Message} 可尝试设置hosts来保障连接的可行性：\n172.64.32.5 file.gldhn.top\n172.64.32.5 blog.gldhn.top "  );
             }
         }
         public void wejson(string ujson) //写入josn
