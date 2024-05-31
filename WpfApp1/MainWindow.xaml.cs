@@ -64,6 +64,7 @@ namespace OPL_WpfApp
             {
                 Logger.Log($"[错误]复制失败：{ex.Message}");
                 MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
+                return;
             }
             MessageBox.Show("复制成功", "提示");
 

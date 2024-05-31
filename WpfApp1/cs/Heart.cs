@@ -95,14 +95,16 @@ namespace userdata
                     }
 
                     // 延迟至下一次心跳
-                    Thread.Sleep(TimeSpan.FromSeconds(KEEP_ALIVE_INTERVAL_SEC));
+                    
                 }
                 else
                 {
-                    IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
-                    _client.Connect(endPoint);
+                    //IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+                    //_client.Connect(endPoint);
                     //break;
+
                 }
+                Thread.Sleep(TimeSpan.FromSeconds(KEEP_ALIVE_INTERVAL_SEC));
             }
         }
         public void StopSendingKeepAlive()
