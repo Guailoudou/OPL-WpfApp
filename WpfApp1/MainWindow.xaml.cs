@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -659,6 +660,7 @@ namespace OPL_WpfApp
             {
                 _output = output;
                 _output.AppendText(Environment.NewLine);
+                Log("----- OPENP2P Launcher by Guailoudou -----");
             }
 
             public static void Log(string message)
@@ -721,6 +723,62 @@ namespace OPL_WpfApp
                 return;
             }
             sjson.Setshare(shares);
+        }
+
+        public void DerLog(bool on =true)
+        {
+            DateTime Date = DateTime.Now;
+            string zipFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log-pack-"+Date.ToString("yyyyMMdd-HHmmssfff") +".zip");
+            string packoplog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","bin","log","openp2p.log");
+            string packopllog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log");
+            using (var archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create))
+            {
+                // 添加文件到ZIP存档
+                archive.CreateEntryFromFile(packopllog, System.IO.Path.GetFileName(packopllog));
+                archive.CreateEntryFromFile(packoplog, System.IO.Path.GetFileName(packoplog));
+            }
+            Logger.Log("[提示]日志已打包完毕，路径为："+zipFilePath);
+            if (on)
+            {
+                MessageBox.Show("日志已打包完毕，路径为：" + zipFilePath + "\n即将自动打开根目录文件夹", "提示");
+                try
+                {
+                    Process.Start("explorer.exe", System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory));
+                }
+                catch { }
+            }
+        }
+
+        private void ExportLog(object sender, RoutedEventArgs e)
+        {
+            DerLog();
+        }
+
+        private void Openwiki(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start("https://blog.gldhn.top/2024/04/19/opl_ui/");
+            }
+            catch { }
+        }
+
+        private void OpenMe(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start("https://space.bilibili.com/496960407");
+            }
+            catch { }
+        }
+
+        private void OpenGit(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start("https://github.com/Guailoudou/OPL-WpfApp");
+            }
+            catch { }
         }
     }
 
