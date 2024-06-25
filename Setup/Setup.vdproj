@@ -140,6 +140,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -496,7 +504,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:OPL"
         "ProductCode" = "8:{C0C10CA4-0CCD-4E7E-8E54-ABFE4DB5358B}"
-        "PackageCode" = "8:{EE271757-D726-42AA-95A6-F706A85265CC}"
+        "PackageCode" = "8:{8F4E9523-835E-424F-AEA4-096931270AAE}"
         "UpgradeCode" = "8:{5FB7A33F-1906-4DC4-880F-87E389E7994C}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"

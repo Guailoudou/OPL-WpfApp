@@ -628,6 +628,7 @@ namespace OPL_WpfApp
                         if (tl)
                         {
                             Strapp();
+                            
                             tl= false;
                         }
                     });
@@ -635,11 +636,37 @@ namespace OPL_WpfApp
             });
 
             // 启动进程并开始接收输出
-            process.Start();
+            try
+            {
+                process.Start();
+                
+            }
+            catch (Exception ex)
+            {
+                
+                Logger.Log("[错误]启动失败，看来被安全中心拦截"+ex.ToString());
+                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动","警告");
+                if (process != null && !process.HasExited)
+                {
+                    process.Kill();
+                }
+                openbutton.Content = "启动";
+                Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
+                fstert.Fill = Brushes.Gray;
+                state.Clear();
+                on = false;
+                Relist();
+                return;
+            }
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
-
         }
+        //public void Addbmd()
+        //{
+        //    string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
+        //    string cmdpath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "addcmd.bat");
+        //    Process.Start(cmdpath,path);
+        //}
         protected override void OnClosed(EventArgs e)
         {
             if (process != null && !process.HasExited)
@@ -751,6 +778,11 @@ namespace OPL_WpfApp
 
         private void ExportLog(object sender, RoutedEventArgs e)
         {
+            if (on)
+            {
+                MessageBox.Show("程序在运行，禁止操作!", "警告");
+                return;
+            }
             DerLog();
         }
 
