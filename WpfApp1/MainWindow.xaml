@@ -176,7 +176,9 @@
                     <Label Content="帮助文档：" HorizontalAlignment="Left" Margin="0,31,0,0" VerticalAlignment="Top" Grid.Column="1"/>
                     <Label Content="作者： 乖漏斗" HorizontalAlignment="Left" Margin="1,63,0,0" VerticalAlignment="Top" Grid.Column="1"/>
                     <Label Content="开源：" HorizontalAlignment="Left" Margin="3,93,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                    <Label Content="*基于OPENP2P" HorizontalAlignment="Left" Margin="680,381,0,0" VerticalAlignment="Top" Grid.Column="1" FontSize="6"/>
+                    <Canvas Grid.ColumnSpan="3">
+                        <Label Content="*基于OPENP2P" HorizontalAlignment="Left" Canvas.Left="700" Canvas.Bottom="10" Grid.Column="1" FontSize="8"/>
+                    </Canvas>
                     <Label Content="预设隧道为联网获取，需要增加常用预设隧道可以联系作者添加&#xD;&#xA;一般为固定多端口联机游戏，或特殊固定端口用途" HorizontalAlignment="Left" Margin="18,122,0,0" VerticalAlignment="Top" Height="45" Width="382" Grid.Column="1"/>
 
                     <Label Content="更新日志：" HorizontalAlignment="Left" Margin="39,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
@@ -189,7 +191,7 @@
                             </TransformGroup>
                         </Label.RenderTransform>
                     </Label>
-                    <TextBox HorizontalAlignment="Left" Background="#7FFFFFFF" Name="uplogbox" Margin="18,203,0,0" TextWrapping="Wrap" Text="联网获取" VerticalAlignment="Top" Width="552" Height="174" IsReadOnly="True" Grid.Column="1"/>
+                    <TextBox Background="#7FFFFFFF" Name="uplogbox" Margin="25,188,194,15" Text="联网获取" IsReadOnly="True" Grid.Column="1"/>
                     <TextBox Margin="598,61,10,29" Background="#7FFFFFFF" Name="thank"  Text="联网获取" IsReadOnly="True" Grid.Column="1"/>
                     <Label Content="充电/发电鸣谢" HorizontalAlignment="Left" Margin="598,31,0,0" VerticalAlignment="Top" Grid.Column="1"/>
                     <Button Grid.Column="1" Content="导出日志" HorizontalAlignment="Left" Margin="665,5,0,0" VerticalAlignment="Top" Click="ExportLog"/>
