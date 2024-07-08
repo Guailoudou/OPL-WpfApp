@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using static OPL_WpfApp.MainWindow;
 using System.IO;
 using System.Windows.Controls;
+using System.Net.Sockets;
 
 namespace userdata
 {
@@ -19,7 +20,7 @@ namespace userdata
     {
         public async Task GetPreset()
         {
-            int pvn = 22;//协议版本号
+            int pvn = 23;//协议版本号
             Logger.Log("[执行]网络请求文件preset.json");
             string fileurl = "https://file.gldhn.top/file/json/preset.json";
             HttpClient httpClient = new HttpClient();
@@ -62,6 +63,26 @@ namespace userdata
                     Logger.Log($"[错误]请求{fileurl}失败，状态码：{response.StatusCode}  可尝试设置hosts来保障连接的可行性：\n172.64.32.5 file.gldhn.top\n172.64.32.5 blog.gldhn.top");
                     //Console.WriteLine($"请求失败，状态码：{response.StatusCode}");
                 }
+            }
+            catch (HttpRequestException ex)
+            {
+                Logger.Log($"[错误]HTTP请求异常 HttpRequestException: {ex.Message}");
+            }
+            catch (TaskCanceledException ex)
+            {
+                Logger.Log($"[错误]请求被取消 TaskCanceledException: {ex.Message}");
+            }
+            catch (TimeoutException ex)
+            {
+                Logger.Log($"[错误]连接超时 TimeoutException: {ex.Message}");
+            }
+            catch (SocketException ex)
+            {
+                Logger.Log($"[错误]网络连接中断或不可达 SocketException: {ex.Message}");
+            }
+            catch (InvalidOperationException ex)
+            {
+                Logger.Log($"[错误]InvalidOperationException: {ex.Message}");
             }
             catch (Exception ex)
             {
