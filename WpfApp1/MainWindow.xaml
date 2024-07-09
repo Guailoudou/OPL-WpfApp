@@ -33,7 +33,7 @@
                     </Grid.Background>
 
                     <Label Content="UID：" HorizontalAlignment="Left" Margin="30,9,0,0" VerticalAlignment="Top" Width="42"/>
-                    <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22" Background="#7FFFFFFF"/>
+                    <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,11,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22" VerticalContentAlignment="Center" Background="#7FFFFFFF"/>
                     <Button Content="复制UID" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24" BorderBrush="#CC707070" Background="#3FDDDDDD" Width="59">
                         <!--<Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
@@ -125,7 +125,7 @@
                         </Button.Template>-->
                     </Button>
                     <Label Content="共享带宽:" HorizontalAlignment="Center" Margin="0,9,0,0" VerticalAlignment="Top" Width="63"/>
-                    <TextBox HorizontalAlignment="Left" x:Name="share" Margin="423,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="38" Height="22" Background="#7FFFFFFF" TextChanged="share_TextChanged" Panel.ZIndex="1"/>
+                    <TextBox HorizontalAlignment="Left" x:Name="share" Margin="423,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="38" Height="22" VerticalContentAlignment="Center" Background="#7FFFFFFF" TextChanged="share_TextChanged" Panel.ZIndex="1"/>
                     <Label Content="Mbps" HorizontalAlignment="Left" Margin="461,10,0,0" VerticalAlignment="Top"/>
                     <!--<Button Content="刷新列表" HorizontalAlignment="Left" Margin="424,10,0,0" VerticalAlignment="Top" Height="24" Width="60" Click="Button_Click_1" BorderBrush="#CC707070" Background="#3FDDDDDD">
             <Button.Template>
@@ -160,6 +160,22 @@
 
                 </Grid>
             </TabItem>
+            <!--<TabItem Header="装扮" Margin="61,-2,-91,0" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
+                            <GradientStop Color="#FFD0F3FF" Offset="0"/>
+                            <GradientStop Color="White" Offset="0.993"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="53*"/>
+                        <ColumnDefinition Width="741*"/>
+
+                    </Grid.ColumnDefinitions>
+
+                </Grid>
+            </TabItem>-->
             <TabItem Header="关于" Margin="61,-2,-91,0" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Grid>
                     <Grid.Background>

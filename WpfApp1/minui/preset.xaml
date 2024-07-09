@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OPL_WpfApp"
         mc:Ignorable="d"
-        Title="预设" Height="200" Width="250">
+        Title="预设" Height="220" Width="250"> 
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
@@ -13,11 +13,11 @@
                 <GradientStop Color="White" Offset="0.993"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Label Content="UID:" HorizontalAlignment="Left" Margin="24,24,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Name="Suuid" Margin="80,28,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Label Content="游戏：" HorizontalAlignment="Left" Margin="23,69,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Name="type" Margin="80,71,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged">
+        <Label Content="UID:" HorizontalAlignment="Left" Margin="24,28,0,0" VerticalAlignment="Top" Height="25"/>
+        <TextBox HorizontalAlignment="Left" Name="Suuid" Margin="80,28,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="25" VerticalContentAlignment="Center"/>
+        <Label Content="游戏：" HorizontalAlignment="Left" Margin="23,73,0,0" VerticalAlignment="Top" Height="25"/>
+        <ComboBox HorizontalAlignment="Left" Name="type" Margin="80,73,0,0" VerticalAlignment="Top" Width="120" Height="25" VerticalContentAlignment="Center" SelectionChanged="ComboBox_SelectionChanged">
         </ComboBox>
-        <Button Content="添加" HorizontalAlignment="Left" Margin="46,129,0,0" VerticalAlignment="Top" Height="28" Width="140" Click="Button_Click"/>
+        <Button Content="添加" HorizontalAlignment="Left" Margin="46,122,0,0" VerticalAlignment="Top" Height="35" Width="140" Click="Button_Click"/>
     </Grid>
 </Window>
