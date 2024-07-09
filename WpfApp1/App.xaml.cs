@@ -1,5 +1,4 @@
-﻿using OPL_WpfApp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -12,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using userdata;
 
-namespace WpfApp1
+namespace OPL_WpfApp
 {
     /// <summary>
     /// App.xaml 的交互逻辑
