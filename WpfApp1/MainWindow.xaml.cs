@@ -26,7 +26,7 @@ namespace OPL_WpfApp
         userdata.UserData userData ;
         userdata.json sjson;
         bool on = false;
-        public MainWindow()
+        public MainWindow(string[] args)
         {
             InitializeComponent();
             // 设置窗口位置居中显示
@@ -51,10 +51,12 @@ namespace OPL_WpfApp
             share.Text = sjson.config.Network.ShareBandwidth.ToString();
             ver.Content = Getversion();
             //thank.Navigate("https://file.gldhn.top/web/thank/"); 废案，内存占用过高
+            if(args.Length > 0 && args[0] == "-on") Strapp();
+
         }
 
 
-            private void CopyUUID_Button_Click(object sender, RoutedEventArgs e)
+        private void CopyUUID_Button_Click(object sender, RoutedEventArgs e)
         {
             TextBox uuidTextBox = (TextBox)this.FindName("UUID");
             try

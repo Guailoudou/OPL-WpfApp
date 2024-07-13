@@ -21,10 +21,10 @@ namespace OPL_WpfApp
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            
+            string[] args = e.Args;
             // 应用程序启动时的自定义逻辑
-            //var mainWindow = new MainWindow();
-            //mainWindow.Show();
+            var mainWindow = new MainWindow(args);
+            mainWindow.Show();
             //var Add = new Add();
             //Add.Show();
         }
