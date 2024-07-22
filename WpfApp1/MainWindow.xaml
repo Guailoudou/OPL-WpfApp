@@ -77,8 +77,9 @@
                                 <Label Content="本地端口：25566" Margin="195,32,386,0"/>
                                 <CheckBox Content="启用" HorizontalAlignment="Left" Margin="630,0,0,0" VerticalAlignment="Center" Checked="CheckBox_Checked"/>
                                 <Button Content=" X " HorizontalAlignment="Left" Margin="678,4,0,0" VerticalAlignment="Top" Background="#3FDDDDDD" BorderBrush="#CC707070"/>
-                                <Button Content="编辑" HorizontalAlignment="Left" Margin="560,0,0,0" VerticalAlignment="Center" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="49" Height="26">
-                                    <!--<Button.Template>
+                                <Button Content="编辑" HorizontalAlignment="Left" Margin="575,0,0,0" VerticalAlignment="Center" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="49" Height="26"/>
+                                <Button Content="复制" HorizontalAlignment="Left" Margin="520,32,0,0" VerticalAlignment="Top" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="38" Height="25"/>
+                                <!--<Button.Template>
                                         <ControlTemplate TargetType="{x:Type Button}">
                                             <Border BorderBrush="{TemplateBinding Control.BorderBrush}"  CornerRadius="5">
                                                 <Border.Background>
@@ -88,7 +89,7 @@
                                             </Border>
                                         </ControlTemplate>
                                     </Button.Template>-->
-                                </Button>
+
                                 <Label Content="协议：TCp" HorizontalAlignment="Left" Margin="310,3,0,0" VerticalAlignment="Top"/>
                                 <Label Content="连接ip:端口->" HorizontalAlignment="Left" Margin="310,32,0,0" VerticalAlignment="Top"/>
                                 <TextBox HorizontalAlignment="Left" Margin="395,36,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" IsReadOnly="True" Background="#BFFFFFFF"/>
@@ -100,30 +101,13 @@
 
 
                     </ListBox>
-                    <Button Content="新建连接" HorizontalAlignment="Left" Margin="567,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070">
-                        <!--<Button.Template>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border BorderBrush="{TemplateBinding Control.BorderBrush}"  CornerRadius="5">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="#0099ff" Opacity="0.4"/>
-                                    </Border.Background>
-                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>-->
-                    </Button>
-                    <Button Content="启动" HorizontalAlignment="Left" Margin="672,10,0,0" VerticalAlignment="Top" Width="60" Height="24" Click="Button_Click_open" Name="openbutton" BorderBrush="#CC707070" Background="#3FDDDDDD">
-                        <!--<Button.Template>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border BorderBrush="{TemplateBinding Control.BorderBrush}"  CornerRadius="5">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="#0099ff" Opacity="0.4"/>
-                                    </Border.Background>
-                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>-->
-                    </Button>
+                    <Button Content="新建连接" HorizontalAlignment="Left" Margin="590,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070"/>
+
+                    <!--<Button Content="一键添加" HorizontalAlignment="Left" Margin="510,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070"/>-->
+                    
+                    <Button Content="启动" HorizontalAlignment="Left" Margin="684,10,0,0" VerticalAlignment="Top" Width="60" Height="24" Click="Button_Click_open" Name="openbutton" BorderBrush="#CC707070" Background="#3FDDDDDD"/>
+
+
                     <Label Content="共享带宽:" HorizontalAlignment="Center" Margin="0,9,0,0" VerticalAlignment="Top" Width="63"/>
                     <TextBox HorizontalAlignment="Left" x:Name="share" Margin="423,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="38" Height="22" VerticalContentAlignment="Center" Background="#7FFFFFFF" TextChanged="share_TextChanged" Panel.ZIndex="1"/>
                     <Label Content="Mbps" HorizontalAlignment="Left" Margin="461,10,0,0" VerticalAlignment="Top"/>

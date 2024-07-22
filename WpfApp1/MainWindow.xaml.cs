@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -72,7 +74,22 @@ namespace OPL_WpfApp
             MessageBox.Show("复制成功", "提示");
 
         }
-
+        private void CopyipLink(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            int index = (int)button.Tag;
+            try
+            {
+                Clipboard.SetText(iplink[index]);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"[错误]复制失败：{ex.Message}");
+                MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
+                return;
+            }
+            MessageBox.Show("复制成功", "提示");
+        }
         private void ResetUUID_Button_Click(object sender, RoutedEventArgs e)
         {
             // 显示确认对话框
@@ -200,7 +217,7 @@ namespace OPL_WpfApp
         }
         private Dictionary<string, int> state = new Dictionary<string, int>();
        // private Dictionary<string, int> statelist = new Dictionary<string, int>();
-        
+        private Dictionary<int, string> iplink = new Dictionary<int, string>();
         public void Relist() //刷新列表
         {
 
@@ -208,6 +225,7 @@ namespace OPL_WpfApp
             ListBox listBox = this.FindName("sdlist") as ListBox;
             userdata.json json = new userdata.json();
             listBox.Items.Clear();
+            iplink.Clear();
             int index = 0;
             if (json.config.Apps != null)
             {
@@ -266,10 +284,11 @@ namespace OPL_WpfApp
                         Margin = new Thickness(310, 32, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top
                     });
-
+                    string iplink_str = "127.0.0.1:" + app.SrcPort;
+                    iplink[index]= iplink_str;
                     grid.Children.Add(new TextBox
                     {
-                        Text = "127.0.0.1:" + app.SrcPort,
+                        Text = iplink_str,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(415, 36, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top,
@@ -362,38 +381,31 @@ namespace OPL_WpfApp
                         }
                     };
                     closeButton.Click += Del;
-
-                    //SolidColorBrush backgroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3FDDDDDD"));
-                    //closeButton.Background = backgroundBrush;
-
-                    //// 设置边框刷子和厚度
-                    //closeButton.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CC707070"));
-                    //closeButton.BorderThickness = new Thickness(1);
-                    //// 自定义按钮模板
-                    //closeButton.Template = CreateButtonTemplate();
                     grid.Children.Add(closeButton);
 
                     Button editButton = new Button
                     {
                         Content = " 编辑 ",
                         HorizontalAlignment = HorizontalAlignment.Left,
-                        Margin = new Thickness(560, 0, 0, 0),
+                        Margin = new Thickness(575, 0, 0, 0),
                         VerticalAlignment = VerticalAlignment.Center,
                         Tag = index
                         //Width = 49,
                         //Height = 26
                     };
                     editButton.Click += Edit;
-                    //SolidColorBrush backgroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3FDDDDDD"));
-                    //editButton.Background = backgroundBrush;
-
-                    //// 设置边框刷子和厚度
-                    //editButton.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CC707070"));
-                    //editButton.BorderThickness = new Thickness(1);
-                    //// 自定义按钮模板
-                    //editButton.Template = CreateButtonTemplate();
                     grid.Children.Add(editButton);
 
+                    Button copyip = new Button
+                    {
+                        Content = "复制",
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(515, 32, 0, 0),
+                        VerticalAlignment = VerticalAlignment.Top,
+                        Tag = index
+                    };
+                    copyip.Click += CopyipLink;
+                    grid.Children.Add(copyip);
 
                     // 将Grid添加到Border
                     border.Child = grid;
@@ -432,7 +444,7 @@ namespace OPL_WpfApp
             string version = fileVersionInfo.FileVersion;
             return version;
         }
-
+        
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -550,7 +562,7 @@ namespace OPL_WpfApp
                     string protocol = match.Groups[1].Value;
                     string port = match.Groups[2].Value;
                     Logger.Log($"[错误]: 本地端口{protocol}:{port}被占用，请更换相关本地端口");
-                    MessageBox.Show($"本地端口{protocol}:{port}被占用，请更换相关本地端口！！", "错误");
+                    MessageBox.Show($"本地端口{protocol}:{port}被占用，请更换相关本地端口！！注意！是连接的创建隧道，开房的仅续在无隧道启用情况下启动！！", "错误");
                     Strapp();
                 }
             }
@@ -588,6 +600,7 @@ namespace OPL_WpfApp
         private Process process;
         public void Open()
         {
+
             // 创建进程对象
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "bin/openp2p.exe"; // 控制台应用路径
@@ -630,8 +643,8 @@ namespace OPL_WpfApp
                         if (tl)
                         {
                             Strapp();
-                            
-                            tl= false;
+
+                            tl = false;
                         }
                     });
                 }
@@ -641,13 +654,13 @@ namespace OPL_WpfApp
             try
             {
                 process.Start();
-                
+
             }
             catch (Exception ex)
             {
-                
-                Logger.Log("[错误]启动失败，看来被安全中心拦截"+ex.ToString());
-                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动","警告");
+
+                Logger.Log("[错误]启动失败，看来被安全中心拦截" + ex.ToString());
+                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动", "警告");
                 if (process != null && !process.HasExited)
                 {
                     process.Kill();

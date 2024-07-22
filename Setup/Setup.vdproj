@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_080B242EAE77493BAB5C8DD9FCCB9D10"
+        "MsmKey" = "8:_00C4E97D999B45F89EF1CAD6014AA099"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -216,9 +216,9 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_080B242EAE77493BAB5C8DD9FCCB9D10"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_00C4E97D999B45F89EF1CAD6014AA099"
             {
-            "SourcePath" = "8:..\\openp2p.exe"
+            "SourcePath" = "8:..\\WpfApp1\\openp2p.exe"
             "TargetName" = "8:openp2p.exe"
             "Tag" = "8:"
             "Folder" = "8:_2AC3BC6E63D0451082FE91FED5F3B9AA"
@@ -530,7 +530,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:OPL"
         "ProductCode" = "8:{84142678-8602-4536-BAA9-B8B642C3939E}"
-        "PackageCode" = "8:{635C2EFD-B46E-4359-9A02-62A640D78688}"
+        "PackageCode" = "8:{0336A898-6E34-4590-AFD8-51CCDA2046D0}"
         "UpgradeCode" = "8:{5FB7A33F-1906-4DC4-880F-87E389E7994C}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
