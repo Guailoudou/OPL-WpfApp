@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/openp2p_dll/openp2p_dll.vcxproj
+/openp2p_dll/openp2p_dll.vcxproj.filters
