@@ -15,34 +15,7 @@ namespace userdata
     internal class Heart
     {
     }
-    public class outcheck
-    {
-        public outcheck() { }
-        
-        public void Check(string m)
-        {
-            
-            if (m.Contains("it will auto reconnect when peer node online"))//对方不在线
-            {
-                string pattern = @"INFO\s+(\w+)\s+offline";
-                Match match = Regex.Match(m, pattern);
-                if (match.Success)
-                {
-                    string id = match.Groups[1].Value;
-                    Logger.Log("[错误]" + id + "不在线！请查询对方UID是否输入错误，询问对方程序是否处于启动状态，当对方在线时会自动进行连接");
-                    MessageBox.Show(id + "不在线！请查询对方UID是否输入错误，询问对方程序是否处于启动状态","警告");
-                }
-            }
-            if (m.Contains("peer offline"))//对方不在线
-            {
-                
-                    Logger.Log("[错误]你连接的人不在线！请查询对方UID是否输入错误，询问对方程序是否处于启动状态，当对方在线时会自动进行连接");
-                    //MessageBox.Show("你连接的人不在线！不在线！请查询对方UID是否输入错误，询问对方程序是否处于启动状态", "警告");
-              
-            }
-
-        }
-    }
+   
     //tcp心跳
     public class TcpClientWithKeepAlive
     {

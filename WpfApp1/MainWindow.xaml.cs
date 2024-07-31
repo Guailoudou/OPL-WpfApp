@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using userdata;
@@ -25,9 +26,10 @@ namespace OPL_WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        userdata.UserData userData ;
-        userdata.json sjson;
+        UserData userData ;
+        json sjson;
         bool on = false;
+        int tcpnum = 0;
         public MainWindow(string[] args)
         {
             InitializeComponent();
@@ -45,9 +47,12 @@ namespace OPL_WpfApp
             this.DataContext = userData;
             userData = new userdata.UserData();
             sjson = new userdata.json();
+            Logger.Log($"[信息]程序启动，当前版本：{Getversion()}");
+            
             Net net = new Net();
             _ = net.GetPreset();
             _ = net.Getthank(thank);
+            _ = GetsayText();
             Relist();
             UUID.Text = sjson.config.Network.Node;
             share.Text = sjson.config.Network.ShareBandwidth.ToString();
@@ -220,7 +225,7 @@ namespace OPL_WpfApp
         private Dictionary<int, string> iplink = new Dictionary<int, string>();
         public void Relist() //刷新列表
         {
-
+            tcpnum = 0;
             // 获取ListBox控件
             ListBox listBox = this.FindName("sdlist") as ListBox;
             userdata.json json = new userdata.json();
@@ -231,6 +236,9 @@ namespace OPL_WpfApp
             {
                 foreach (userdata.App app in json.config.Apps)
                 {
+                    if(app.Enabled == 1 ? true : false)
+                        if(app.Protocol=="tcp") tcpnum++;
+
                     // 创建Border
                     Border border = new Border
                     {
@@ -418,25 +426,7 @@ namespace OPL_WpfApp
 
 
         }
-        //private ControlTemplate CreateButtonTemplate()
-        //{
-        //    ControlTemplate template = new ControlTemplate(typeof(Button));
-        //    FrameworkElementFactory borderFactory = new FrameworkElementFactory(typeof(Border));
-        //    borderFactory.SetValue(Border.BorderBrushProperty, new TemplateBindingExtension(BorderBrushProperty));
-        //    borderFactory.SetValue(Border.BorderThicknessProperty, new TemplateBindingExtension(BorderThicknessProperty));
-        //    borderFactory.SetValue(Border.CornerRadiusProperty, new CornerRadius(5));
-        //    //borderFactory.SetValue(Border.BackgroundProperty, new SolidColorBrush(Color.FromArgb(80, 221, 221, 221))); // 注意这里的背景色需要重新定义或引用
 
-        //    FrameworkElementFactory contentPresenterFactory = new FrameworkElementFactory(typeof(ContentPresenter));
-        //    contentPresenterFactory.SetBinding(ContentPresenter.ContentProperty, new Binding { Path = new PropertyPath("Content"), RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent) });
-        //    contentPresenterFactory.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Center);
-        //    contentPresenterFactory.SetValue(VerticalAlignmentProperty, VerticalAlignment.Center);
-
-        //    borderFactory.AppendChild(contentPresenterFactory);
-        //    template.VisualTree = borderFactory;
-
-        //    return template;
-        //}
         private string Getversion() //获取文件版本号
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
@@ -456,7 +446,22 @@ namespace OPL_WpfApp
             Strapp();
 
         }
+        //程序结束后的处理
+        private void Stop()
+        {
+            openbutton.Content = "启动";
+            Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
+            fstert.Fill = Brushes.Gray;
+            Multicast.Stop();
+            state.Clear();
+            on = false;
+            Relist();
 
+            string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "openp2p.log");
+            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(absolutePath));
+            DateTime Date = DateTime.Now;
+            Logger.AppendTextToFile(absolutePath, Environment.NewLine + "[" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "]" + "----- OPENP2P Launcher by Guailoudou -----" + Environment.NewLine);
+        }
         private void Strapp()
         {
             if (process != null && !process.HasExited)
@@ -464,12 +469,7 @@ namespace OPL_WpfApp
                 process.CancelOutputRead();
                 process.CancelErrorRead();
                 process.Kill();
-                openbutton.Content = "启动";
-                Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
-                fstert.Fill = Brushes.Gray;
-                state.Clear();
-                on = false;
-                Relist();
+                Stop();
                 //if (udps != null) foreach (UdpClientKeepAlive app in udps) app.StopSendingKeepAlive();
                 if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
 
@@ -488,6 +488,7 @@ namespace OPL_WpfApp
 
                 openbutton.Content = "关闭";
                 Logger.Log("[提示]-----------------------程序已开始运行请耐心等待隧道连接----------------------------");
+                
                 fstert.Fill = Brushes.Orange;
                 on = true;
                 Relist();
@@ -496,107 +497,6 @@ namespace OPL_WpfApp
         }
         public static List<UdpClientKeepAlive> udps = new List<UdpClientKeepAlive>();
         public static List<TcpClientWithKeepAlive> tcps = new List<TcpClientWithKeepAlive>();
-        public void Checkopen(string m)
-        {
-            if (m.Contains("autorunApp start"))
-            { 
-                Logger.Log("[提示]程序启动完毕，请耐心等待隧道连接"); //启动完毕
-                fstert.Fill = Brushes.Green;
-            }
-            if (m.Contains("autorunApp end"))
-            {
-                Logger.Log("[提示]程序离线，请检查你的网络设置或查看网络连接是否正常");
-                fstert.Fill = Brushes.Orange;
-            }
-            if (m.Contains("LISTEN ON PORT")) //连接成功or断开
-            {
-                string pattern = @"PORT\s+(\w+:\d+)";
-                Match match = Regex.Match(m, pattern);
-                if (match.Success)
-                {
-                    string portInfo = match.Groups[1].Value;
-                    if (m.Contains("START"))
-                    {
-                        Logger.Log("[提示]隧道本地端口为 " + portInfo + " 连接成功");
-                        state[portInfo] = 2;
-                        Relist();
-                        string[] parts = portInfo.Split(':');
-                        string type = parts[0];
-                        int port = int.Parse(parts[1]);
-                        if (type == "tcp")
-                        {
-                            tcps.Add(new TcpClientWithKeepAlive("127.0.0.1", port));
-                        }
-                        //else
-                        //{
-                        //    udps.Add(new UdpClientKeepAlive("127.0.0.1", port));
-                        //}
-                    }
-                    if (m.Contains("END"))
-                    {
-                        Logger.Log("[错误]隧道本地端口为 " + portInfo + " 断开连接");
-                        state[portInfo] = 1;
-                        Relist();
-                    }
-
-                }
-            }
-            if (m.Contains("ERROR P2PNetwork login error"))
-            {
-                Logger.Log("[错误]请检查是否连接网络，或是程序是否拥有网络访问权限！");
-                //if (process != null && !process.HasExited)
-                state.Clear();
-                on = false;
-                Relist();
-                Strapp();
-
-            }
-            if(m.Contains("Only one usage of each socket address"))
-            {
-                string pattern = @"(tcp|udp)\s*:\s*(\d+)";
-                Match match = Regex.Match(m, pattern);
-
-                if (match.Success)
-                {
-                    // 提取并输出匹配到的协议和端口号
-                    string protocol = match.Groups[1].Value;
-                    string port = match.Groups[2].Value;
-                    Logger.Log($"[错误]: 本地端口{protocol}:{port}被占用，请更换相关本地端口");
-                    MessageBox.Show($"本地端口{protocol}:{port}被占用，请更换相关本地端口！！注意！是连接的创建隧道，开房的仅续在无隧道启用情况下启动！！", "错误");
-                    Strapp();
-                }
-            }
-            if (m.Contains("no such host"))
-            {
-                Logger.Log("[错误]请检查DNS是否正确，是否连接网络，或是程序是否拥有网络访问权限！");
-            }
-            if (m.Contains("login ok")) //登录中心成功
-            {
-                string pattern = @"node=(\w+)";
-                string upattern = @"user=(\w+)";
-                Match match = Regex.Match(m, pattern);
-                Match umatch = Regex.Match(m, upattern);
-                if (match.Success)
-                {
-                    string id = match.Groups[1].Value;
-                    Logger.Log("[提示]你的实际UID为" + id);
-                }
-                if (umatch.Success)
-                {
-                    string user = umatch.Groups[1].Value;
-                    if (user != "gldoffice")
-                    {
-                       
-                        Logger.Log("[错误]：疑似token丢失，开始自动尝试修复" );
-                        //MessageBox.Show("疑似token丢失，已自动尝试修复", "严重错误");
-                        Strapp();
-                        sjson.ReSetToken(); //修复token
-                        Logger.Log("[提示]：尝试修复完毕");
-                        Strapp();
-                    }
-                }
-            }
-        }
         private Process process;
         public void Open()
         {
@@ -613,7 +513,6 @@ namespace OPL_WpfApp
 
             process = new Process();
             process.StartInfo = startInfo;
-            userdata.outcheck check = new userdata.outcheck();
             // 设置输出数据接收事件
             process.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
             {
@@ -625,7 +524,7 @@ namespace OPL_WpfApp
 
                         richOutput.ScrollToEnd();
 
-                        check.Check(e.Data);
+                       
                         Checkopen(e.Data);
                     });
                 }
@@ -642,8 +541,9 @@ namespace OPL_WpfApp
                         Logger.Log("【错误】: " + e.Data + Environment.NewLine);
                         if (tl)
                         {
+                            
                             Strapp();
-
+                            MessageBox.Show("主程序程序openp2p异常退出，请查看软件状态，重新启动","错误");
                             tl = false;
                         }
                     });
@@ -665,12 +565,7 @@ namespace OPL_WpfApp
                 {
                     process.Kill();
                 }
-                openbutton.Content = "启动";
-                Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
-                fstert.Fill = Brushes.Gray;
-                state.Clear();
-                on = false;
-                Relist();
+                Stop();
                 return;
             }
             process.BeginOutputReadLine();
@@ -684,30 +579,37 @@ namespace OPL_WpfApp
         //}
         protected override void OnClosed(EventArgs e)
         {
+            
             if (process != null && !process.HasExited)
             {
                 process.CancelOutputRead();
                 process.CancelErrorRead();
                 process.Kill();
             }
+            Stop();
             if (udps != null) foreach (UdpClientKeepAlive app in udps) app.StopSendingKeepAlive();
             if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
+            
             base.OnClosed(e);
         }
         public class Logger
         {
             private static RichTextBox _output;
-
-            public Logger(RichTextBox output)
+            private static string absolutePath;
+            public Logger(RichTextBox output,bool on=true)
             {
                 _output = output;
                 _output.AppendText(Environment.NewLine);
+                if(on)
+                    absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log");
+                else
+                    absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "openp2p.log");
                 Log("----- OPENP2P Launcher by Guailoudou -----");
             }
 
             public static void Log(string message)
             {
-                string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log");
+                
                 Directory.CreateDirectory(System.IO.Path.GetDirectoryName(absolutePath));
                 DateTime Date = DateTime.Now;
                 string outmessage = "[" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "]" + message + Environment.NewLine;
@@ -773,11 +675,13 @@ namespace OPL_WpfApp
             string zipFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log-pack-"+Date.ToString("yyyyMMdd-HHmmssfff") +".zip");
             string packoplog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","bin","log","openp2p.log");
             string packopllog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log");
+            string configfile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
             using (var archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create))
             {
                 // 添加文件到ZIP存档
                 archive.CreateEntryFromFile(packopllog, System.IO.Path.GetFileName(packopllog));
                 archive.CreateEntryFromFile(packoplog, System.IO.Path.GetFileName(packoplog));
+                archive.CreateEntryFromFile(configfile, System.IO.Path.GetFileName(configfile));
             }
             Logger.Log("[提示]日志已打包完毕，路径为："+zipFilePath);
             if (on)
@@ -785,7 +689,7 @@ namespace OPL_WpfApp
                 MessageBox.Show("日志已打包完毕，路径为：" + zipFilePath + "\n即将自动打开根目录文件夹", "提示");
                 try
                 {
-                    Process.Start("explorer.exe", System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory));
+                    Process.Start("explorer.exe", zipFilePath + ",/select");
                 }
                 catch { }
             }
@@ -826,6 +730,11 @@ namespace OPL_WpfApp
                 Process.Start("https://github.com/Guailoudou/OPL-WpfApp");
             }
             catch { }
+        }
+
+        private void Redaysay(object sender, MouseButtonEventArgs e)
+        {
+            _ = GetsayText();
         }
     }
 

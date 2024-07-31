@@ -191,13 +191,15 @@
                             </TransformGroup>
                         </Label.RenderTransform>
                     </Label>
-                    <TextBox Background="#7FFFFFFF" Name="uplogbox" Margin="25,188,194,15" Text="联网获取" IsReadOnly="True" Grid.Column="1"/>
-                    <TextBox Margin="598,61,10,29" Background="#7FFFFFFF" Name="thank"  Text="联网获取" IsReadOnly="True" Grid.Column="1"/>
+                    <TextBox Background="#7FFFFFFF" Name="uplogbox" Margin="25,188,194,15" Text="联网获取中" IsReadOnly="True" Grid.Column="1"/>
+                    <TextBox Margin="598,61,10,29" Background="#7FFFFFFF" Name="thank"  Text="联网获取中" IsReadOnly="True" Grid.Column="1"/>
                     <Label Content="充电/发电鸣谢" HorizontalAlignment="Left" Margin="598,31,0,0" VerticalAlignment="Top" Grid.Column="1"/>
                     <Button Grid.Column="1" Content="导出日志" HorizontalAlignment="Left" Margin="665,5,0,0" VerticalAlignment="Top" Click="ExportLog"/>
                     <Button Grid.Column="1" Content="使用默认浏览器打开" HorizontalAlignment="Left" Margin="94,31,0,0" VerticalAlignment="Top" Click="Openwiki"/>
                     <Button Grid.Column="1" Content="使用默认浏览器打开" HorizontalAlignment="Left" Margin="94,62,0,0" VerticalAlignment="Top" Click="OpenMe"/>
                     <Button Grid.Column="1" Content="使用默认浏览器打开" HorizontalAlignment="Left" Margin="94,93,0,0" VerticalAlignment="Top" Click="OpenGit"/>
+                    <TextBox Grid.Column="1" Background="#7FFFFFFF" HorizontalAlignment="Left" Margin="250,32,0,0" TextWrapping="Wrap" Text="联网获取中" VerticalAlignment="Top" Width="307" Name="daysay" IsReadOnly="True" PreviewMouseLeftButtonDown="Redaysay"/>
+                    <Label Grid.Column="1" Content="随机一言：" HorizontalAlignment="Left" Margin="256,7,0,0" VerticalAlignment="Top"/>
 
 
                 </Grid>

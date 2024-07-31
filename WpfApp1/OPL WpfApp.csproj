@@ -113,7 +113,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="cs\Check.cs" />
     <Compile Include="cs\Heart.cs" />
+    <Compile Include="cs\Multicast.cs" />
     <Compile Include="cs\updata.cs" />
     <Compile Include="minui\Add.xaml.cs">
       <DependentUpon>Add.xaml</DependentUpon>
