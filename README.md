@@ -1,6 +1,8 @@
 - [![Github](https://img.shields.io/badge/Github-OPL_WpfApp-Green?logo=github)](https://github.com/Guailoudou/OPL-WpfApp)
 - [![Github](https://img.shields.io/badge/Github-openp2p-Green?logo=github)](https://github.com/openp2p-cn/openp2p)
 
+# Openp2p Launcher
+
 基于openp2p，针对游戏联机简化操作，旨在实现联机更加容易
 ## 使用方法
 1. 下载后解压，双击OPL_WpfApp.exe
