@@ -25,6 +25,10 @@
             <TabItem Header="隧道" Margin="-2,-2,-29,0" Background="{x:Null}" BorderBrush="{x:Null}">
 
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="92*"/>
+                        <ColumnDefinition Width="305*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.Background>
                         <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
                             <GradientStop Color="#FFD0F3FF" Offset="0"/>
@@ -33,8 +37,8 @@
                     </Grid.Background>
 
                     <Label Content="UID：" HorizontalAlignment="Left" Margin="30,9,0,0" VerticalAlignment="Top" Width="42"/>
-                    <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,11,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22" VerticalContentAlignment="Center" Background="#7FFFFFFF"/>
-                    <Button Content="复制UID" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24" BorderBrush="#CC707070" Background="#3FDDDDDD" Width="59">
+                    <TextBox HorizontalAlignment="Left" IsReadOnly="True" Name="UUID" Margin="72,11,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" Height="22" VerticalContentAlignment="Center" Background="#7FFFFFFF" Grid.ColumnSpan="2"/>
+                    <Button Content="复制UID" HorizontalAlignment="Left" Margin="29,10,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24" BorderBrush="#CC707070" Background="#3FDDDDDD" Width="59" Grid.Column="1">
                         <!--<Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Border BorderBrush="{TemplateBinding Control.BorderBrush}" CornerRadius="5">
@@ -46,22 +50,12 @@
                             </ControlTemplate>
                         </Button.Template>-->
                     </Button>
-                    <Button Content="重置程序" HorizontalAlignment="Left" Margin="277,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="58">
-                        <!--<Button.Template>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border BorderBrush="{TemplateBinding Control.BorderBrush}"  CornerRadius="5">
-                                    <Border.Background>
-                                        <SolidColorBrush Color="#0099ff" Opacity="0.4"/>
-                                    </Border.Background>
-                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>-->
+                    <Button Content="重置程序" HorizontalAlignment="Left" Margin="93,10,0,0" VerticalAlignment="Top" Click="ResetUUID_Button_Click" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="58" Grid.Column="1">
                         <Button.ToolTip>
                             <TextBlock Text="这将会重置你的uuid，同时你会失去下面所有隧道！谨慎点击" />
                         </Button.ToolTip>
                     </Button>
-                    <ListBox ScrollViewer.CanContentScroll="False"  Margin="10,41,21,32" SelectionChanged="ListBox_SelectionChanged" Name="sdlist" BorderBrush="{x:Null}">
+                    <ListBox ScrollViewer.CanContentScroll="False"  Margin="10,41,21,32" SelectionChanged="ListBox_SelectionChanged" Name="sdlist" BorderBrush="{x:Null}" Grid.ColumnSpan="2">
                         <ListBox.Background>
                             <SolidColorBrush Color="White" Opacity="0"/>
                         </ListBox.Background>
@@ -101,16 +95,16 @@
 
 
                     </ListBox>
-                    <Button Content="新建连接" HorizontalAlignment="Left" Margin="590,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070"/>
+                    <Button Content="新建连接" HorizontalAlignment="Left" Margin="406,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070" Grid.Column="1"/>
 
                     <!--<Button Content="一键添加" HorizontalAlignment="Left" Margin="510,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070"/>-->
-                    
-                    <Button Content="启动" HorizontalAlignment="Left" Margin="684,10,0,0" VerticalAlignment="Top" Width="60" Height="24" Click="Button_Click_open" Name="openbutton" BorderBrush="#CC707070" Background="#3FDDDDDD"/>
+
+                    <Button Content="启动" HorizontalAlignment="Left" Margin="500,10,0,0" VerticalAlignment="Top" Width="60" Height="24" Click="Button_Click_open" Name="openbutton" BorderBrush="#CC707070" Background="#3FDDDDDD" Grid.Column="1"/>
 
 
-                    <Label Content="共享带宽:" HorizontalAlignment="Center" Margin="0,9,0,0" VerticalAlignment="Top" Width="63"/>
-                    <TextBox HorizontalAlignment="Left" x:Name="share" Margin="423,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="38" Height="22" VerticalContentAlignment="Center" Background="#7FFFFFFF" TextChanged="share_TextChanged" Panel.ZIndex="1"/>
-                    <Label Content="Mbps" HorizontalAlignment="Left" Margin="461,10,0,0" VerticalAlignment="Top"/>
+                    <Label Content="共享带宽:" HorizontalAlignment="Center" Margin="0,9,0,0" VerticalAlignment="Top" Width="62" Grid.Column="1"/>
+                    <TextBox HorizontalAlignment="Left" x:Name="share" Margin="239,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="38" Height="22" VerticalContentAlignment="Center" Background="#7FFFFFFF" TextChanged="share_TextChanged" Panel.ZIndex="1" Grid.Column="1"/>
+                    <Label Content="Mbps" HorizontalAlignment="Left" Margin="277,10,0,0" VerticalAlignment="Top" Grid.Column="1"/>
                     <!--<Button Content="刷新列表" HorizontalAlignment="Left" Margin="424,10,0,0" VerticalAlignment="Top" Height="24" Width="60" Click="Button_Click_1" BorderBrush="#CC707070" Background="#3FDDDDDD">
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">

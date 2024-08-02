@@ -60,7 +60,7 @@ namespace OPL_WpfApp
                     }
                 else
                 {
-                    MessageBox.Show("存在未填数据或错误数据 端口正常范围为0-65535", "提示");
+                    MessageBox.Show("存在未填数据或错误数据 端口正常范围为1-65535", "提示");
                     return;
                 }
             }

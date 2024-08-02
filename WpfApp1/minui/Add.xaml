@@ -13,18 +13,18 @@
                 <GradientStop Color="White" Offset="0.993"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Label Content="UID*" HorizontalAlignment="Left" Margin="26,57,0,0" VerticalAlignment="Top" Height="25"/>
+        <Label Content="UID*" HorizontalAlignment="Left" Margin="26,57,0,0" VerticalAlignment="Top" Height="25" ToolTip="输入房主的UID"/>
         <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Suuid" Margin="82,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="25"/>
-        <Label Content="远程端口*" HorizontalAlignment="Left" Margin="17,92,0,0" VerticalAlignment="Top" Height="25"/>
+        <Label Content="远程端口*" HorizontalAlignment="Left" Margin="17,92,0,0" VerticalAlignment="Top" Height="25" ToolTip="输入房主游戏对外开放的端口"/>
         <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Sport" Margin="82,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="Sport_TextChanged" Height="25"/>
         <Label Content="本地端口" HorizontalAlignment="Left" Margin="17,127,0,0" VerticalAlignment="Top" Height="25"/>
         <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Cport" Margin="82,127,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="25"/>
         <ComboBox VerticalContentAlignment="Center" HorizontalAlignment="Left" Name="type" Margin="82,162,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged" Height="25" BorderBrush="#B2EFECEC" Background="#3FEDE9E9">
 
-            <ComboBoxItem Content="tcp"/>
+            <ComboBoxItem Content="tcp" IsSelected="True"/>
             <ComboBoxItem Content="udp"/>
         </ComboBox>
-        <Label Content="协议*" HorizontalAlignment="Left" Margin="25,162,0,0" VerticalAlignment="Top" Height="25"/>
+        <Label Content="协议*" HorizontalAlignment="Left" Margin="25,162,0,0" VerticalAlignment="Top" Height="25" ToolTip="MC选择TCP"/>
         <Button Content="添加" HorizontalAlignment="Left" Margin="17,208,0,0" VerticalAlignment="Top" Width="135" Height="35" Click="Button_Click" Background="#3FDDDDDD">
             <!--<Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">

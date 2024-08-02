@@ -114,6 +114,18 @@ namespace OPL_WpfApp
                 //MessageBox.Show("你连接的人不在线！不在线！请查询对方UID是否输入错误，询问对方程序是否处于启动状态", "警告");
 
             }
+            if(m.Contains("NAT type"))
+            {
+                string pattern = @"NAT type:(\w+)";
+                Match match = Regex.Match(m, pattern);
+                if (match.Success)
+                {
+                    string type = match.Groups[1].Value;
+                    //Logger.Log("[提示]你的NAT类型为"+type);
+                    if (type == "2")
+                        Logger.Log("[提示]你的NAT类型为对称形 Symmetric NAT，连接可能受阻，或连接时间较长");
+                }
+            }
             if (m.Contains("login ok")) //登录中心成功
             {
                 string pattern = @"node=(\w+)";
@@ -142,12 +154,12 @@ namespace OPL_WpfApp
             }
         }
         //从https://uapis.cn/api/say获取文本 异步
-        public async Task GetsayText()
+        public async Task GetsayText(bool oo = true)
         {
             HttpClient httpClient = new HttpClient();
             try
             {
-                Logger.Log("[提示]获取一言 -UAPI公益API提供数据支持");
+                if(oo)Logger.Log("[提示]获取一言 -UAPI公益API提供数据支持");
                 HttpResponseMessage response = await httpClient.GetAsync("https://uapis.cn/api/say");
 
                 // 检查响应状态是否成功

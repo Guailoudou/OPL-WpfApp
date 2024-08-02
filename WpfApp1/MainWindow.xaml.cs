@@ -10,6 +10,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -456,14 +457,27 @@ namespace OPL_WpfApp
             state.Clear();
             on = false;
             Relist();
-
+            _ = Woplog();
+        }
+        private async Task Woplog()
+        {
             string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "openp2p.log");
+
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(absolutePath));
             DateTime Date = DateTime.Now;
+            await Task.Delay(500);
             Logger.AppendTextToFile(absolutePath, Environment.NewLine + "[" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "]" + "----- OPENP2P Launcher by Guailoudou -----" + Environment.NewLine);
+
         }
+        DateTime OpenDate;
         private void Strapp()
         {
+            if (!on&&OpenDate.AddSeconds(1)>DateTime.Now&&OpenDate!=null)
+            {
+                MessageBox.Show("操作太频繁，请稍后再试 (请至少间隔1s，防止出现BUG)", "警告");
+                return;
+            }
+            OpenDate = DateTime.Now;
             if (process != null && !process.HasExited)
             {
                 process.CancelOutputRead();
@@ -472,7 +486,6 @@ namespace OPL_WpfApp
                 Stop();
                 //if (udps != null) foreach (UdpClientKeepAlive app in udps) app.StopSendingKeepAlive();
                 if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
-
             }
             else
             {
@@ -488,7 +501,6 @@ namespace OPL_WpfApp
 
                 openbutton.Content = "关闭";
                 Logger.Log("[提示]-----------------------程序已开始运行请耐心等待隧道连接----------------------------");
-                
                 fstert.Fill = Brushes.Orange;
                 on = true;
                 Relist();
@@ -596,11 +608,11 @@ namespace OPL_WpfApp
         {
             private static RichTextBox _output;
             private static string absolutePath;
-            public Logger(RichTextBox output,bool on=true)
+            public Logger(RichTextBox output,bool oon=true)
             {
                 _output = output;
                 _output.AppendText(Environment.NewLine);
-                if(on)
+                if(oon)
                     absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log");
                 else
                     absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "openp2p.log");
@@ -628,7 +640,7 @@ namespace OPL_WpfApp
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "错误");
+                    AppendTextToFile(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log"),ex.Message);
                 }
             }
         }
@@ -669,22 +681,30 @@ namespace OPL_WpfApp
             sjson.Setshare(shares);
         }
 
-        public void DerLog(bool on =true)
+        public void DerLog(bool oon =true)
         {
             DateTime Date = DateTime.Now;
             string zipFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log-pack-"+Date.ToString("yyyyMMdd-HHmmssfff") +".zip");
             string packoplog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","bin","log","openp2p.log");
             string packopllog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log");
             string configfile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
-            using (var archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create))
+            try
             {
-                // 添加文件到ZIP存档
-                archive.CreateEntryFromFile(packopllog, System.IO.Path.GetFileName(packopllog));
-                archive.CreateEntryFromFile(packoplog, System.IO.Path.GetFileName(packoplog));
-                archive.CreateEntryFromFile(configfile, System.IO.Path.GetFileName(configfile));
+                using (var archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create))
+                {
+                    // 添加文件到ZIP存档
+                    archive.CreateEntryFromFile(packopllog, System.IO.Path.GetFileName(packopllog));
+                    archive.CreateEntryFromFile(packoplog, System.IO.Path.GetFileName(packoplog));
+                    archive.CreateEntryFromFile(configfile, System.IO.Path.GetFileName(configfile));
+                }
+            }catch (Exception e)
+            {
+                Logger.Log("[错误]日志打包出错，错误信息：" + e.Message);
+                MessageBox.Show("日志打包出错，错误信息：" + e.Message, "错误");
             }
+                
             Logger.Log("[提示]日志已打包完毕，路径为："+zipFilePath);
-            if (on)
+            if (oon)
             {
                 MessageBox.Show("日志已打包完毕，路径为：" + zipFilePath + "\n即将自动打开根目录文件夹", "提示");
                 try
@@ -731,10 +751,16 @@ namespace OPL_WpfApp
             }
             catch { }
         }
-
+        DateTime SayTime = DateTime.Now;
         private void Redaysay(object sender, MouseButtonEventArgs e)
         {
-            _ = GetsayText();
+            if (SayTime.AddSeconds(3) > DateTime.Now)
+            {
+                MessageBox.Show("获取频率过快！！间隔需要至少3s", "警告");
+                return;
+            }
+            _ = GetsayText(false);
+            SayTime = DateTime.Now;
         }
     }
 

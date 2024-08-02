@@ -63,8 +63,19 @@ namespace OPL_WpfApp
             json.config.Apps[index].AppName = names.Text.Replace(" ", "");
             try
             {
-                json.config.Apps[index].DstPort = int.Parse(SportText.Text.Replace(" ", ""));
-                json.config.Apps[index].SrcPort = int.Parse(CportText.Text.Replace(" ", ""));
+                int Sport = int.Parse(SportText.Text.Replace(" ", ""));
+                int Cport = int.Parse(CportText.Text.Replace(" ", ""));
+                if (Sport > 0 && Sport <= 65535 && Cport > 0 && Cport <= 65535)
+                {
+                    json.config.Apps[index].DstPort = int.Parse(SportText.Text.Replace(" ", ""));
+                    json.config.Apps[index].SrcPort = int.Parse(CportText.Text.Replace(" ", ""));
+                }
+                else
+                {
+                    MessageBox.Show("存在错误数据 端口正常范围为1-65535", "提示");
+                    return;
+                }
+
             }
             catch (Exception ex)
             {
