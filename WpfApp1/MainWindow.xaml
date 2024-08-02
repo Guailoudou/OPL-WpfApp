@@ -102,7 +102,7 @@
                     <Button Content="启动" HorizontalAlignment="Left" Margin="500,10,0,0" VerticalAlignment="Top" Width="60" Height="24" Click="Button_Click_open" Name="openbutton" BorderBrush="#CC707070" Background="#3FDDDDDD" Grid.Column="1"/>
 
 
-                    <Label Content="共享带宽:" HorizontalAlignment="Center" Margin="0,9,0,0" VerticalAlignment="Top" Width="62" Grid.Column="1"/>
+                    <Label Content="共享带宽:" HorizontalAlignment="Left" Margin="177,9,0,0" VerticalAlignment="Top" Width="62" Grid.Column="1"/>
                     <TextBox HorizontalAlignment="Left" x:Name="share" Margin="239,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="38" Height="22" VerticalContentAlignment="Center" Background="#7FFFFFFF" TextChanged="share_TextChanged" Panel.ZIndex="1" Grid.Column="1"/>
                     <Label Content="Mbps" HorizontalAlignment="Left" Margin="277,10,0,0" VerticalAlignment="Top" Grid.Column="1"/>
                     <!--<Button Content="刷新列表" HorizontalAlignment="Left" Margin="424,10,0,0" VerticalAlignment="Top" Height="24" Width="60" Click="Button_Click_1" BorderBrush="#CC707070" Background="#3FDDDDDD">

@@ -48,7 +48,7 @@ namespace OPL_WpfApp
             this.DataContext = userData;
             userData = new userdata.UserData();
             sjson = new userdata.json();
-            Logger.Log($"[信息]程序启动，当前版本：{Getversion()}");
+            Logger.Log($"[信息]程序启动，当前版本：{Getversion()}，更新包号：{Net.Getpvn()}");
             
             Net net = new Net();
             _ = net.GetPreset();

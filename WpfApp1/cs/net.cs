@@ -18,9 +18,15 @@ namespace userdata
 {
     internal class Net
     {
+        private static readonly int pvn = 26;//协议版本号
+        public static int Getpvn()
+        {
+            return pvn;
+        }
+        
         public async Task GetPreset()
         {
-            int pvn = 26;//协议版本号
+            
             Logger.Log("[执行]网络请求文件preset.json");
             string fileurl = "https://file.gldhn.top/file/json/preset.json"; //http://127.0.0.1:85/file/json/preset.json https://file.gldhn.top/file/json/preset.json
             HttpClient httpClient = new HttpClient();
