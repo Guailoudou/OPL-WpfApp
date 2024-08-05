@@ -1,37 +1,47 @@
----
-name: Bug 反馈
-about: 创建一个issues以帮助我们改进
-title: "[BUG]"
-labels: ''
-assignees: ''
-
----
-
-**软件版本号**
-填写软件右上角的版本号信息
-
-**描述错误**
-简明扼要地描述错误所在。
-
-**重现**
-重现该行为的步骤:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
-**预期行为**
-简明扼要地描述你期望发生的事情.
-
-**截图**
-如果适用，请添加屏幕截图以帮助解释您的问题.
-
-**电脑信息（请填写以下信息）:**
- - 系统版本: [e.g. win11/10/7]
-
-
-**补充信息**
-在此添加有关该问题的其他信息。
-
-**日志文件**
-请点击关于页面，点击右上角导出日志，并在此处上传，或进入根目录bin/bin/log获取日志文件
+name: "Bug 反馈"
+description: "遇见了Bug"
+labels: [· BUG]
+body:
+- type: checkboxes
+  id: "yml-1"
+  attributes:
+    label: "检查项"
+    description: "请逐个检查下列项目，并勾选确认。"
+    options:
+    - label: "我已在 [Issues 页面](https://github.com/Guailoudou/OPL-WpfApp/issues?q=is%3Aissue+) ，确认了这一 Bug 未被提交过。"
+      required: true
+- type: textarea
+  id: "yml-2"
+  attributes:
+    label: 描述
+    description: "详细描述该 Bug 的具体表现。"
+  validations:
+    required: true
+- type: textarea
+  id: "yml-3"
+  attributes:
+    label: 重现步骤
+    description: "详细描述要怎么操作才能再次触发这个 Bug。"
+    value: |
+      1、点击xxxx
+      2、往下滚，然后点击xxxx
+  validations:
+    required: true
+- type: textarea
+  id: "yml-4"
+  attributes:
+    label: 系统版本/软件版本
+    description: "请填写你的系统版本。"
+    value: |
+      1、系统版本[win11/win10]
+      2、软件版本[1.0.0.0]
+  validations:
+    required: true
+- type: textarea
+  id: "yml-5"
+  attributes:
+    label: 日志与附件
+    description: "关于页面右上角导出日志文件或根目录bin/bin/log文件夹获取日志"
+    placeholder: "先点击这个文本框，然后再将文件直接拖拽到文本框中以上传。"
+  validations:
+    required: true
