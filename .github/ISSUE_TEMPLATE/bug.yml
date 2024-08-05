@@ -1,6 +1,6 @@
 name: "Bug 反馈"
 description: "遇见了Bug"
-labels: [· BUG]
+labels: [bug]
 body:
 - type: checkboxes
   id: "yml-1"
