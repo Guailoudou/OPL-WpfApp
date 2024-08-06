@@ -811,6 +811,7 @@ namespace OPL_WpfApp
             pastedText = pastedText.Replace("；", ";");
             try
             {
+                if(pastedText=="") throw new ArgumentException("无效码");
                 var connections = ConnectionParser.ParseConnections(pastedText);
                 json json = new json();
                 json.Alloff();

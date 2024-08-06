@@ -21,7 +21,7 @@ namespace userdata
                 if (!File.Exists(absolutePath))
                 {
                     _ = DmAsync(url, "nvb.zip"); //更新包 
-                    _ = Dmupdata("https://file.gldhn.top/file/updata.exe"); //用来替换文件的程序
+                    _ = Dmupdata(Net.Getmirror("https://file.gldhn.top/file/updata.exe")); //用来替换文件的程序
                 }
             }
             else

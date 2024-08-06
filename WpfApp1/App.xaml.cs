@@ -25,8 +25,11 @@ namespace OPL_WpfApp
             // 应用程序启动时的自定义逻辑
             var mainWindow = new MainWindow(args);
             mainWindow.Show();
-            //var Add = new Add();
-            //Add.Show();
+            string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "nvb.zip");
+            if (File.Exists(savePath))
+            {
+                File.Delete(savePath);
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)
