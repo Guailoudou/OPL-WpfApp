@@ -817,7 +817,6 @@ namespace OPL_WpfApp
                 foreach (var conn in connections)
                 {
                     string type = conn.Protocol;
-                    if (type != "1" && type != "2") throw new ArgumentException("无效的协议类型");
                     if (type == "1") type = "tcp";
                     if (type == "2") type = "udp";
                     string uid = conn.UID;
@@ -831,7 +830,7 @@ namespace OPL_WpfApp
             catch (Exception ex)
             {
                 Logger.Log($"无法识别的连接码: {ex.Message}");
-                MessageBox.Show($"无法识别的连接码，正确格式为 1:uid:端口;2:uid:端口 ，1为tcp，2为udp 请复制后再点击该按钮\r {ex.Message}", "错误");
+                MessageBox.Show($"无法识别的连接码\r该功能为一键添加/编辑隧道为连接码隧道，房主可直接编辑发送连接码供连接方使用。 \r\r连接码用法： \r用法1：\r uid:端口 --> tcp协议连接码 \r示例：qwertyuioop:25565 \r\r 用法2：\r<1/2>:uid:端口[:本地端口] --> 1为tcp，2为udp 本地端口可省略\r示例：1:qwertyuiop:25565:25575 \r多个连接可以用;间隔同时输入\r复制后直接点击该按钮即可完成添加，后直接启动即可  \r\r {ex.Message}", "错误");
             }
         }
     }

@@ -254,11 +254,33 @@ namespace userdata
             foreach (var part in parts)
             {
                 var components = part.Split(':');
-                if (components.Length != 3 && components.Length != 4)
+                if (components.Length!=2 &&components.Length != 3 && components.Length != 4)
                 {
                     throw new ArgumentException("连接格式无效", nameof(input));
                 }
-
+                if(components.Length == 2)
+                {
+                    if (!int.TryParse(components[1], out int tmport))
+                    {
+                        throw new ArgumentException("端口不是有效整数", nameof(input));
+                    }
+                    if (tmport <= 0 || tmport > 65535)
+                    {
+                        throw new ArgumentException("端口不在正确范围(0~65535)", nameof(input));
+                    }
+                    connections.Add(new ConnectionInfo
+                    {
+                        Protocol = "1",
+                        UID = components[0],
+                        Port = tmport,
+                        CPort = 0
+                    });
+                    break;
+                }
+                if (components[0] != "1" && components[0] != "2")
+                {
+                    throw new ArgumentException("协议无效", nameof(input));
+                }
                 if (!int.TryParse(components[2], out int port))
                 {
                     throw new ArgumentException("端口不是有效整数", nameof(input));
