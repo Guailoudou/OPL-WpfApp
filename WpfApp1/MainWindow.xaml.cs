@@ -249,9 +249,15 @@ namespace OPL_WpfApp
                        // Background = new SolidColorBrush(Color.FromArgb(Colors.Black))
                         
                     };
-                    SolidColorBrush brush = new SolidColorBrush(); 
+                    SolidColorBrush brush = new SolidColorBrush();
                     //brush.Color = Colors.Black;
-                    brush.Color = (Color)ColorConverter.ConvertFromString("#0099ff");
+                    object resource = FindResource("list-Background");
+                    if (resource is SolidColorBrush bb)
+                    {
+                        // 从 SolidColorBrush 获取颜色
+                        Color color = bb.Color;
+                        brush.Color = color;
+                    }
 
                     brush.Opacity = 0.2; 
                     border.Background = brush;
@@ -363,7 +369,7 @@ namespace OPL_WpfApp
                     {
                         Stroke = Brushes.Black,
                         Fill = clo,
-                        Margin = new Thickness(518, 7, 167, 42),
+                        Margin = new Thickness(518, 7, 210, 42),
                         ToolTip = new ToolTip 
                         { 
                             Content="灰色：未启动/未启用 橙色：连接中..  绿色：连接成功"
@@ -376,17 +382,24 @@ namespace OPL_WpfApp
                         if(state[app.Protocol + ":" + app.SrcPort]==0)
                             state[app.Protocol + ":" + app.SrcPort] = app.Enabled;
 
-
+                    string delData = "M5.629,7.5 L6.72612901,18.4738834 C6.83893748,19.6019681 7.77211147,20.4662096 8.89848718,20.4990325 L8.96496269,20.5 L15.0342282,20.5 C16.1681898,20.5 17.1211231,19.6570911 17.2655686,18.5392856 L17.2731282,18.4732196 L18.1924161,9.2527383 L18.369,7.5 L19.877,7.5 L19.6849078,9.40262938 L18.7657282,18.6220326 C18.5772847,20.512127 17.0070268,21.9581787 15.1166184,21.9991088 L15.0342282,22 L8.96496269,22 C7.06591715,22 5.47142703,20.5815579 5.24265599,18.7050136 L5.23357322,18.6231389 L4.121,7.5 L5.629,7.5 Z M10.25,11.75 C10.6642136,11.75 11,12.0857864 11,12.5 L11,18.5 C11,18.9142136 10.6642136,19.25 10.25,19.25 C9.83578644,19.25 9.5,18.9142136 9.5,18.5 L9.5,12.5 C9.5,12.0857864 9.83578644,11.75 10.25,11.75 Z M13.75,11.75 C14.1642136,11.75 14.5,12.0857864 14.5,12.5 L14.5,18.5 C14.5,18.9142136 14.1642136,19.25 13.75,19.25 C13.3357864,19.25 13,18.9142136 13,18.5 L13,12.5 C13,12.0857864 13.3357864,11.75 13.75,11.75 Z M12,1.75 C13.7692836,1.75 15.2083571,3.16379796 15.2491124,4.92328595 L15.25,5 L21,5 C21.4142136,5 21.75,5.33578644 21.75,5.75 C21.75,6.14942022 21.43777,6.47591522 21.0440682,6.49872683 L21,6.5 L14.5,6.5 C14.1005798,6.5 13.7740848,6.18777001 13.7512732,5.7940682 L13.75,5.75 L13.75,5 C13.75,4.03350169 12.9664983,3.25 12,3.25 C11.0536371,3.25 10.2827253,4.00119585 10.2510148,4.93983756 L10.25,5 L10.25,5.75 C10.25,6.14942022 9.93777001,6.47591522 9.5440682,6.49872683 L9.5,6.5 L2.75,6.5 C2.33578644,6.5 2,6.16421356 2,5.75 C2,5.35057978 2.31222999,5.02408478 2.7059318,5.00127317 L2.75,5 L8.75,5 C8.75,3.20507456 10.2050746,1.75 12,1.75 Z";
                     Button closeButton = new Button
                     {
-                        Content = " X ",
+
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(678, 4, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top,
                         Tag = index,
+                        Style = (Style)this.FindResource("svg-button"),
                         ToolTip = new ToolTip
                         {
                             Content = "删除隧道，无法恢复"
+                        },
+                        Content = new System.Windows.Shapes.Path
+                        {
+                            Fill = (SolidColorBrush)FindResource("svg-icon"),
+                            //Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4a4a4a")),
+                            Data = Geometry.Parse(delData)
                         }
                     };
                     closeButton.Click += Del;
@@ -404,10 +417,20 @@ namespace OPL_WpfApp
                     };
                     editButton.Click += Edit;
                     grid.Children.Add(editButton);
-
+                    string copyData = "M15.0132009,4.5 C16.5733587,4.5 17.1391096,4.66244482 17.70948,4.96748223 C18.2798504,5.27251964 18.7274804,5.72014965 19.0325178,6.29052002 L19.1342249,6.49326214 C19.3735291,7.00777167 19.5,7.61018928 19.5,8.9867991 L19.5,17.5132009 C19.5,19.0733587 19.3375552,19.6391096 19.0325178,20.20948 C18.7274804,20.7798504 18.2798504,21.2274804 17.70948,21.5325178 L17.5067379,21.6342249 C16.9922283,21.8735291 16.3898107,22 15.0132009,22 L6.4867991,22 C4.92664131,22 4.36089039,21.8375552 3.79052002,21.5325178 C3.22014965,21.2274804 2.77251964,20.7798504 2.46748223,20.20948 L2.36577509,20.0067379 C2.12647088,19.4922283 2,18.8898107 2,17.5132009 L2,8.9867991 C2,7.42664131 2.16244482,6.86089039 2.46748223,6.29052002 C2.77251964,5.72014965 3.22014965,5.27251964 3.79052002,4.96748223 L3.99326214,4.86577509 C4.47347103,4.64242449 5.03025764,4.51736427 6.22159636,4.50168224 L15.0132009,4.5 Z M6.4867991,6 C5.29081707,6 4.8991107,6.07564199 4.49791831,6.29020203 C4.18895065,6.45543974 3.95543974,6.68895065 3.79020203,6.99791831 L3.71163699,7.15981826 C3.56872488,7.49032199 3.50932077,7.88419566 3.50102731,8.75808525 L3.5,17.5132009 C3.5,18.7091829 3.57564199,19.1008893 3.79020203,19.5020817 C3.95543974,19.8110494 4.18895065,20.0445603 4.49791831,20.209798 L4.65981826,20.288363 C4.99032199,20.4312751 5.38419566,20.4906792 6.25808525,20.4989727 L6.4867991,20.5 L15.0132009,20.5 L15.4506279,20.4958158 C16.3138066,20.4773591 16.6543816,20.39575 17.0020817,20.209798 C17.3110494,20.0445603 17.5445603,19.8110494 17.709798,19.5020817 L17.788363,19.3401817 C17.9312751,19.009678 17.9906792,18.6158043 17.9989727,17.7419147 L18,17.5132009 L18,8.9867991 L17.9958158,8.54937207 C17.9773591,7.6861934 17.89575,7.34561838 17.709798,6.99791831 C17.5445603,6.68895065 17.3110494,6.45543974 17.0020817,6.29020203 L16.8401817,6.21163699 C16.509678,6.06872488 16.1158043,6.00932077 15.2419147,6.00102731 L6.4867991,6 Z M15.590287,2 C17.8190838,2 18.6272994,2.23206403 19.4421143,2.66783176 C20.2569291,3.10359949 20.8964005,3.74307093 21.3321682,4.55788574 C21.767936,5.37270056 22,6.18091615 22,8.409713 L22,14.3722296 C22,16.1552671 21.8143488,16.8018396 21.4657346,17.4536914 C21.2202776,17.9126561 20.8940321,18.3020799 20.4949174,18.6140435 C20.4981214,18.4695118 20.5,18.316606 20.5,18.1541722 L20.5,8.3458278 C20.5,6.97563815 20.3663256,6.28341544 19.9811141,5.56313259 C19.6264537,4.89997522 19.1000248,4.3735463 18.4368674,4.01888586 C17.7646034,3.65935514 17.1167829,3.51894119 15.9193798,3.50181725 L5.8458278,3.5 C5.68310622,3.5 5.5299464,3.50188529 5.38516578,3.50585327 C5.69792007,3.10596794 6.0873439,2.77972241 6.54630859,2.53426541 C7.19816044,2.18565122 7.84473292,2 9.6277704,2 L15.590287,2 Z M10.75,8.25 C11.1642136,8.25 11.5,8.58578644 11.5,9 L11.5,17.5 C11.5,17.9142136 11.1642136,18.25 10.75,18.25 C10.3357864,18.25 10,17.9142136 10,17.5 L10,14 L6.5,14 C6.08578644,14 5.75,13.6642136 5.75,13.25 C5.75,12.8357864 6.08578644,12.5 6.5,12.5 L10,12.5 L10,9 C10,8.58578644 10.3357864,8.25 10.75,8.25 Z M15,12.5 C15.4142136,12.5 15.75,12.8357864 15.75,13.25 C15.75,13.6642136 15.4142136,14 15,14 L12.5,14 L12.5,12.5 L15,12.5 Z";
                     Button copyip = new Button
                     {
-                        Content = "复制",
+                        Content = new System.Windows.Shapes.Path
+                        {
+
+                            Fill = (SolidColorBrush)FindResource("svg-icon"), 
+                            Data = Geometry.Parse(copyData)
+                        },
+                        ToolTip = new ToolTip
+                        {
+                            Content = "复制IP地址到剪贴板"
+                        },
+                        Style = (Style)this.FindResource("svg-button"),
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(515, 32, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top,
@@ -553,8 +576,17 @@ namespace OPL_WpfApp
                         Logger.Log("【错误】: " + e.Data + Environment.NewLine);
                         if (tl)
                         {
-                            
-                            Strapp();
+
+                            if (process != null && !process.HasExited)
+                            {
+                                process.CancelOutputRead();
+                                process.CancelErrorRead();
+                                process.Kill();
+                                
+                                //if (udps != null) foreach (UdpClientKeepAlive app in udps) app.StopSendingKeepAlive();
+                                if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
+                            }
+                            Stop();
                             MessageBox.Show("主程序程序openp2p异常退出，请查看软件状态，重新启动","错误");
                             tl = false;
                         }
@@ -761,6 +793,46 @@ namespace OPL_WpfApp
             }
             _ = GetsayText(false);
             SayTime = DateTime.Now;
+        }
+
+        private void Quick_Add(object sender, RoutedEventArgs e)
+        {
+            if (on)
+            {
+                MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
+                Relist();
+                return;
+            }
+            string pastedText = Clipboard.GetText();
+            pastedText = pastedText.Replace("\r", "");
+            pastedText = pastedText.Replace("\n", "");
+            pastedText = pastedText.Replace(" ", "");
+            pastedText = pastedText.Replace("：", ":");
+            pastedText = pastedText.Replace("；", ";");
+            try
+            {
+                var connections = ConnectionParser.ParseConnections(pastedText);
+                json json = new json();
+                json.Alloff();
+                foreach (var conn in connections)
+                {
+                    string type = conn.Protocol;
+                    if (type != "1" && type != "2") throw new ArgumentException("无效的协议类型");
+                    if (type == "1") type = "tcp";
+                    if (type == "2") type = "udp";
+                    string uid = conn.UID;
+                    int port = conn.Port;
+                    int cport = conn.CPort;
+                    json.Add1link(type,uid,port,cport);
+                }
+                Relist();
+                MessageBox.Show("已将列表状态同步连接码", "提示");
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"无法识别的连接码: {ex.Message}");
+                MessageBox.Show($"无法识别的连接码，正确格式为 1:uid:端口;2:uid:端口 ，1为tcp，2为udp 请复制后再点击该按钮\r {ex.Message}", "错误");
+            }
         }
     }
 

@@ -3,11 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:OPL_WpfApp"
              >
+
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="AppColors.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        
+
         <Style TargetType="ListBoxItem">
             <Setter Property="SnapsToDevicePixels" Value="true"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Template">
+                
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
                         <Border Name="List"
@@ -16,21 +24,115 @@
                                 SnapsToDevicePixels="True">
                             <ContentPresenter />
                         </Border>
-                        <ControlTemplate.Triggers>
-                            <!--<Trigger Property="IsSelected" Value="true">
-                                <Setter TargetName="Border" Property="Background" Value="Green"/>
-                                <Setter Property="Foreground" Value="White"/>
+                        <!--<ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                    <Setter  Property="BorderBrush" Value="Green"/>
+                                
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Foreground" Value="LightGray"/>
-                            </Trigger>-->
-                        </ControlTemplate.Triggers>
+                            </Trigger>
+                        </ControlTemplate.Triggers>-->
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-            
-        <Style TargetType="Button">
+
+            <!--<Style TargetType="TextBox">
+                <Setter Property="BorderBrush" Value="Gold"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="SelectionBrush" Value="Red"/>
+                <Setter Property="BorderThickness" Value="3"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                --><!-- 设置被选中状态下的样式 --><!--
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="BorderBrush" Value="Pink"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.56"/>
+                    </Trigger>
+                    <Trigger Property="IsFocused" Value="True">
+                        <Setter Property="BorderBrush" Value="Green"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>-->
+
+            <Style TargetType="TextBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource mo-BorderBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource mo-BorderBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="RichTextBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type RichTextBox}">
+                            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource mo-BorderBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource mo-BorderBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
+            <Style TargetType="Button">
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Name="ButtonC"
+                            Padding="5"
+                            Background="{DynamicResource button}"
+                            CornerRadius="5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            >
+
+                                <ContentPresenter HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                            RecognizesAccessKey="True" />
+
+                            </Border>
+
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="svg-button">
             <Setter Property="SnapsToDevicePixels" Value="true"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -39,8 +141,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Name="ButtonC"
-                                Padding="5"
-                                Background="#96D5FF" 
+                                Background="Transparent" 
                                 CornerRadius="5"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
@@ -51,14 +152,13 @@
                                 RecognizesAccessKey="True" />
 
                         </Border>
-                        
+
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
 
-        
         <Style TargetType="TabItem">
             <Setter Property="Template">
                 <Setter.Value>
@@ -72,10 +172,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="LightSkyBlue" />
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource button}" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="False">
-                                <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource tabF-Background}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -102,5 +202,6 @@
                 </Setter.Value>
             </Setter>
         </Style>-->
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

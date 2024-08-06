@@ -129,6 +129,10 @@
       <DependentUpon>preset.xaml</DependentUpon>
     </Compile>
     <Compile Include="cs\UserData.cs" />
+    <Page Include="AppColors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="minui\Add.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

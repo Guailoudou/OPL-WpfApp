@@ -18,6 +18,7 @@ namespace userdata
 
         int Ologv = 2; //openp2p日志等级
         public Config config;
+        List<int> oindex = new List<int>();
         public json()
         {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
@@ -58,6 +59,48 @@ namespace userdata
             wejson(ujson);
             
         }
+        public void Alloff()
+        {
+            foreach (App app in config.Apps)
+            {
+                app.Enabled = 0;
+            }
+            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
+            wejson(ujson);
+        }
+        public void Add1link(string type, string uid, int port,int cport)  
+        {
+            
+            int index = Finduid(uid,type);
+            if (index != -1)
+            {
+                config.Apps[index].DstPort = port;
+                if(cport!=0)config.Apps[index].SrcPort = cport;
+                config.Apps[index].Enabled = 1;
+                oindex.Add(index);
+                string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
+                wejson(ujson);
+            }
+            else
+            {
+                newapp(uid,port,type,cport);
+                index = config.Apps.Count-1 ;
+                oindex.Add(index);
+            }
+        }
+        public int Finduid(string uid,string type)
+        {
+            int index = 0;
+            foreach (App app in config.Apps)
+            {
+                if (app.PeerNode==uid && app.Protocol==type && !oindex.Contains(index))
+                {
+                    return index;
+                }
+                index++;
+            }
+            return -1;
+        }
         public void Setshare(int n)
         {
             config.Network.ShareBandwidth = n;
@@ -72,8 +115,8 @@ namespace userdata
                 MessageBox.Show("不能自己连自己啊！！这无异于试图左脚踩右脚升天！！", "错误");
                 return false;
             }
+            if (cport == 0) cport = sport;
             Logger.Log("[执行]创建新的隧道"+suuid+":"+sport+"--"+type+">>"+cport);
-            if (cport == 0)cport = sport-1;
             int enabled = 1;
 
             if (config.Apps != null)
@@ -81,7 +124,7 @@ namespace userdata
                 {
                     if (apps.Enabled == 1 && cport == apps.SrcPort && type == apps.Protocol)
                     {
-                        enabled = 0;
+                        apps.Enabled = 0;
                     }
                 }
 
@@ -199,6 +242,53 @@ namespace userdata
        
     }
 
+    public static class ConnectionParser
+    {
+        public static List<ConnectionInfo> ParseConnections(string input)
+        {
+            var connections = new List<ConnectionInfo>();
+            if (string.IsNullOrEmpty(input)) return connections;
+
+            // 分割字符串中的多个连接信息
+            var parts = input.Split(';');
+            foreach (var part in parts)
+            {
+                var components = part.Split(':');
+                if (components.Length != 3 && components.Length != 4)
+                {
+                    throw new ArgumentException("连接格式无效", nameof(input));
+                }
+
+                if (!int.TryParse(components[2], out int port))
+                {
+                    throw new ArgumentException("端口不是有效整数", nameof(input));
+                }
+                int cport = 0;
+                if (components.Length == 4) {
+                    if (!int.TryParse(components[3], out int tport))
+                    {
+                        throw new ArgumentException("端口不是有效整数", nameof(input));
+                    }
+                    cport = tport;
+                }
+                if (port <= 0 || port > 65535)
+                {
+                    throw new ArgumentException("端口不在正确范围(0~65535)", nameof(input));
+                }
+                var connection = new ConnectionInfo
+                {
+                    Protocol = components[0],
+                    UID = components[1],
+                    Port = port,
+                    CPort = cport
+                };
+
+                connections.Add(connection);
+            }
+
+            return connections;
+        }
+    }
 
     public class App
     {
@@ -257,5 +347,17 @@ namespace userdata
         public string uphash { get; set; }
         public string opurl { get; set; }
         public string ophash { get; set; }
+    }
+
+    public class ConnectionInfo
+    {
+        public string Protocol { get; set; }
+        public string UID { get; set; }
+        public int Port { get; set; }
+        public int CPort { get; set; }
+        public override string ToString()
+        {
+            return $"{Protocol}:{UID}:{Port}";
+        }
     }
 }
