@@ -369,7 +369,7 @@ namespace OPL_WpfApp
                     {
                         Stroke = Brushes.Black,
                         Fill = clo,
-                        Margin = new Thickness(518, 7, 210, 42),
+                        Margin = new Thickness(518, 7, 167, 42),
                         ToolTip = new ToolTip 
                         { 
                             Content="灰色：未启动/未启用 橙色：连接中..  绿色：连接成功"
@@ -538,7 +538,7 @@ namespace OPL_WpfApp
 
             // 创建进程对象
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "bin/openp2p.exe"; // 控制台应用路径
+            startInfo.FileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","openp2p.exe"); // 控制台应用路径
             startInfo.RedirectStandardOutput = true;
             startInfo.StandardOutputEncoding = Encoding.UTF8;
             startInfo.StandardErrorEncoding = Encoding.UTF8;
@@ -604,7 +604,7 @@ namespace OPL_WpfApp
             {
 
                 Logger.Log("[错误]启动失败，看来被安全中心拦截" + ex.ToString());
-                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动", "警告");
+                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), "警告");
                 if (process != null && !process.HasExited)
                 {
                     process.Kill();
