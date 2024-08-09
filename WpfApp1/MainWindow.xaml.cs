@@ -1,4 +1,7 @@
-﻿using System;
+﻿using iNKORE.UI.WPF.Modern;
+using iNKORE.UI.WPF.Modern.Common.IconKeys;
+using iNKORE.UI.WPF.Modern.Controls;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -13,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -60,6 +64,7 @@ namespace OPL_WpfApp
             ver.Content = Getversion();
             //thank.Navigate("https://file.gldhn.top/web/thank/"); 废案，内存占用过高
             if(args.Length > 0 && args[0] == "-on") Strapp();
+            //richOutput.SelectionFont = new Font("楷体", 12, FontStyle.Bold);
 
         }
 
@@ -547,9 +552,10 @@ namespace OPL_WpfApp
                     {
                         richOutput.AppendText(e.Data + Environment.NewLine);
 
-                        richOutput.ScrollToEnd();
+                        richOutput.ScrollToEnd(); 
 
-                       
+
+
                         Checkopen(e.Data);
                     });
                 }
@@ -633,6 +639,7 @@ namespace OPL_WpfApp
             public Logger(RichTextBox output,bool oon=true)
             {
                 _output = output;
+                _output.FontFamily = new FontFamily("Times New Roman"); 
                 _output.AppendText(Environment.NewLine);
                 if(oon)
                     absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log");
@@ -648,6 +655,7 @@ namespace OPL_WpfApp
                 DateTime Date = DateTime.Now;
                 string outmessage = "[" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "]" + message + Environment.NewLine;
                 _output.AppendText(outmessage);
+                _output.ScrollToEnd();
                 AppendTextToFile(absolutePath, outmessage);
 
             }
@@ -673,6 +681,7 @@ namespace OPL_WpfApp
             public Uplog(TextBox output)
             {
                 _output = output;
+                
             }
 
             public static void Log(string message)
@@ -841,6 +850,20 @@ namespace OPL_WpfApp
                 return;
             }
             iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("复制成功", "提示");
+        }
+
+        private void Button_ToggleTheme_Click(object sender, RoutedEventArgs e)
+        {
+            if (ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark)
+            {
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
+                
+            }
+            else
+            {
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                
+            }
         }
     }
 
