@@ -23,6 +23,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using userdata;
+using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace OPL_WpfApp
 {
@@ -38,6 +39,7 @@ namespace OPL_WpfApp
         public MainWindow(string[] args)
         {
             InitializeComponent();
+            MessageBox.Show("程序启动成功，请勿关闭本窗口", "提示");
             // 设置窗口位置居中显示
             double screenWidth = SystemParameters.PrimaryScreenWidth;
             double screenHeight = SystemParameters.PrimaryScreenHeight;
@@ -78,10 +80,10 @@ namespace OPL_WpfApp
             catch (Exception ex)
             {
                 Logger.Log($"[错误]复制失败：{ex.Message}");
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
+                MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
                 return;
             }
-            iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("复制成功", "提示");
+            MessageBox.Show("复制成功", "提示");
 
         }
         private void CopyipLink(object sender, RoutedEventArgs e)
@@ -95,20 +97,20 @@ namespace OPL_WpfApp
             catch (Exception ex)
             {
                 Logger.Log($"[错误]复制失败：{ex.Message}");
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
+                MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
                 return;
             }
-            iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("复制成功", "提示");
+            MessageBox.Show("复制成功", "提示");
         }
         private void ResetUUID_Button_Click(object sender, RoutedEventArgs e)
         {
             // 显示确认对话框
             if (on)
             {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("程序在运行，禁止操作!", "警告");
+                MessageBox.Show("程序在运行，禁止操作!", "警告");
                 return;
             }
-            MessageBoxResult result = iNKORE.UI.WPF.Modern.Controls.MessageBox.Show(
+            MessageBoxResult result = MessageBox.Show(
                 "你确定要重置吗?会导致失去所有已有隧道配置!",
                 "警告",
                 MessageBoxButton.OKCancel,
@@ -119,7 +121,7 @@ namespace OPL_WpfApp
                 TextBox uuidTextBox = (TextBox)this.FindName("UUID");
                 uuidTextBox.Text = userData.UUID;
                 sjson.newjson(userData);
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("已重置UID,新的UID为：" + userData.UUID, "提示");
+                MessageBox.Show("已重置UID,新的UID为：" + userData.UUID, "提示");
                 Relist();
             }
             else if (result == MessageBoxResult.Cancel)
@@ -145,7 +147,7 @@ namespace OPL_WpfApp
         {
             if (on)
             {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("程序在运行，禁止操作!", "警告");
+                MessageBox.Show("程序在运行，禁止操作!", "警告");
                 return;
             }
             Add Add = new Add();
@@ -159,7 +161,7 @@ namespace OPL_WpfApp
         {
             if (on)
             {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
+                MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
                 Relist();
                 return;
             }
@@ -173,7 +175,7 @@ namespace OPL_WpfApp
         {
             if (on)
             {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
+                MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
                 Relist();
                 return;
             }
@@ -186,11 +188,11 @@ namespace OPL_WpfApp
         {
             if (on)
             {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
+                MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
                 Relist();
                 return;
             }
-            MessageBoxResult result = iNKORE.UI.WPF.Modern.Controls.MessageBox.Show(
+            MessageBoxResult result = MessageBox.Show(
                 "你确定要删除隧道吗，这是不可逆的!",
                 "警告",
                 MessageBoxButton.OKCancel,
@@ -212,7 +214,7 @@ namespace OPL_WpfApp
         {
             if (on)
             {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
+                MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
                 Relist();
                 return;
             }
@@ -492,7 +494,7 @@ namespace OPL_WpfApp
         {
             if (!on&&OpenDate.AddSeconds(1)>DateTime.Now&&OpenDate!=null)
             {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("操作太频繁，请稍后再试 (请至少间隔1s，防止出现BUG)", "警告");
+                MessageBox.Show("操作太频繁，请稍后再试 (请至少间隔1s，防止出现BUG)", "警告");
                 return;
             }
             OpenDate = DateTime.Now;
@@ -510,7 +512,7 @@ namespace OPL_WpfApp
                 string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
                 if (!File.Exists(absolutePath))
                 {
-                    iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单", "警告");
+                    MessageBox.Show("程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单", "警告");
                     Logger.Log("[警告]程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单");
                     return;
 
@@ -583,7 +585,7 @@ namespace OPL_WpfApp
                                 if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
                             }
                             Stop();
-                            iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("主程序程序openp2p异常退出，请查看软件状态，重新启动","错误");
+                            MessageBox.Show("主程序程序openp2p异常退出，请查看软件状态，重新启动","错误");
                             tl = false;
                         }
                     });
@@ -600,7 +602,7 @@ namespace OPL_WpfApp
             {
 
                 Logger.Log("[错误]启动失败，看来被安全中心拦截" + ex.ToString());
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), "警告");
+                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), "警告");
                 if (process != null && !process.HasExited)
                 {
                     process.Kill();
@@ -704,7 +706,7 @@ namespace OPL_WpfApp
                 shares = int.Parse(sshare.Replace(" ", ""));
             }
             catch {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("错误的输入", "错误");
+                MessageBox.Show("错误的输入", "错误");
                 
                 share.Text = sjson.config.Network.ShareBandwidth.ToString();
                 return;
@@ -734,13 +736,13 @@ namespace OPL_WpfApp
             }catch (Exception e)
             {
                 Logger.Log("[错误]日志打包出错，错误信息：" + e.Message);
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("日志打包出错，错误信息：" + e.Message, "错误");
+                MessageBox.Show("日志打包出错，错误信息：" + e.Message, "错误");
             }
                 
             Logger.Log("[提示]日志已打包完毕，路径为："+zipFilePath);
             if (oon)
             {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("日志已打包完毕，路径为：" + zipFilePath + "\n即将自动打开根目录文件夹", "提示");
+                MessageBox.Show("日志已打包完毕，路径为：" + zipFilePath + "\n即将自动打开根目录文件夹", "提示");
                 try
                 {
                     Process.Start("explorer.exe", zipFilePath + ",/select");
@@ -753,7 +755,7 @@ namespace OPL_WpfApp
         {
             if (on)
             {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("程序在运行，禁止操作!", "警告");
+                MessageBox.Show("程序在运行，禁止操作!", "警告");
                 return;
             }
             DerLog();
@@ -790,7 +792,7 @@ namespace OPL_WpfApp
         {
             if (SayTime.AddSeconds(3) > DateTime.Now)
             {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("获取频率过快！！间隔需要至少3s", "警告");
+                MessageBox.Show("获取频率过快！！间隔需要至少3s", "警告");
                 return;
             }
             _ = GetsayText(false);
@@ -801,7 +803,7 @@ namespace OPL_WpfApp
         {
             if (on)
             {
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
+                MessageBox.Show("程序在运行，禁止操作! 操作无效", "警告");
                 Relist();
                 return;
             }
@@ -828,12 +830,12 @@ namespace OPL_WpfApp
                     json.Add1link(type,uid,port,cport);
                 }
                 Relist();
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("已将列表状态同步连接码", "提示");
+                MessageBox.Show("已将列表状态同步连接码", "提示");
             }
             catch (Exception ex)
             {
                 Logger.Log($"无法识别的连接码: {ex.Message}");
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show($"无法识别的连接码\r该功能为一键添加/编辑隧道为连接码隧道，房主可直接编辑发送连接码供连接方使用。 \r\r连接码用法： \r用法1：\r uid:端口 --> tcp协议连接码 \r示例：qwertyuioop:25565 \r\r 用法2：\r<1/2>:uid:端口[:本地端口] --> 1为tcp，2为udp 本地端口可省略\r示例：1:qwertyuiop:25565:25575 \r多个连接可以用;间隔同时输入\r复制后直接点击该按钮即可完成添加，后直接启动即可  \r\r {ex.Message}", "错误");
+                MessageBox.Show($"无法识别的连接码\r该功能为一键添加/编辑隧道为连接码隧道，房主可直接编辑发送连接码供连接方使用。 \r\r连接码用法： \r用法1：\r uid:端口 --> tcp协议连接码 \r示例：qwertyuioop:25565 \r\r 用法2：\r<1/2>:uid:端口[:本地端口] --> 1为tcp，2为udp 本地端口可省略\r示例：1:qwertyuiop:25565:25575 \r多个连接可以用;间隔同时输入\r复制后直接点击该按钮即可完成添加，后直接启动即可  \r\r {ex.Message}", "错误");
             }
         }
 
@@ -846,10 +848,10 @@ namespace OPL_WpfApp
             catch (Exception ex)
             {
                 Logger.Log($"[错误]复制失败：{ex.Message}");
-                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show($"自动复制可能失败了，--{ex.Message}", "提示");
+                MessageBox.Show($"自动复制可能失败了，--{ex.Message}", "提示");
                 return;
             }
-            iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("复制成功", "提示");
+            MessageBox.Show("复制成功", "提示");
         }
 
         private void Button_ToggleTheme_Click(object sender, RoutedEventArgs e)
