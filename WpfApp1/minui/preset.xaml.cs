@@ -10,7 +10,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using static OPL_WpfApp.MainWindow;
 using userdata;
 //using System.Windows.Shapes;
@@ -74,7 +73,7 @@ namespace OPL_WpfApp
                 
             }
             Logger.Log("已自动添加预设" + game);
-            MessageBox.Show(net.presetss.presets[Map[game]].Note, "提示");
+            iNKORE.UI.WPF.Modern.Controls.MessageBox.Show(net.presetss.presets[Map[game]].Note, "提示");
             this.Close();
         }
 
