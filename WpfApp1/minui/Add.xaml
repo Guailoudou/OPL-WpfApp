@@ -4,28 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OPL_WpfApp"
+        xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+        ui:ThemeManager.IsThemeAware="True"
+        ui:WindowHelper.SystemBackdropType="Mica"
+        ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
-        Title="添加隧道" Height="300" Width="250">
+        Title="添加隧道" Height="300" Width="250" WindowStyle="ToolWindow">
     <Grid Margin="0,0,0,-6">
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
-                <GradientStop Color="#FFD0F3FF" Offset="0"/>
-                <GradientStop Color="White" Offset="0.993"/>
-            </LinearGradientBrush>
-        </Grid.Background>
-        <Label Content="UID*" HorizontalAlignment="Left" Margin="26,57,0,0" VerticalAlignment="Top" Height="25" ToolTip="输入房主的UID"/>
+        <Label Content="UID*" HorizontalAlignment="Left" Margin="26,64,0,0" VerticalAlignment="Top" Height="25" ToolTip="输入房主的UID"/>
         <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Suuid" Margin="82,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="25"/>
-        <Label Content="远程端口*" HorizontalAlignment="Left" Margin="17,92,0,0" VerticalAlignment="Top" Height="25" ToolTip="输入房主游戏对外开放的端口"/>
+        <Label Content="远程端口*" HorizontalAlignment="Left" Margin="17,96,0,0" VerticalAlignment="Top" Height="24" ToolTip="输入房主游戏对外开放的端口"/>
         <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Sport" Margin="82,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="Sport_TextChanged" Height="25"/>
-        <Label Content="本地端口" HorizontalAlignment="Left" Margin="17,127,0,0" VerticalAlignment="Top" Height="25"/>
-        <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Cport" Margin="82,127,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="25"/>
-        <ComboBox VerticalContentAlignment="Center" HorizontalAlignment="Left" Name="type" Margin="82,162,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged" Height="25" BorderBrush="#B2EFECEC" Background="#3FEDE9E9">
+        <Label Content="本地端口" HorizontalAlignment="Left" Margin="17,131,0,0" VerticalAlignment="Top" Height="25"/>
+        <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Cport" Margin="82,127,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="25" d:LayoutOverrides="Height"/>
+        <ComboBox VerticalContentAlignment="Center" Name="type" Margin="82,162,0,0" Width="120" SelectionChanged="ComboBox_SelectionChanged" Height="34" BorderBrush="#B2EFECEC" Background="#3FEDE9E9">
 
             <ComboBoxItem Content="tcp" IsSelected="True"/>
             <ComboBoxItem Content="udp"/>
         </ComboBox>
-        <Label Content="协议*" HorizontalAlignment="Left" Margin="25,162,0,0" VerticalAlignment="Top" Height="25" ToolTip="MC选择TCP"/>
-        <Button Content="添加" HorizontalAlignment="Left" Margin="17,208,0,0" VerticalAlignment="Top" Width="135" Height="35" Click="Button_Click" Background="#3FDDDDDD">
+        <Label Content="协议*" HorizontalAlignment="Left" Margin="26,170,0,0" VerticalAlignment="Top" Height="25" ToolTip="MC选择TCP"/>
+        <Button Content="添加" Margin="17,208,0,0" VerticalAlignment="Top" Width="151" Height="35" Click="Button_Click" Background="#3FDDDDDD">
             <!--<Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
@@ -35,7 +33,7 @@
                 </ControlTemplate>
             </Button.Template>-->
         </Button>
-        <Button Content="预设" HorizontalAlignment="Left" Margin="173,208,0,0" VerticalAlignment="Top" Height="35" Width="47" Click="Preset" Background="#3FDDDDDD">
+        <Button Content="预设" Margin="173,208,0,0" VerticalAlignment="Top" Height="35" Width="67" Click="Preset" Background="#3FDDDDDD">
             <!--<Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
@@ -45,7 +43,7 @@
                 </ControlTemplate>
             </Button.Template>-->
         </Button>
-        <Label Content="名称" HorizontalAlignment="Left" Margin="26,22,0,0" VerticalAlignment="Top" Height="25"/>
+        <Label Content="名称" HorizontalAlignment="Left" Margin="26,26,0,0" VerticalAlignment="Top" Height="24"/>
         <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" x:Name="names" Margin="82,22,0,0" TextWrapping="Wrap" Text="自定义" VerticalAlignment="Top" Width="120" Height="25"/>
 
     </Grid>
