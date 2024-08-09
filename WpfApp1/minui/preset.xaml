@@ -5,19 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OPL_WpfApp"
         mc:Ignorable="d"
-        Title="预设" Height="220" Width="250"> 
+        xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+        ui:ThemeManager.IsThemeAware="True"
+        ui:WindowHelper.SystemBackdropType="Mica"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Title="预设" Height="183" Width="250" WindowStyle="ToolWindow">
     <Grid>
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
-                <GradientStop Color="#FFD0F3FF" Offset="0"/>
-                <GradientStop Color="White" Offset="0.993"/>
-            </LinearGradientBrush>
-        </Grid.Background>
         <Label Content="UID:" HorizontalAlignment="Left" Margin="24,28,0,0" VerticalAlignment="Top" Height="25" ToolTip="房主的UID"/>
-        <TextBox HorizontalAlignment="Left" Name="Suuid" Margin="80,28,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="25" VerticalContentAlignment="Center"/>
-        <Label Content="游戏：" HorizontalAlignment="Left" Margin="23,73,0,0" VerticalAlignment="Top" Height="25"/>
-        <ComboBox HorizontalAlignment="Left" Name="type" Margin="80,73,0,0" VerticalAlignment="Top" Width="120" Height="25" VerticalContentAlignment="Center" SelectionChanged="ComboBox_SelectionChanged">
-        </ComboBox>
-        <Button Content="添加" HorizontalAlignment="Left" Margin="46,122,0,0" VerticalAlignment="Top" Height="35" Width="140" Click="Button_Click"/>
+        <TextBox HorizontalAlignment="Left" Name="Suuid" Margin="80,21,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="25" VerticalContentAlignment="Center"/>
+        <Label Content="游戏：" HorizontalAlignment="Left" Margin="24,65,0,0" VerticalAlignment="Top" Height="25"/>
+        <ComboBox Name="type" Margin="80,58,0,0" Width="120" VerticalContentAlignment="Center" SelectionChanged="ComboBox_SelectionChanged" d:LayoutOverrides="VerticalAlignment"/>
+        <Button Content="添加" Margin="24,95,0,0" VerticalAlignment="Top" Height="35" Width="176" Click="Button_Click"/>
     </Grid>
 </Window>

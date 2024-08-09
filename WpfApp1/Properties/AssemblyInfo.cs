@@ -8,7 +8,7 @@ using System.Windows;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("OPL联机工具")]
-[assembly: AssemblyDescription("基于openp2p的快捷p2p联机工具")]
+[assembly: AssemblyDescription("基于openp2p的快捷联机工具")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("gldoffice")]
 [assembly: AssemblyProduct("OPL_WpfApp")]
