@@ -1,0 +1,192 @@
+﻿<Window x:Class="OPL_WpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OPL_WpfApp"
+        mc:Ignorable="d"
+        xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+        ui:ThemeManager.IsThemeAware="True"
+        ui:WindowHelper.SystemBackdropType="Mica"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Title="联机工具" Height="450" Width="800" MaxWidth="800" MinWidth="800" MinHeight="450">
+    <Grid Background="{DynamicResource all-Background}" Margin="0,0,0,1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="19*"/>
+            <ColumnDefinition Width="81*"/>
+        </Grid.ColumnDefinitions>
+
+        <Ellipse Stroke="Black" Fill="Gray" Margin="14,0,0,13" Name="fstert" HorizontalAlignment="Left" Width="10" Panel.ZIndex="1" d:LayoutOverrides="HorizontalAlignment" Height="10" VerticalAlignment="Bottom"/>
+        <Label Content="v1.0.1.9" HorizontalAlignment="Left" Name="ver" Margin="30,0,0,10" Panel.ZIndex="1" Width="104" Height="18" VerticalAlignment="Bottom"/>
+        <TabControl Grid.ColumnSpan="2" BorderBrush="{x:Null}" IsSynchronizedWithCurrentItem="False" OverridesDefaultStyle="False" Focusable="False" TabStripPlacement="Left" Margin="0,0,0,45" ScrollViewer.CanContentScroll="True">
+            <TabControl.FocusVisualStyle>
+                <Style/>
+            </TabControl.FocusVisualStyle>
+
+            <TabItem Header="隧道" Background="{x:Null}" BorderBrush="{x:Null}" Width="66">
+                <TabItem.FocusVisualStyle>
+                    <Style/>
+                </TabItem.FocusVisualStyle>
+
+                <Grid UseLayoutRounding="False">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="92*"/>
+                        <ColumnDefinition Width="305*"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <Label Content="UID：" HorizontalAlignment="Left" Margin="21,18,0,0" VerticalAlignment="Top" Width="42"/>
+                    <TextBox IsReadOnly="True" x:Name="UUID" Margin="-93,9,377,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="22" VerticalContentAlignment="Center" Background="#7FFFFFFF" Grid.Column="1" Width="234" SelectionBrush="White"/>
+                    <Button Style="{StaticResource svg-button}" HorizontalAlignment="Left" Margin="146,12,0,0" VerticalAlignment="Top" Click="CopyUUID_Button_Click" Height="24" BorderBrush="#CC707070" Background="#3FDDDDDD" Width="26" Grid.Column="1">
+                        <Path Fill="{DynamicResource svg-icon}" Data="M15.0132009,4.5 C16.5733587,4.5 17.1391096,4.66244482 17.70948,4.96748223 C18.2798504,5.27251964 18.7274804,5.72014965 19.0325178,6.29052002 L19.1342249,6.49326214 C19.3735291,7.00777167 19.5,7.61018928 19.5,8.9867991 L19.5,17.5132009 C19.5,19.0733587 19.3375552,19.6391096 19.0325178,20.20948 C18.7274804,20.7798504 18.2798504,21.2274804 17.70948,21.5325178 L17.5067379,21.6342249 C16.9922283,21.8735291 16.3898107,22 15.0132009,22 L6.4867991,22 C4.92664131,22 4.36089039,21.8375552 3.79052002,21.5325178 C3.22014965,21.2274804 2.77251964,20.7798504 2.46748223,20.20948 L2.36577509,20.0067379 C2.12647088,19.4922283 2,18.8898107 2,17.5132009 L2,8.9867991 C2,7.42664131 2.16244482,6.86089039 2.46748223,6.29052002 C2.77251964,5.72014965 3.22014965,5.27251964 3.79052002,4.96748223 L3.99326214,4.86577509 C4.47347103,4.64242449 5.03025764,4.51736427 6.22159636,4.50168224 L15.0132009,4.5 Z M6.4867991,6 C5.29081707,6 4.8991107,6.07564199 4.49791831,6.29020203 C4.18895065,6.45543974 3.95543974,6.68895065 3.79020203,6.99791831 L3.71163699,7.15981826 C3.56872488,7.49032199 3.50932077,7.88419566 3.50102731,8.75808525 L3.5,17.5132009 C3.5,18.7091829 3.57564199,19.1008893 3.79020203,19.5020817 C3.95543974,19.8110494 4.18895065,20.0445603 4.49791831,20.209798 L4.65981826,20.288363 C4.99032199,20.4312751 5.38419566,20.4906792 6.25808525,20.4989727 L6.4867991,20.5 L15.0132009,20.5 L15.4506279,20.4958158 C16.3138066,20.4773591 16.6543816,20.39575 17.0020817,20.209798 C17.3110494,20.0445603 17.5445603,19.8110494 17.709798,19.5020817 L17.788363,19.3401817 C17.9312751,19.009678 17.9906792,18.6158043 17.9989727,17.7419147 L18,17.5132009 L18,8.9867991 L17.9958158,8.54937207 C17.9773591,7.6861934 17.89575,7.34561838 17.709798,6.99791831 C17.5445603,6.68895065 17.3110494,6.45543974 17.0020817,6.29020203 L16.8401817,6.21163699 C16.509678,6.06872488 16.1158043,6.00932077 15.2419147,6.00102731 L6.4867991,6 Z M15.590287,2 C17.8190838,2 18.6272994,2.23206403 19.4421143,2.66783176 C20.2569291,3.10359949 20.8964005,3.74307093 21.3321682,4.55788574 C21.767936,5.37270056 22,6.18091615 22,8.409713 L22,14.3722296 C22,16.1552671 21.8143488,16.8018396 21.4657346,17.4536914 C21.2202776,17.9126561 20.8940321,18.3020799 20.4949174,18.6140435 C20.4981214,18.4695118 20.5,18.316606 20.5,18.1541722 L20.5,8.3458278 C20.5,6.97563815 20.3663256,6.28341544 19.9811141,5.56313259 C19.6264537,4.89997522 19.1000248,4.3735463 18.4368674,4.01888586 C17.7646034,3.65935514 17.1167829,3.51894119 15.9193798,3.50181725 L5.8458278,3.5 C5.68310622,3.5 5.5299464,3.50188529 5.38516578,3.50585327 C5.69792007,3.10596794 6.0873439,2.77972241 6.54630859,2.53426541 C7.19816044,2.18565122 7.84473292,2 9.6277704,2 L15.590287,2 Z M10.75,8.25 C11.1642136,8.25 11.5,8.58578644 11.5,9 L11.5,17.5 C11.5,17.9142136 11.1642136,18.25 10.75,18.25 C10.3357864,18.25 10,17.9142136 10,17.5 L10,14 L6.5,14 C6.08578644,14 5.75,13.6642136 5.75,13.25 C5.75,12.8357864 6.08578644,12.5 6.5,12.5 L10,12.5 L10,9 C10,8.58578644 10.3357864,8.25 10.75,8.25 Z M15,12.5 C15.4142136,12.5 15.75,12.8357864 15.75,13.25 C15.75,13.6642136 15.4142136,14 15,14 L12.5,14 L12.5,12.5 L15,12.5 Z"/>
+                    </Button>
+                    <ListBox ScrollViewer.CanContentScroll="False"  Margin="10,41,10,32" SelectionChanged="ListBox_SelectionChanged" x:Name="sdlist" BorderBrush="{x:Null}" Grid.ColumnSpan="2">
+                        <ListBox.Background>
+                            <SolidColorBrush Color="White" Opacity="0"/>
+                        </ListBox.Background>
+
+                        <Border BorderThickness="1" CornerRadius="5" Width="628">
+                            <Border.Background>
+                                <SolidColorBrush Color="#0099ff" Opacity="0.2"/>
+                            </Border.Background>
+                            <Grid Height="63">
+                                <Label Content="名称：***" HorizontalAlignment="Left" Margin="10,3,0,0" VerticalAlignment="Top"/>
+                                <Label Content="目标UID：erererererereer" Margin="10,29,505,0"/>
+                                <Label Content="远程端口：25555" HorizontalAlignment="Left" Margin="150,3,0,0" VerticalAlignment="Top"/>
+                                <Label Content="本地端口：25566" Margin="150,29,351,3" d:LayoutOverrides="VerticalAlignment"/>
+                                <CheckBox Content="启用" Margin="479,-3,0,34" VerticalAlignment="Stretch" Checked="CheckBox_Checked" Width="66"/>
+                                <Button HorizontalAlignment="Left" Margin="600,2,0,0" VerticalAlignment="Top" Background="#3FDDDDDD" BorderBrush="#CC707070" Style="{StaticResource svg-button}">
+                                    <Path Fill="{DynamicResource svg-icon}" Data="M5.629,7.5 L6.72612901,18.4738834 C6.83893748,19.6019681 7.77211147,20.4662096 8.89848718,20.4990325 L8.96496269,20.5 L15.0342282,20.5 C16.1681898,20.5 17.1211231,19.6570911 17.2655686,18.5392856 L17.2731282,18.4732196 L18.1924161,9.2527383 L18.369,7.5 L19.877,7.5 L19.6849078,9.40262938 L18.7657282,18.6220326 C18.5772847,20.512127 17.0070268,21.9581787 15.1166184,21.9991088 L15.0342282,22 L8.96496269,22 C7.06591715,22 5.47142703,20.5815579 5.24265599,18.7050136 L5.23357322,18.6231389 L4.121,7.5 L5.629,7.5 Z M10.25,11.75 C10.6642136,11.75 11,12.0857864 11,12.5 L11,18.5 C11,18.9142136 10.6642136,19.25 10.25,19.25 C9.83578644,19.25 9.5,18.9142136 9.5,18.5 L9.5,12.5 C9.5,12.0857864 9.83578644,11.75 10.25,11.75 Z M13.75,11.75 C14.1642136,11.75 14.5,12.0857864 14.5,12.5 L14.5,18.5 C14.5,18.9142136 14.1642136,19.25 13.75,19.25 C13.3357864,19.25 13,18.9142136 13,18.5 L13,12.5 C13,12.0857864 13.3357864,11.75 13.75,11.75 Z M12,1.75 C13.7692836,1.75 15.2083571,3.16379796 15.2491124,4.92328595 L15.25,5 L21,5 C21.4142136,5 21.75,5.33578644 21.75,5.75 C21.75,6.14942022 21.43777,6.47591522 21.0440682,6.49872683 L21,6.5 L14.5,6.5 C14.1005798,6.5 13.7740848,6.18777001 13.7512732,5.7940682 L13.75,5.75 L13.75,5 C13.75,4.03350169 12.9664983,3.25 12,3.25 C11.0536371,3.25 10.2827253,4.00119585 10.2510148,4.93983756 L10.25,5 L10.25,5.75 C10.25,6.14942022 9.93777001,6.47591522 9.5440682,6.49872683 L9.5,6.5 L2.75,6.5 C2.33578644,6.5 2,6.16421356 2,5.75 C2,5.35057978 2.31222999,5.02408478 2.7059318,5.00127317 L2.75,5 L8.75,5 C8.75,3.20507456 10.2050746,1.75 12,1.75 Z"/>
+                                </Button>
+                                <Button Content="编辑" Margin="539,24,0,0" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="55" VerticalAlignment="Top" Height="32"/>
+                                <Button Content="复制" Margin="479,24,0,0" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="55" VerticalAlignment="Top" Height="32"/>
+
+
+                                <Label Content="协议：TCP" HorizontalAlignment="Left" Margin="266,3,0,0" VerticalAlignment="Top"/>
+                                <Label Content="连接ip：" HorizontalAlignment="Left" Margin="266,29,0,0" VerticalAlignment="Top"/>
+                                <TextBox HorizontalAlignment="Left" Margin="321,24,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="153" IsReadOnly="True" Background="#BFFFFFFF"/>
+                                <Ellipse Stroke="Black" Fill="Black" Margin="397,4,214,45" x:Name="state0"/>
+                                <Label Content="状态：" HorizontalAlignment="Left" Margin="354,2,0,0" VerticalAlignment="Top" Width="38"/>
+                            </Grid>
+                        </Border>
+
+
+
+                    </ListBox>
+                    <Button Style="{StaticResource svg-button}" HorizontalAlignment="Left" Margin="371,13,0,0" VerticalAlignment="Top" Click="Quick_Add" Height="24" BorderBrush="#CC707070" Background="#3FDDDDDD" Width="26" Grid.Column="1" ToolTip="快速添加">
+                        <Path Fill="{DynamicResource svg-icon}" Data="M12,1 C18.0751322,1 23,5.92486775 23,12 C23,18.0751322 18.0751322,23 12,23 C5.92486775,23 1,18.0751322 1,12 C1,5.92486775 5.92486775,1 12,1 Z M12,2.5 C6.75329488,2.5 2.5,6.75329488 2.5,12 C2.5,17.2467051 6.75329488,21.5 12,21.5 C17.2467051,21.5 21.5,17.2467051 21.5,12 C21.5,6.75329488 17.2467051,2.5 12,2.5 Z M12.75,17.25 C12.75,17.6642136 12.4142136,18 12,18 C11.5857864,18 11.25,17.6642136 11.25,17.25 L11.25,12.749 L6.75,12.75 C6.33578644,12.75 6,12.4142136 6,12 C6,11.5857864 6.33578644,11.25 6.75,11.25 L11.25,11.249 L11.25,6.75 C11.25,6.33578644 11.5857864,6 12,6 C12.4142136,6 12.75,6.33578644 12.75,6.75 L12.75,17.25 Z M17.25,11.25 C17.6642136,11.25 18,11.5857864 18,12 C18,12.4142136 17.6642136,12.75 17.25,12.75 L13.75,12.75 L13.75,11.25 L17.25,11.25 Z"/>
+                    </Button>
+                    <Button Content="新建连接" Margin="422,8,0,0" VerticalAlignment="Top" Click="Button_Click" Width="86" Height="32" Background="#3FDDDDDD" BorderBrush="#CC707070" Grid.Column="1"/>
+
+                    <!--<Button Content="一键添加" HorizontalAlignment="Left" Margin="510,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070"/>-->
+
+
+                    <Label Content="共享带宽:" HorizontalAlignment="Left" Margin="177,15,0,0" VerticalAlignment="Top" Width="62" Grid.Column="1"/>
+                    <TextBox HorizontalAlignment="Left" x:Name="share" Margin="244,9,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="38" Height="22" VerticalContentAlignment="Center" Background="#7FFFFFFF" TextChanged="share_TextChanged" Panel.ZIndex="1" Grid.Column="1" SelectionBrush="White"/>
+                    <Label Content="Mbps" HorizontalAlignment="Left" Margin="313,18,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <!--<Button Content="刷新列表" HorizontalAlignment="Left" Margin="424,10,0,0" VerticalAlignment="Top" Height="24" Width="60" Click="Button_Click_1" BorderBrush="#CC707070" Background="#3FDDDDDD">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
+                        <Border.Background>#3FDDDDDD</Border.Background>
+                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>-->
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="日志" RenderTransformOrigin="0.495,0.539" Background="{x:Null}" BorderBrush="{x:Null}">
+                <TabItem.FocusVisualStyle>
+                    <Style/>
+                </TabItem.FocusVisualStyle>
+
+                <Grid Background="{DynamicResource all-Background}">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+
+                    </Grid.ColumnDefinitions>
+                    <RichTextBox x:Name="richOutput" IsReadOnly="True" BorderBrush="{x:Null}" SelectionBrush="Black" CaretBrush="Black" FontFamily="Consolas">
+                        <RichTextBox.Background>
+                            <SolidColorBrush Color="White" Opacity="0"/>
+                        </RichTextBox.Background>
+                        <FlowDocument/>
+                    </RichTextBox>
+
+                </Grid>
+            </TabItem>
+            <!--<TabItem Header="装扮" Margin="61,-2,-91,0" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
+                            <GradientStop Color="#FFD0F3FF" Offset="0"/>
+                            <GradientStop Color="White" Offset="0.993"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="53*"/>
+                        <ColumnDefinition Width="741*"/>
+
+                    </Grid.ColumnDefinitions>
+
+                </Grid>
+            </TabItem>-->
+            <TabItem Header="关于" Background="{x:Null}" BorderBrush="{x:Null}">
+                <TabItem.FocusVisualStyle>
+                    <Style/>
+                </TabItem.FocusVisualStyle>
+                <Grid Background="{DynamicResource all-Background}" Width="682">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="53*"/>
+                        <ColumnDefinition Width="741*"/>
+
+                    </Grid.ColumnDefinitions>
+                    <!--<Label Content="帮助文档：" HorizontalAlignment="Left" Margin="0,31,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="作者： 乖漏斗" HorizontalAlignment="Left" Margin="1,63,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                    <Label Content="开源：" HorizontalAlignment="Left" Margin="3,93,0,0" VerticalAlignment="Top" Grid.Column="1"/>-->
+                    <Canvas Grid.ColumnSpan="3">
+                        <Label Content="*基于OPENP2P" HorizontalAlignment="Left" Canvas.Left="700" Canvas.Bottom="10" Grid.Column="1" FontSize="8"/>
+                        <TextBox Background="#7FFFFFFF" TextWrapping="Wrap" Text="联网获取中" Width="455" x:Name="daysay" IsReadOnly="True" PreviewMouseLeftButtonDown="Redaysay" HorizontalAlignment="Left" Canvas.Left="10" Canvas.Top="84" VerticalAlignment="Center" Height="32" MaxHeight="32" SelectionBrush="{x:Null}"/>
+                        <Label Content="随机一言：" HorizontalAlignment="Left" Canvas.Left="10" Canvas.Top="61" VerticalAlignment="Top"/>
+                        <Label Content="充电/发电鸣谢" HorizontalAlignment="Left" Canvas.Left="530" Canvas.Top="61" VerticalAlignment="Center" RenderTransformOrigin="0.493,0.155"/>
+                        <Label Content="更新日志：" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Canvas.Left="13" Canvas.Top="167" VerticalAlignment="Top">
+                            <Label.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="0.715"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Label.RenderTransform>
+                        </Label>
+                        <Label Content="预设隧道为联网获取，需要增加常用预设隧道可以联系作者添加一般为固定多端口&#xD;&#xA;联机游戏，或特殊固定端口用途" Height="45" Width="515" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="121" VerticalAlignment="Center"/>
+                        <Button x:Name="copysss" Content="复制" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="55" Height="32" Canvas.Left="470" Canvas.Top="84" VerticalAlignment="Top" Click="copysss_Click" HorizontalAlignment="Center"/>
+                        <Button Content="重置程序" Click="ResetUUID_Button_Click" Height="32" Background="#3FDDDDDD" BorderBrush="#CC707070" Width="90" Canvas.Left="573" Canvas.Top="10" VerticalAlignment="Top">
+                            <Button.ToolTip>
+                                <TextBlock Text="这将会重置你的uuid，同时你会失去下面所有隧道！谨慎点击" />
+                            </Button.ToolTip>
+                        </Button>
+                    </Canvas>
+                    <TextBox Background="#7FFFFFFF" x:Name="uplogbox" Margin="10,188,160,30" Text="联网获取中" IsReadOnly="True" Grid.ColumnSpan="2" SelectionBrush="{x:Null}"/>
+                    <Button Grid.Column="1" Content="导出日志" HorizontalAlignment="Left" Margin="665,5,0,0" VerticalAlignment="Top" Click="ExportLog"/>
+                    <Button HorizontalAlignment="Center" Margin="0,12,0,0" VerticalAlignment="Top" Click="Openwiki" Style="{StaticResource svg-button}" ToolTip="打开帮助">
+                        <Path Fill="Black" Data="M15.8722296,1 C17.6173301,1 18.2738114,1.17783521 18.91208,1.51223497 L18.9536914,1.53426541 C19.5745027,1.86627892 20.0680807,2.34610464 20.4148264,2.9541436 L20.4657346,3.04630859 C20.8143488,3.69816044 21,4.34473292 21,6.1277704 L21,17.8722296 L20.9989932,18.0937657 C20.9842401,19.674381 20.8076257,20.3015622 20.487765,20.91208 L20.4657346,20.9536914 C20.1337211,21.5745027 19.6538954,22.0680807 19.0458564,22.4148264 L18.9536914,22.4657346 C18.3018396,22.8143488 17.6552671,23 15.8722296,23 L8.1277704,23 L7.90623426,22.9989932 C6.32561899,22.9842401 5.69843783,22.8076257 5.08791999,22.487765 L5.04630859,22.4657346 C4.42549731,22.1337211 3.93191931,21.6538954 3.58517358,21.0458564 L3.53426541,20.9536914 C3.18565122,20.3018396 3,19.6552671 3,17.8722296 L3,6.1277704 C3,4.38266989 3.17783521,3.72618864 3.51223497,3.08791999 L3.53426541,3.04630859 C3.86627892,2.42549731 4.34610464,1.93191931 4.9541436,1.58517358 L5.04630859,1.53426541 C5.69816044,1.18565122 6.34473292,1 8.1277704,1 L15.8722296,1 Z M16.0753381,2.50070655 L8.02453833,2.50017541 L7.82305804,2.501658 C6.6550816,2.5151767 6.20981608,2.61305534 5.75370688,2.8569852 C5.36325774,3.06579969 5.06579969,3.36325774 4.8569852,3.75370688 C4.59290159,4.24750032 4.5,4.72858421 4.5,6.1277704 L4.50017541,17.9754617 L4.501658,18.176942 C4.5151767,19.3449184 4.61305534,19.7901839 4.8569852,20.2462931 C5.06579969,20.6367423 5.36325774,20.9342003 5.75370688,21.1430148 C6.22281064,21.3938942 6.68044405,21.4902819 7.92466189,21.4992935 L8.1277704,21.5 L15.8722296,21.5 C17.2714158,21.5 17.7524997,21.4070984 18.2462931,21.1430148 C18.6367423,20.9342003 18.9342003,20.6367423 19.1430148,20.2462931 C19.3938942,19.7771894 19.4902819,19.319556 19.4992935,18.0753381 L19.5,17.8722296 L19.5,6.1277704 C19.5,4.72858421 19.4070984,4.24750032 19.1430148,3.75370688 C18.9342003,3.36325774 18.6367423,3.06579969 18.2462931,2.8569852 C17.7771894,2.60610577 17.319556,2.50971811 16.0753381,2.50070655 Z M12,16.25 C12.4142136,16.25 12.75,16.5857864 12.75,17 C12.75,17.4142136 12.4142136,17.75 12,17.75 L7.5,17.75 C7.08578644,17.75 6.75,17.4142136 6.75,17 C6.75,16.5857864 7.08578644,16.25 7.5,16.25 L12,16.25 Z M16.5,11.25 C16.9142136,11.25 17.25,11.5857864 17.25,12 C17.25,12.4142136 16.9142136,12.75 16.5,12.75 L7.5,12.75 C7.08578644,12.75 6.75,12.4142136 6.75,12 C6.75,11.5857864 7.08578644,11.25 7.5,11.25 L16.5,11.25 Z M16.5,6.25 C16.9142136,6.25 17.25,6.58578644 17.25,7 C17.25,7.41421356 16.9142136,7.75 16.5,7.75 L7.5,7.75 C7.08578644,7.75 6.75,7.41421356 6.75,7 C6.75,6.58578644 7.08578644,6.25 7.5,6.25 L16.5,6.25 Z"/>
+                    </Button>
+                    <Button HorizontalAlignment="Left" Margin="-6,10,0,0" VerticalAlignment="Top" Click="OpenMe" Style="{StaticResource svg-button}" ToolTip="打开作者B站" Grid.Column="1">
+                        <Path Fill="#00ACE5" Data="M18.223 3.086a1.25 1.25 0 0 1 0 1.768L17.08 5.996h1.17A3.75 3.75 0 0 1 22 9.747v7.5a3.75 3.75 0 0 1-3.75 3.75H5.75A3.75 3.75 0 0 1 2 17.247v-7.5a3.75 3.75 0 0 1 3.75-3.75h1.166L5.775 4.855a1.25 1.25 0 1 1 1.767-1.768l2.652 2.652c.079.079.145.165.198.257h3.213c.053-.092.12-.18.199-.258l2.651-2.652a1.25 1.25 0 0 1 1.768 0zm.027 5.42H5.75a1.25 1.25 0 0 0-1.247 1.157l-.003.094v7.5c0 .659.51 1.199 1.157 1.246l.093.004h12.5a1.25 1.25 0 0 0 1.247-1.157l.003-.093v-7.5c0-.69-.56-1.25-1.25-1.25zm-10 2.5c.69 0 1.25.56 1.25 1.25v1.25a1.25 1.25 0 1 1-2.5 0v-1.25c0-.69.56-1.25 1.25-1.25zm7.5 0c.69 0 1.25.56 1.25 1.25v1.25a1.25 1.25 0 1 1-2.5 0v-1.25c0-.69.56-1.25 1.25-1.25z"/>
+                    </Button>
+                    <Button Grid.Column="1" HorizontalAlignment="Left" Margin="21,6,0,0" VerticalAlignment="Top" Click="OpenGit" Style="{StaticResource svg-button}" Width="47" ToolTip="打开Github" Height="33">
+                        <Path Fill="Black" Data="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399" Height="30" Stretch="Fill" Width="32"/>
+                    </Button>
+                    <TextBox Background="#7FFFFFFF" x:Name="thank"  Text="联网获取中" IsReadOnly="True" SelectionBrush="{x:Null}" Grid.Column="1" HorizontalAlignment="Left" Margin="487,84,0,30" Width="131" d:LayoutOverrides="VerticalAlignment"/>
+
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button Content="启动" Margin="0,0,10,10" VerticalAlignment="Bottom" Click="Button_Click_open" x:Name="openbutton" BorderBrush="#CC707070" Background="#3FDDDDDD" Grid.Column="1" HorizontalAlignment="Right" Height="32" Width="102"/>
+    </Grid>
+</Window>
