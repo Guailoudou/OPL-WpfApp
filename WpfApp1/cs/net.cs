@@ -13,6 +13,7 @@ using static OPL_WpfApp.MainWindow;
 using System.IO;
 using System.Windows.Controls;
 using System.Net.Sockets;
+using OPL_WpfApp.cs;
 namespace userdata
 {
     internal class Net
@@ -26,7 +27,7 @@ namespace userdata
         public async Task GetPreset()
         {
             string isgitee = ismirror ? "gitee镜像" : "";
-            Logger.Log($"[执行]网络请求文件preset.json-{isgitee}");
+            Logs.Out_Logs($"[执行]网络请求文件preset.json-{isgitee}");
             string fileurl = "https://file.gldhn.top/file/json/preset.json"; //http://127.0.0.1:85/file/json/preset.json https://file.gldhn.top/file/json/preset.json
             fileurl = Getmirror(fileurl);
             HttpClient httpClient = new HttpClient();
@@ -55,22 +56,22 @@ namespace userdata
                     if (v > pvn)
                     {
                         new Updata(Getmirror(presetss.upurl));
-                        Logger.Log($"[提示]获取预设完成,你的程序不是最新版本哦~ 开始后台下载更新包-{isgitee}");
+                        Logs.Out_Logs($"[提示]获取预设完成,你的程序不是最新版本哦~ 开始后台下载更新包-{isgitee}");
                     }
                     else
                     {
-                        Logger.Log($"[提示]获取预设完成,当前为最新版本~ {isgitee}");
+                        Logs.Out_Logs($"[提示]获取预设完成,当前为最新版本~ {isgitee}");
                     }
                     if ((CalculateMD5Hash(opPath) != ophash && ophash != null) || !File.Exists(opPath))
                     {
                         new Updata(Getmirror(presetss.opurl), false);
-                        Logger.Log("[提示]你的openp2p不是最新版本哦~ 开始后台下载更新包");
+                        Logs.Out_Logs("[提示]你的openp2p不是最新版本哦~ 开始后台下载更新包");
                     }
                     Uplog.Log(presetss.uplog);
                 }
                 else
                 {
-                    Logger.Log($"[错误]请求{fileurl}失败，状态码：{response.StatusCode}  可尝试设置hosts来保障连接的可行性：\n172.64.32.5 file.gldhn.top\n172.64.32.5 blog.gldhn.top");
+                    Logs.Out_Logs($"[错误]请求{fileurl}失败，状态码：{response.StatusCode}  可尝试设置hosts来保障连接的可行性：\n172.64.32.5 file.gldhn.top\n172.64.32.5 blog.gldhn.top");
                     //Console.WriteLine($"请求失败，状态码：{response.StatusCode}");
                     Uplog.Log("获取失败");
                     if (ismirror)
@@ -82,23 +83,23 @@ namespace userdata
             }
             catch (HttpRequestException ex)
             {
-                Logger.Log($"[错误]HTTP请求异常 HttpRequestException: {ex.Message}");
+                Logs.Out_Logs($"[错误]HTTP请求异常 HttpRequestException: {ex.Message}");
             }
             catch (TaskCanceledException ex)
             {
-                Logger.Log($"[错误]请求被取消 TaskCanceledException: {ex.Message}");
+                Logs.Out_Logs($"[错误]请求被取消 TaskCanceledException: {ex.Message}");
             }
             catch (TimeoutException ex)
             {
-                Logger.Log($"[错误]连接超时 TimeoutException: {ex.Message}");
+                Logs.Out_Logs($"[错误]连接超时 TimeoutException: {ex.Message}");
             }
             catch (SocketException ex)
             {
-                Logger.Log($"[错误]网络连接中断或不可达 SocketException: {ex.Message}");
+                Logs.Out_Logs($"[错误]网络连接中断或不可达 SocketException: {ex.Message}");
             }
             catch (InvalidOperationException ex)
             {
-                Logger.Log($"[错误]InvalidOperationException: {ex.Message}");
+                Logs.Out_Logs($"[错误]InvalidOperationException: {ex.Message}");
             }
             catch (Exception ex)
             {
@@ -107,7 +108,7 @@ namespace userdata
                     ismirror = false;
                     await GetPreset();
                 }else
-                Logger.Log($"[错误]请求{fileurl}过程中发生错误：{ex.Message} "  );
+                Logs.Out_Logs($"[错误]请求{fileurl}过程中发生错误：{ex.Message} "  );
             }
         }
         public void wejson(string ujson) //写入josn
@@ -135,7 +136,7 @@ namespace userdata
             catch (JsonException je)
             {
                 // 如果JSON格式不正确，记录错误并返回null
-                Logger.Log($"Error while deserializing JSON: {je.Message}");
+                Logs.Out_Logs($"Error while deserializing JSON: {je.Message}");
             }
 
         }
@@ -156,7 +157,7 @@ namespace userdata
                 {
                     // 获取响应内容的字符串形式
                     string isgitee = ismirror ? "gitee镜像" : "";
-                    Logger.Log($"[提示]获取充电/发电列表成功-{isgitee}");
+                    Logs.Out_Logs($"[提示]获取充电/发电列表成功-{isgitee}");
                     string contentString = await response.Content.ReadAsStringAsync();
                     var lists = JsonConvert.DeserializeObject<thanklist>(contentString);
                     string info = "afdian.com/@guailoudou\n|用户名|金额|\n";
@@ -170,7 +171,7 @@ namespace userdata
             }
             catch (Exception ex)
             {
-                Logger.Log($"[错误]请求{url}过程中发生错误：{ex.Message}");
+                Logs.Out_Logs($"[错误]请求{url}过程中发生错误：{ex.Message}");
                 text.Text = "获取失败";
                 if (ismirror)
                 {

@@ -1,6 +1,7 @@
 ﻿using iNKORE.UI.WPF.Modern;
 using iNKORE.UI.WPF.Modern.Common.IconKeys;
 using iNKORE.UI.WPF.Modern.Controls;
+using OPL_WpfApp.cs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,6 +14,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -48,13 +50,26 @@ namespace OPL_WpfApp
             this.Top = (screenHeight - windowHeight) / 2;
             //userdata.UserData userData = new userdata.UserData();
             //userdata.json sjson = new userdata.json();
-            Logger logger = new Logger(richOutput);
+            RichTextBox richTextBox = new RichTextBox();
+            Logger logger = new Logger(richTextBox);
             Uplog uplog = new Uplog(uplogbox);
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(100);
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        aaaaa.Text = GL.Logs_Str.Substring(1, GL.Logs_Str.Length-1);
+                    });
+                }
+            });
             this.DataContext = userData;
             userData = new userdata.UserData();
             sjson = new userdata.json();
-            Logger.Log($"[信息]程序启动，当前版本：{Getversion()}，更新包号：{Net.Getpvn()}");
+            Logs.Out_Logs($"[信息]程序启动，当前版本：{Getversion()}，更新包号：{Net.Getpvn()}");
             
+
             Net net = new Net();
             _ = net.GetPreset();
             _ = net.Getthank(thank);
@@ -78,7 +93,7 @@ namespace OPL_WpfApp
             }
             catch (Exception ex)
             {
-                Logger.Log($"[错误]复制失败：{ex.Message}");
+                Logs.Out_Logs($"[错误]复制失败：{ex.Message}");
                 MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
                 return;
             }
@@ -95,7 +110,7 @@ namespace OPL_WpfApp
             }
             catch (Exception ex)
             {
-                Logger.Log($"[错误]复制失败：{ex.Message}");
+                Logs.Out_Logs($"[错误]复制失败：{ex.Message}");
                 MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
                 return;
             }
@@ -470,7 +485,7 @@ namespace OPL_WpfApp
         private void Stop()
         {
             openbutton.Content = "启动";
-            Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
+            Logs.Out_Logs("[提示]----------------------------------程序已停止运行----------------------------------");
             fstert.Fill = Brushes.Gray;
             Multicast.Stop();
             state.Clear();
@@ -512,14 +527,14 @@ namespace OPL_WpfApp
                 if (!File.Exists(absolutePath))
                 {
                     MessageBox.Show("程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单", "警告");
-                    Logger.Log("[警告]程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单");
+                    Logs.Out_Logs("[警告]程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单");
                     return;
 
                 }
                 else Open();
 
                 openbutton.Content = "关闭";
-                Logger.Log("[提示]-----------------------程序已开始运行请耐心等待隧道连接----------------------------");
+                Logs.Out_Logs("[提示]-----------------------程序已开始运行请耐心等待隧道连接----------------------------");
                 fstert.Fill = Brushes.Orange;
                 on = true;
                 Relist();
@@ -551,12 +566,7 @@ namespace OPL_WpfApp
                 {
                     Dispatcher.Invoke(() => // 必须在UI线程更新RichTextBox内容
                     {
-                        richOutput.AppendText(e.Data + Environment.NewLine);
-
-                        richOutput.ScrollToEnd(); 
-
-
-
+                        Logs.Out_Logs((e.Data + Environment.NewLine).Replace("\n",""));
                         Checkopen(e.Data);
                     });
                 }
@@ -570,7 +580,7 @@ namespace OPL_WpfApp
                     bool tl = true;
                     Dispatcher.Invoke(() =>
                     {
-                        Logger.Log("【错误】: " + e.Data + Environment.NewLine);
+                        Logs.Out_Logs("[错误]: " + e.Data + Environment.NewLine);
                         if (tl)
                         {
 
@@ -600,7 +610,7 @@ namespace OPL_WpfApp
             catch (Exception ex)
             {
 
-                Logger.Log("[错误]启动失败，看来被安全中心拦截" + ex.ToString());
+                Logs.Out_Logs("[错误]启动失败，看来被安全中心拦截" + ex.ToString());
                 MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), "警告");
                 if (process != null && !process.HasExited)
                 {
@@ -734,11 +744,11 @@ namespace OPL_WpfApp
                 }
             }catch (Exception e)
             {
-                Logger.Log("[错误]日志打包出错，错误信息：" + e.Message);
+                Logs.Out_Logs("[错误]日志打包出错，错误信息：" + e.Message);
                 MessageBox.Show("日志打包出错，错误信息：" + e.Message, "错误");
             }
                 
-            Logger.Log("[提示]日志已打包完毕，路径为："+zipFilePath);
+            Logs.Out_Logs("[提示]日志已打包完毕，路径为："+zipFilePath);
             if (oon)
             {
                 MessageBox.Show("日志已打包完毕，路径为：" + zipFilePath + "\n即将自动打开根目录文件夹", "提示");
@@ -833,8 +843,8 @@ namespace OPL_WpfApp
             }
             catch (Exception ex)
             {
-                Logger.Log($"无法识别的连接码: {ex.Message}");
-                MessageBox.Show($"无法识别的连接码\r该功能为一键添加/编辑隧道为连接码隧道，房主可直接编辑发送连接码供连接方使用。 \r\r连接码用法： \r用法1：\r uid:端口 --> tcp协议连接码 \r示例：qwertyuioop:25565 \r\r 用法2：\r<1/2>:uid:端口[:本地端口] --> 1为tcp，2为udp 本地端口可省略\r示例：1:qwertyuiop:25565:25575 \r多个连接可以用;间隔同时输入\r复制后直接点击该按钮即可完成添加，后直接启动即可  \r\r {ex.Message}", "错误");
+                Logs.Out_Logs($"无法识别的连接码: {ex.Message}");
+                MessageBox.Show($"无法识别的连接码\r\n用途：一键添加/编辑隧道为连接码隧道，房主可直接编辑发送连接码供连接方使用。 \n使用方法：复制房主发放的联机码，随后点击此按钮即可自动添加！\n \r\r连接码用法： \r用法1：\r uid:端口 --> tcp协议连接码 \r示例：qwertyuioop:25565 \r\r 用法2：\r<1/2>:uid:端口[:本地端口] --> 1为tcp，2为udp 本地端口可省略\r示例：1:qwertyuiop:25565:25575 \r多个连接可以用;间隔同时输入\r复制后直接点击该按钮即可完成添加，后直接启动即可  \r\r {ex.Message}", "错误");
             }
         }
 
@@ -846,7 +856,7 @@ namespace OPL_WpfApp
             }
             catch (Exception ex)
             {
-                Logger.Log($"[错误]复制失败：{ex.Message}");
+                Logs.Out_Logs($"[错误]复制失败：{ex.Message}");
                 MessageBox.Show($"自动复制可能失败了，--{ex.Message}", "提示");
                 return;
             }

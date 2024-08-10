@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static OPL_WpfApp.MainWindow;
+using OPL_WpfApp.cs;
 
 namespace userdata
 {
@@ -45,7 +46,7 @@ namespace userdata
                     byte[] ttl = new byte[] { 2 }; // 多播数据包的存活时间
                     client.Client.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, ttl);
 
-                    Logger.Log($"[提示]开启虚拟局域网发现 to:{SrcPort} 仅MC");
+                    Logs.Out_Logs($"[提示]开启虚拟局域网发现 to:{SrcPort} 仅MC");
 
                     while (MulticastOpen )
                     {
@@ -57,7 +58,7 @@ namespace userdata
                         await Task.Delay(1500); // 在发送下一个消息之前等待一段时间
                     }
 
-                    Logger.Log($"[提示]关闭虚拟局域网发现 to:{SrcPort}");
+                    Logs.Out_Logs($"[提示]关闭虚拟局域网发现 to:{SrcPort}");
                 }
             }
             

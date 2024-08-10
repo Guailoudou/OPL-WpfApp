@@ -9,6 +9,7 @@ using System.Threading;
 using static OPL_WpfApp.MainWindow;
 using System.Text.RegularExpressions;
 using System.Windows;
+using OPL_WpfApp.cs;
 namespace userdata
 {
     internal class Heart
@@ -36,7 +37,7 @@ namespace userdata
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
                 _client.Connect(endPoint);
 
-                Logger.Log("[提示]TCP Connected to "+ipAddress+":"+port+"开启隧道保活");
+                Logs.Out_Logs("[提示]TCP Connected to "+ipAddress+":"+port+"开启隧道保活");
                 _shouldStopKeepAlive = false;
                 // 启动心跳线程
                 _keepAliveThread = new Thread(SendKeepAliveMessage);
@@ -45,7 +46,7 @@ namespace userdata
             }
             catch (SocketException se)
             {
-                Logger.Log("SocketException: {0}" + se.Message);
+                Logs.Out_Logs("SocketException: {0}" + se.Message);
             }
         }
 
@@ -62,7 +63,7 @@ namespace userdata
                         _client.Send(buffer);
                     }catch (SocketException)
                     {
-                        //Logger.Log(se.Message);
+                        //Logs.Out_Logs(se.Message);
                         //break;
                     }
 
@@ -113,13 +114,13 @@ namespace userdata
             try
             {
                 IPEndPoint remoteEP = new IPEndPoint(IPAddress.Parse(ipAddress), port);
-                Logger.Log("[提示]UDP Connected to " + ipAddress +":"+ port + "开启隧道保活");
+                Logs.Out_Logs("[提示]UDP Connected to " + ipAddress +":"+ port + "开启隧道保活");
                 // 开始发送心跳包
                 StartSendingKeepAlive(remoteEP);
             }
             catch (Exception ex)
             {
-                Logger.Log($"Error: {ex.Message}");
+                Logs.Out_Logs($"Error: {ex.Message}");
             }
         }
 
@@ -134,7 +135,7 @@ namespace userdata
                 // 发送心跳包
                 _udpClient.Send(buffer, buffer.Length, remoteEP);
 
-                //Logger.Log("Sent UDP KeepAlive packet at {0}"+DateTime.Now.ToString("HH:mm:ss"));
+                //Logs.Out_Logs("Sent UDP KeepAlive packet at {0}"+DateTime.Now.ToString("HH:mm:ss"));
             }, null, TimeSpan.Zero, TimeSpan.FromSeconds(KEEP_ALIVE_INTERVAL_SEC));
         }
 

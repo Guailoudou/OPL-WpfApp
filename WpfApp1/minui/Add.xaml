@@ -23,7 +23,7 @@
             <ComboBoxItem Content="udp"/>
         </ComboBox>
         <Label Content="协议*" HorizontalAlignment="Left" Margin="26,170,0,0" VerticalAlignment="Top" Height="25" ToolTip="MC选择TCP"/>
-        <Button Content="添加" Margin="17,208,0,0" VerticalAlignment="Top" Width="151" Height="35" Click="Button_Click" Background="#3FDDDDDD">
+        <Button Content="添加" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Margin="17,208,0,0" VerticalAlignment="Top" Width="151" Height="35" Click="Button_Click" Background="#3FDDDDDD">
             <!--<Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
@@ -33,7 +33,7 @@
                 </ControlTemplate>
             </Button.Template>-->
         </Button>
-        <Button Content="预设" Margin="173,208,0,0" VerticalAlignment="Top" Height="35" Width="67" Click="Preset" Background="#3FDDDDDD">
+        <Button Content="预设" Margin="173,208,0,0" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" VerticalAlignment="Top" Height="35" Width="67" Click="Preset" Background="#3FDDDDDD">
             <!--<Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">

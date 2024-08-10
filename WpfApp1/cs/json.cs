@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
+using OPL_WpfApp.cs;
 using static OPL_WpfApp.MainWindow;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 namespace userdata
@@ -35,7 +36,7 @@ namespace userdata
         }
         public void newjson(UserData userData) //创建无app配置
         {
-            Logger.Log("[执行]创建新的配置-UID:" + userData.UUID);
+            Logs.Out_Logs("[执行]创建新的配置-UID:" + userData.UUID);
             config = new Config
             {
                 Network = new Network
@@ -111,12 +112,12 @@ namespace userdata
         {
             if (suuid == config.Network.Node)
             {
-                Logger.Log("[错误]自己连自己？");
+                Logs.Out_Logs("[错误]自己连自己？");
                 MessageBox.Show("不能自己连自己啊！！这无异于试图左脚踩右脚升天！！", "错误");
                 return false;
             }
             if (cport == 0) cport = sport;
-            Logger.Log("[执行]创建新的隧道"+suuid+":"+sport+"--"+type+">>"+cport);
+            Logs.Out_Logs("[执行]创建新的隧道"+suuid+":"+sport+"--"+type+">>"+cport);
             int enabled = 1;
 
             if (config.Apps != null)
@@ -179,7 +180,7 @@ namespace userdata
         }
         public void del(int index)
         {
-            Logger.Log("[执行]删除隧道 序号:"+index);
+            Logs.Out_Logs("[执行]删除隧道 序号:"+index);
             getjosn();
             config.Apps.RemoveAt(index);
             config.LogLevel = Ologv;
@@ -194,7 +195,7 @@ namespace userdata
             {
                 if (app.Enabled == 1 && config.Apps[index].SrcPort==app.SrcPort && config.Apps[index].Protocol == app.Protocol)
                 {
-                    Logger.Log("[错误]无法同时开启2个本地端口相同的隧道");
+                    Logs.Out_Logs("[错误]无法同时开启2个本地端口相同的隧道");
                     MessageBox.Show("无法同时开启2个本地端口相同的隧道", "警告");
                     return;
                 }
@@ -235,7 +236,7 @@ namespace userdata
             catch (JsonException je)
             {
                 // 如果JSON格式不正确，记录错误并返回null
-                Logger.Log($"Error while deserializing JSON: {je.Message}");
+                Logs.Out_Logs($"Error while deserializing JSON: {je.Message}");
             }
 
         }

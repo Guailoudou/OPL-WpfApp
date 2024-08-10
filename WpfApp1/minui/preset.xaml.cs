@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using static OPL_WpfApp.MainWindow;
 using userdata;
+using OPL_WpfApp.cs;
 //using System.Windows.Shapes;
 
 namespace OPL_WpfApp
@@ -66,13 +67,13 @@ namespace OPL_WpfApp
             //TextBox SuuidText = (TextBox)this.FindName("Suuid");
             string game = box.Text;
             json json = new json();
-            Logger.Log(net.presetss.presets[Map[game]].Note);
+            Logs.Out_Logs(net.presetss.presets[Map[game]].Note);
             foreach (PrTunnel key in net.presetss.presets[Map[game]].tunnel)
             {
                 if(!json.newapp(Suuid.Text.Replace(" ", ""), key.Sport, key.type, key.CPort,game))return;
                 
             }
-            Logger.Log("已自动添加预设" + game);
+            Logs.Out_Logs("已自动添加预设" + game);
             iNKORE.UI.WPF.Modern.Controls.MessageBox.Show(net.presetss.presets[Map[game]].Note, "提示");
             this.Close();
         }

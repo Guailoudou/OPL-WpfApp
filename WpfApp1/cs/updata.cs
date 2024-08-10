@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OPL_WpfApp.cs;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace userdata
                     // 将字节流写入到本地文件
                     File.WriteAllBytes(savePath, fileBytes);
 
-                    Logger.Log($"[提示]ZIP更新文件已成功下载到：{savePath}");
+                    Logs.Out_Logs($"[提示]ZIP更新文件已成功下载到：{savePath}");
                     if(name== "openp2p.zip")
                         MessageBox.Show("更新包下载完毕，推荐立刻重启软件，完成最后更新，防止出现BUG", "提示");
 
@@ -55,11 +56,11 @@ namespace userdata
                 }
                 catch (HttpRequestException ex)
                 {
-                    Logger.Log($"下载失败: {ex.Message} 可尝试设置hosts来保障连接的可行性：\r\n172.64.32.5 file.gldhn.top\r\n172.64.32.5 blog.gldhn.top");
+                    Logs.Out_Logs($"下载失败: {ex.Message} 可尝试设置hosts来保障连接的可行性：\r\n172.64.32.5 file.gldhn.top\r\n172.64.32.5 blog.gldhn.top");
                 }
                 catch (IOException ex)
                 {
-                    Logger.Log($"文件操作失败: {ex.Message}");
+                    Logs.Out_Logs($"文件操作失败: {ex.Message}");
                 }
             }
         }
@@ -81,15 +82,15 @@ namespace userdata
                     // 将字节流写入到本地文件
                     File.WriteAllBytes(savePath, fileBytes);
 
-                    Logger.Log($"[提示]更新程序已成功下载到：{savePath}");
+                    Logs.Out_Logs($"[提示]更新程序已成功下载到：{savePath}");
                 }
                 catch (HttpRequestException ex)
                 {
-                    Logger.Log($"下载失败: {ex.Message}");
+                    Logs.Out_Logs($"下载失败: {ex.Message}");
                 }
                 catch (IOException ex)
                 {
-                    Logger.Log($"文件操作失败: {ex.Message}");
+                    Logs.Out_Logs($"文件操作失败: {ex.Message}");
                 }
             }
         }
