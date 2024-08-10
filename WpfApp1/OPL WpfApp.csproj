@@ -120,6 +120,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
       <Private>True</Private>
@@ -225,6 +226,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\iNKORE.UI.WPF.Modern.0.9.30\lib\net452\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -250,10 +252,17 @@
     <Compile Include="cs\Check.cs" />
     <Compile Include="cs\Heart.cs" />
     <Compile Include="cs\Multicast.cs" />
+    <Compile Include="cs\set.cs" />
     <Compile Include="cs\updata.cs" />
+    <Compile Include="Media\HsbaColor.cs" />
+    <Compile Include="Media\ResObj.cs" />
+    <Compile Include="Media\RgbaColor.cs" />
+    <Compile Include="Media\StreamObj.cs" />
+    <Compile Include="Media\Utility.cs" />
     <Compile Include="minui\Add.xaml.cs">
       <DependentUpon>Add.xaml</DependentUpon>
     </Compile>
+    <Compile Include="minui\ColorPicker.xaml.cs" />
     <Compile Include="minui\edit.xaml.cs">
       <DependentUpon>edit.xaml</DependentUpon>
     </Compile>
@@ -270,6 +279,10 @@
     <Page Include="minui\Add.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="minui\ColorPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="minui\edit.xaml">
       <SubType>Designer</SubType>

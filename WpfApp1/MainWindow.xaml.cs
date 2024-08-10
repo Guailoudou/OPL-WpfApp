@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
@@ -20,10 +21,15 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
+
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using userdata;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
+using ColorConverter = System.Windows.Media.ColorConverter;
+using FontFamily = System.Windows.Media.FontFamily;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace OPL_WpfApp
@@ -61,7 +67,9 @@ namespace OPL_WpfApp
             {
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 Logger.Log("[提示]当前操作系统版本过低，为防止显示问题已自动切换为黑夜模式");
+
             }
+            
             Net net = new Net();
             _ = net.GetPreset();
             _ = net.Getthank(thank);
@@ -72,10 +80,28 @@ namespace OPL_WpfApp
             ver.Content = Getversion();
             //thank.Navigate("https://file.gldhn.top/web/thank/"); 废案，内存占用过高
             if(args.Length > 0 && args[0] == "-on") Strapp();
+            string bgColor = ExtractBackgroundColor(args);
+            if(bgColor != null) ColorBlock.SelectColor = new SolidColorBrush(set.ParseColor(bgColor));
             //richOutput.SelectionFont = new Font("楷体", 12, FontStyle.Bold);
 
-        }
 
+
+        }
+        private static string ExtractBackgroundColor(string[] args)
+        {
+            foreach (string arg in args)
+            {
+                if (arg.StartsWith("-bg=", StringComparison.OrdinalIgnoreCase))
+                {
+                    string[] parts = arg.Split(new[] { '=' }, 2);
+                    if (parts.Length == 2)
+                    {
+                        return parts[1]; 
+                    }
+                }
+            }
+            return null; 
+        }
 
         private void CopyUUID_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -864,13 +890,33 @@ namespace OPL_WpfApp
             if (ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark)
             {
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
-                
+
+
             }
             else
             {
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 
             }
+        }
+
+        private void ColorPicker_Set(object sender, RoutedEventArgs e)
+        {
+            
+            SolidColorBrush color = ColorBlock.SelectColor;
+            ThemeManager.Current.AccentColor = color.Color;
+            set set = new set();
+            set.settings.Color = color.Color.ToString();
+            set.Write();
+            MessageBox.Show($"设置颜色成功{color.Color} 部分样式可能需要重启生效");
+        }
+
+        private void ColorPicker_ReSet(object sender, RoutedEventArgs e)
+        {
+            set set = new set();
+            set.settings.Color = "";
+            set.Write();
+            MessageBox.Show($"已重置，重启生效");
         }
     }
 

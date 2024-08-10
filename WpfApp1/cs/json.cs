@@ -55,8 +55,7 @@ namespace userdata
                 LogLevel = Ologv
 
             };
-            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
-            wejson(ujson);
+            wejson();
             
         }
         public void Alloff()
@@ -65,8 +64,7 @@ namespace userdata
             {
                 app.Enabled = 0;
             }
-            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
-            wejson(ujson);
+            wejson();
         }
         public void Add1link(string type, string uid, int port,int cport)  
         {
@@ -78,8 +76,7 @@ namespace userdata
                 if(cport!=0)config.Apps[index].SrcPort = cport;
                 config.Apps[index].Enabled = 1;
                 oindex.Add(index);
-                string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
-                wejson(ujson);
+                wejson();
             }
             else
             {
@@ -104,8 +101,7 @@ namespace userdata
         public void Setshare(int n)
         {
             config.Network.ShareBandwidth = n;
-            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
-            wejson(ujson);
+            wejson();
         }
         public bool newapp(string suuid,int sport, string type,int cport=0,string appname="自定义")
         {
@@ -152,8 +148,7 @@ namespace userdata
                 };
             }
             config.LogLevel = Ologv;
-            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
-            wejson(ujson);
+            wejson();
             return true;
         }
         public void ReSetToken()
@@ -162,13 +157,12 @@ namespace userdata
             config.Network.Token = 11602319472897248650UL;
             config.LogLevel = Ologv;
             config.Network.User = "gldoffice";
-            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
-            wejson(ujson);
+            wejson();
         }
-        public void wejson(string ujson) //写入josn
+        public void wejson() //写入josn
         {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
-
+            string ujson =  JsonConvert.SerializeObject(config, Formatting.Indented);
             // 创建 bin 文件夹（如果不存在）
             Directory.CreateDirectory(Path.GetDirectoryName(absolutePath));
             using (FileStream stream = new FileStream(absolutePath, FileMode.Create, FileAccess.Write))
@@ -183,8 +177,7 @@ namespace userdata
             getjosn();
             config.Apps.RemoveAt(index);
             config.LogLevel = Ologv;
-            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
-            wejson(ujson);
+            wejson();
         }
         public void onapp(int index) //开启app
         {
@@ -201,16 +194,14 @@ namespace userdata
             }
             config.Apps[index].Enabled = 1;
             config.LogLevel = Ologv;
-            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
-            wejson(ujson);
+            wejson();
         }
         public void offapp(int index) //关闭app
         {
             getjosn();
             config.Apps[index].Enabled = 0;
             config.LogLevel = Ologv;
-            string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
-            wejson(ujson);
+            wejson();
         }
         public void getjosn() //读取配置
         {
@@ -221,14 +212,12 @@ namespace userdata
                 config = JsonConvert.DeserializeObject<Config>(jsonCont);
                 if (config.Network.ShareBandwidth == 100) { 
                     config.Network.ShareBandwidth = 10;
-                    string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
-                    wejson(ujson);
+                    wejson();
                 }
                 if(config.LogLevel != Ologv) 
                 {
                     config.LogLevel = Ologv;
-                    string ujson = JsonConvert.SerializeObject(config, Formatting.Indented);
-                    wejson(ujson);
+                    wejson();
                 }
 
             }

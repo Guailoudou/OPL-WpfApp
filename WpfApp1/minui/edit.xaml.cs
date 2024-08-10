@@ -82,8 +82,7 @@ namespace OPL_WpfApp
                 iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("错误，异常的输入:" + ex, "警告");
                 return;
             }
-            string ujson = JsonConvert.SerializeObject(json.config, Formatting.Indented);
-            json.wejson(ujson);
+            json.wejson();
             this.Close();
         }
     }

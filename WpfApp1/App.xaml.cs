@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iNKORE.UI.WPF.Modern;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -11,6 +12,8 @@ using System.Reflection;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Media;
 using userdata;
 
 namespace OPL_WpfApp
@@ -24,8 +27,15 @@ namespace OPL_WpfApp
         {
             
             base.OnStartup(e);
-            
             string[] args = e.Args;
+            set set = new set();
+            if (set.settings.Color != null && set.settings.Color != "")
+            {
+                ThemeManager.Current.AccentColor = set.ParseColor(set.settings.Color);
+                var color = ThemeManager.Current.AccentColor ?? Colors.Black;
+                args = args.Concat(new[] { $"-bg={color}" }).ToArray();
+            }
+            
             // 应用程序启动时的自定义逻辑
             var mainWindow = new MainWindow(args);
             mainWindow.Show();
@@ -34,6 +44,7 @@ namespace OPL_WpfApp
             {
                 File.Delete(savePath);
             }
+            
         }
 
         protected override void OnExit(ExitEventArgs e)

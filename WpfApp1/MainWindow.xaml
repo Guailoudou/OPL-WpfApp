@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OPL_WpfApp"
         mc:Ignorable="d"
-        xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+        xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern" 
+        xmlns:test="clr-namespace:test"
         ui:ThemeManager.IsThemeAware="True"
         ui:WindowHelper.SystemBackdropType="Mica"
         ui:WindowHelper.UseModernWindowStyle="True"
@@ -200,6 +201,14 @@
 
 
                 </Grid>
+            </TabItem>
+            <TabItem Header="自定义颜色" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
+                <Grid>
+                    <test:ColorPicker Margin="258,362,248,0" SelectColor="Black" x:Name="ColorBlock"/>
+                    <Button Content="设置颜色" Margin="133,364,0,0" VerticalAlignment="Top" Width="120" Click="ColorPicker_Set"/>
+                    <Button Content="重置" Margin="505,366,0,0" VerticalAlignment="Top" Width="120" Click="ColorPicker_ReSet"/>
+                </Grid>
+
             </TabItem>
         </TabControl>
         <Button Content="启动" Margin="0,0,10,10" VerticalAlignment="Bottom" Click="Button_Click_open" x:Name="openbutton" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Grid.Column="1" HorizontalAlignment="Right" Height="32" Width="102"/>

@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="AppColors.xaml"/>
                 <ui:ThemeResources/>
                 <ui:XamlControlsResources />
+                
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="Button" x:Key="svg-button">
                 <Setter Property="SnapsToDevicePixels" Value="true"/>
