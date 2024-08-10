@@ -24,7 +24,7 @@
             <ComboBoxItem Content="udp"/>
         </ComboBox>
         <Label Content="协议*" HorizontalAlignment="Left" Margin="28,168,0,0" VerticalAlignment="Top"/>
-        <Button Content="保存" HorizontalAlignment="Center" Margin="0,216,0,0" VerticalAlignment="Top" Width="176" Height="35" Click="Button_Click">
+        <Button Content="保存" HorizontalAlignment="Center" Margin="0,216,0,0" VerticalAlignment="Top" Width="176" Height="35" Click="Button_Click" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}">
             <!--<Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">

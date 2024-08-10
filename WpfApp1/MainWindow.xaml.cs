@@ -39,7 +39,6 @@ namespace OPL_WpfApp
         public MainWindow(string[] args)
         {
             InitializeComponent();
-            MessageBox.Show("程序启动成功，请勿关闭本窗口", "提示");
             // 设置窗口位置居中显示
             double screenWidth = SystemParameters.PrimaryScreenWidth;
             double screenHeight = SystemParameters.PrimaryScreenHeight;
@@ -636,13 +635,12 @@ namespace OPL_WpfApp
         }
         public class Logger
         {
-            private static RichTextBox _output;
+            private static TextBox _output;
             private static string absolutePath;
-            public Logger(RichTextBox output,bool oon=true)
+            public Logger(TextBox output,bool oon=true)
             {
                 _output = output;
                 _output.FontFamily = new FontFamily("Times New Roman"); 
-                _output.AppendText(Environment.NewLine);
                 if(oon)
                     absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log");
                 else
@@ -835,7 +833,7 @@ namespace OPL_WpfApp
             catch (Exception ex)
             {
                 Logger.Log($"无法识别的连接码: {ex.Message}");
-                MessageBox.Show($"无法识别的连接码\r该功能为一键添加/编辑隧道为连接码隧道，房主可直接编辑发送连接码供连接方使用。 \r\r连接码用法： \r用法1：\r uid:端口 --> tcp协议连接码 \r示例：qwertyuioop:25565 \r\r 用法2：\r<1/2>:uid:端口[:本地端口] --> 1为tcp，2为udp 本地端口可省略\r示例：1:qwertyuiop:25565:25575 \r多个连接可以用;间隔同时输入\r复制后直接点击该按钮即可完成添加，后直接启动即可  \r\r {ex.Message}", "错误");
+                MessageBox.Show($"无法识别的连接码-请复制连接码后点击\r该功能为一键添加/编辑隧道为连接码隧道，房主可直接编辑发送连接码供连接方使用。 \r\r连接码用法： \r用法1：\r uid:端口 --> tcp协议连接码 \r示例：qwertyuioop:25565 \r\r 用法2：\r<1/2>:uid:端口[:本地端口] --> 1为tcp，2为udp 本地端口可省略\r示例：1:qwertyuiop:25565:25575 \r多个连接可以用;间隔同时输入\r复制后直接点击该按钮即可完成添加，后直接启动即可  \r\r {ex.Message}", "错误");
             }
         }
 
