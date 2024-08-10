@@ -9,7 +9,6 @@ using System.Threading;
 using static OPL_WpfApp.MainWindow;
 using System.Text.RegularExpressions;
 using System.Windows;
-
 namespace userdata
 {
     internal class Heart

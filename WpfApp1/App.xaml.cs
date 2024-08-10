@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,7 +22,9 @@ namespace OPL_WpfApp
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            
             base.OnStartup(e);
+            
             string[] args = e.Args;
             // 应用程序启动时的自定义逻辑
             var mainWindow = new MainWindow(args);
@@ -116,6 +120,6 @@ namespace OPL_WpfApp
             }
 
         }
-
+      
     }
 }
