@@ -1,6 +1,7 @@
 ﻿using iNKORE.UI.WPF.Modern;
 using iNKORE.UI.WPF.Modern.Common.IconKeys;
 using iNKORE.UI.WPF.Modern.Controls;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -53,8 +54,14 @@ namespace OPL_WpfApp
             this.DataContext = userData;
             userData = new userdata.UserData();
             sjson = new userdata.json();
-            Logger.Log($"[信息]程序启动，当前版本：{Getversion()}，更新包号：{Net.Getpvn()}");
-            
+            OperatingSystem os = Environment.OSVersion;
+            Version vers = os.Version;
+            Logger.Log($"[信息]程序启动，当前版本：{Getversion()}，更新包号：{Net.Getpvn()}，系统版本：{vers}");
+            if (vers.Major <= 6 && vers.Minor <= 1)
+            {
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                Logger.Log("[提示]当前操作系统版本过低，为防止显示问题已自动切换为黑夜模式");
+            }
             Net net = new Net();
             _ = net.GetPreset();
             _ = net.Getthank(thank);
