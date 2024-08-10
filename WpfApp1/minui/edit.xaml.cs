@@ -72,14 +72,14 @@ namespace OPL_WpfApp
                 }
                 else
                 {
-                    MessageBox.Show("存在错误数据 端口正常范围为1-65535", "提示");
+                    iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("存在错误数据 端口正常范围为1-65535", "提示");
                     return;
                 }
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("错误，异常的输入:" + ex, "警告");
+                iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("错误，异常的输入:" + ex, "警告");
                 return;
             }
             string ujson = JsonConvert.SerializeObject(json.config, Formatting.Indented);

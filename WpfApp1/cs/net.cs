@@ -13,7 +13,6 @@ using static OPL_WpfApp.MainWindow;
 using System.IO;
 using System.Windows.Controls;
 using System.Net.Sockets;
-
 namespace userdata
 {
     internal class Net
