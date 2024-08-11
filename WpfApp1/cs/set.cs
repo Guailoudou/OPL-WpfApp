@@ -76,6 +76,7 @@ namespace userdata
     public class settings
     {
         public string Color { get; set; }
+        public string Theme { get; set; }
     }
     
 

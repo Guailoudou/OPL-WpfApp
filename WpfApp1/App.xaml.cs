@@ -35,7 +35,7 @@ namespace OPL_WpfApp
                 var color = ThemeManager.Current.AccentColor ?? Colors.Black;
                 args = args.Concat(new[] { $"-bg={color}" }).ToArray();
             }
-            
+
             // 应用程序启动时的自定义逻辑
             var mainWindow = new MainWindow(args);
             mainWindow.Show();

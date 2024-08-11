@@ -83,7 +83,7 @@ namespace OPL_WpfApp
             string bgColor = ExtractBackgroundColor(args);
             if(bgColor != null) ColorBlock.SelectColor = new SolidColorBrush(set.ParseColor(bgColor));
             //richOutput.SelectionFont = new Font("楷体", 12, FontStyle.Bold);
-
+            GetTheme();
 
 
         }
@@ -885,67 +885,7 @@ namespace OPL_WpfApp
             MessageBox.Show("复制成功", "提示");
         }
 
-        private void Button_ToggleTheme_Click(object sender, RoutedEventArgs e)
-        {
-            if (ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark)
-            {
-                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
-
-
-            }
-            else
-            {
-                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                
-            }
-        }
         
-
-        private void ApplySystemTheme()
-        {
-            // 检查系统是否设置为高对比度模式，如果是，则可能需要特殊处理
-            if (SystemParameters.HighContrast)
-            {
-                // 根据需要设置高对比度主题
-            }
-            else
-            {
-                // 使用 SystemParameters 来确定系统的主题
-                var isDarkMode = IsSystemDarkMode(); // 这个方法需要您自己实现
-
-                if (isDarkMode)
-                {
-                    // 系统设置为深色主题
-                    ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                }
-                else
-                {
-                    // 系统设置为浅色主题
-                    ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
-                }
-            }
-        }
-
-        // 检测系统是否处于深色模式
-        private bool IsSystemDarkMode()
-        {
-            // 根据不同的操作系统版本，实现可能有所不同
-            // 以下是一个通用的示例，具体实现可能需要根据操作系统进行调整
-
-            // 对于 Windows 10 及更高版本，可以尝试读取注册表或使用其他API
-
-            // 例如，检查 Windows 10 的注册表项来确定是否启用了深色模式
-            // 注意：以下代码仅为示例，可能需要根据实际情况进行调整
-            var registryKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-            if (registryKey != null)
-            {
-                var appsUseLightTheme = (int)registryKey.GetValue("AppsUseLightTheme", 1);
-                return appsUseLightTheme == 0; // 0 表示深色模式，1 表示浅色模式
-            }
-
-            // 如果无法确定或不是 Windows 10，可以返回 false，表示使用浅色模式
-            return false;
-        }
         private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var comboBox = sender as ComboBox;
@@ -954,20 +894,21 @@ namespace OPL_WpfApp
                 switch (selectedItem.Content.ToString())
                 {
                     case "跟随系统":
-                        ApplySystemTheme();
+                        ThemeManager.Current.ApplicationTheme = null;
+                        SetThene("");
                         break;
                     case "浅色":
                         ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
+                        SetThene("Light");
                         break;
                     case "深色":
                         ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                        SetThene("Dark");
                         break;
                 }
             }
         }
-
-
-
+        
         private void ColorPicker_Set(object sender, RoutedEventArgs e)
         {
             
@@ -985,6 +926,18 @@ namespace OPL_WpfApp
             set.settings.Color = "";
             set.Write();
             MessageBox.Show($"已重置，重启生效");
+        }
+
+        private void SetReColor(object sender, RoutedEventArgs e)
+        {
+            var Border = sender as Border;
+            SolidColorBrush color = Border.Background as SolidColorBrush;
+            ThemeManager.Current.AccentColor = color.Color;
+            ColorBlock.SelectColor = color;
+            set set = new set();
+            set.settings.Color = color.Color.ToString();
+            set.Write();
+            MessageBox.Show($"设置颜色成功{color.Color} 部分样式可能需要重启生效");
         }
     }
 
