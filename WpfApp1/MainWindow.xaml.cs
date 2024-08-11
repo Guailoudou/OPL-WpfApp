@@ -68,8 +68,8 @@ namespace OPL_WpfApp
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 Logger.Log("[提示]当前操作系统版本过低，为防止显示问题已自动切换为黑夜模式");
 
-            }
-            
+            }else GetTheme();
+
             Net net = new Net();
             _ = net.GetPreset();
             _ = net.Getthank(thank);
@@ -83,7 +83,7 @@ namespace OPL_WpfApp
             string bgColor = ExtractBackgroundColor(args);
             if(bgColor != null) ColorBlock.SelectColor = new SolidColorBrush(set.ParseColor(bgColor));
             //richOutput.SelectionFont = new Font("楷体", 12, FontStyle.Bold);
-            GetTheme();
+            
 
 
         }
@@ -888,7 +888,15 @@ namespace OPL_WpfApp
         
         private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var comboBox = sender as ComboBox;
+            OperatingSystem os = Environment.OSVersion;
+            Version vers = os.Version;
+            
+            if (vers.Major <= 6 && vers.Minor <= 1)
+            {
+                MessageBox.Show("当前系统暂不支持主题设置", "提示");
+                return;
+            }
+             var comboBox = sender as ComboBox;
             if (comboBox != null && comboBox.SelectedItem is ComboBoxItem selectedItem)
             {
                 switch (selectedItem.Content.ToString())

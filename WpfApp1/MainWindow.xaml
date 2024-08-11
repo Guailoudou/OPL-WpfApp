@@ -271,6 +271,7 @@
                     <test:ColorPicker Height="234" Margin="30,52,30,98" SelectColor="Black" x:Name="ColorBlock" Grid.Column="1" Grid.Row="1"/>
 
                     <Button Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Content="重置为系统配色" Width="170" Click="ColorPicker_ReSet" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="0,310,0,0" VerticalAlignment="Top" Height="34"/>
+                    <Label Content="外观设置：" HorizontalAlignment="Left" Margin="308,16,0,0" VerticalAlignment="Top"  />
 
 
 
