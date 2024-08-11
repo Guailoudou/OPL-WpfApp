@@ -25,11 +25,7 @@
             <TabControl.FocusVisualStyle>
                 <Style/>
             </TabControl.FocusVisualStyle>
-            <ui:TabControlHelper.TabStripFooter>
-                <Button x:Name="Button_ToggleTheme" Click="Button_ToggleTheme_Click" HorizontalAlignment="Center" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}">
-                    <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Lightbulb_20_Regular}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Theme"/>
-                </Button>
-            </ui:TabControlHelper.TabStripFooter>
+
             <TabItem Header="隧道" BorderBrush="{x:Null}" Width="80" Height="50">
                 <ui:TabItemHelper.Icon>
                     <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Link_20_Regular}" />
@@ -202,11 +198,85 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="自定义颜色" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
+            <TabItem Header="个性化" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
+                <ui:TabItemHelper.Icon>
+                    <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Color_20_Regular}"/>
+                </ui:TabItemHelper.Icon>
                 <Grid>
-                    <test:ColorPicker Margin="258,362,248,0" SelectColor="Black" x:Name="ColorBlock"/>
-                    <Button Content="设置颜色" Margin="133,364,0,0" VerticalAlignment="Top" Width="120" Click="ColorPicker_Set"/>
-                    <Button Content="重置" Margin="505,366,0,0" VerticalAlignment="Top" Width="120" Click="ColorPicker_ReSet"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="500"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="预设颜色" HorizontalAlignment="Left" Margin="24,16,0,0" VerticalAlignment="Top" Width="60" />
+
+                    <ComboBox x:Name="ThemeComboBox"
+          VerticalContentAlignment="Center"
+          Margin="383,10,0,0"
+          Width="107"
+          Height="32"
+          BorderBrush="#B2EFECEC"
+          Background="#7FFFFFFF"
+          SelectionChanged="ThemeComboBox_SelectionChanged">
+                        <ComboBoxItem Content="跟随系统" IsSelected="True"/>
+                        <ComboBoxItem Content="浅色"/>
+                        <ComboBoxItem Content="深色"/>
+                    </ComboBox>
+
+                    <Border Margin="34,9,396,300" CornerRadius="4" Background="#FFB900" Grid.Row="1"/>
+                    <Border Margin="111,9,319,300" CornerRadius="4" Background="#FF8C00" Grid.Row="1"/>
+                    <Border Margin="187,9,243,300" CornerRadius="4" Background="#F7630C" Grid.Row="1"/>
+                    <Border Margin="264,9,166,300" CornerRadius="4" Background="#CA5010" Grid.Row="1"/>
+                    <Border Margin="342,9,88,300" CornerRadius="4" Background="#DA3B01" Grid.Row="1"/>
+                    <Border Margin="419,9,11,300" CornerRadius="4" Background="#EF6950" Grid.Row="1"/>
+                    <Border Margin="34,66,396,243" CornerRadius="4" Background="#D13438" Grid.Row="1"/>
+                    <Border Margin="111,66,319,243" CornerRadius="4" Background="#FF4343" Grid.Row="1"/>
+                    <Border Margin="187,66,243,243" CornerRadius="4" Background="#FF4343" Grid.Row="1"/>
+                    <Border Margin="264,66,166,243" CornerRadius="4" Background="#E3008C" Grid.Row="1"/>
+                    <Border Margin="342,66,88,243" CornerRadius="4" Background="#E74856" Grid.Row="1"/>
+                    <Border Margin="419,66,11,243" CornerRadius="4" Background="#E81123" Grid.Row="1"/>
+                    <Border Margin="34,123,396,186" CornerRadius="4" Background="#EA005E" Grid.Row="1"/>
+                    <Border Margin="111,123,319,186" CornerRadius="4" Background="#C30052" Grid.Row="1"/>
+                    <Border Margin="187,123,243,186" CornerRadius="4" Background="#E3008C" Grid.Row="1"/>
+                    <Border Margin="264,123,166,186" CornerRadius="4" Background="#BF0077" Grid.Row="1"/>
+                    <Border Margin="342,123,88,186" CornerRadius="4" Background="#C239B3" Grid.Row="1"/>
+                    <Border Margin="419,123,11,186" CornerRadius="4" Background="#9A0089" Grid.Row="1"/>
+                    <Border Margin="34,180,396,129" CornerRadius="4" Background="#0078D4" Grid.Row="1"/>
+                    <Border Margin="111,180,319,129" CornerRadius="4" Background="#0063B1" Grid.Row="1"/>
+                    <Border Margin="187,180,243,129" CornerRadius="4" Background="#8E8CD8" Grid.Row="1"/>
+                    <Border Margin="264,180,166,129" CornerRadius="4" Background="#6B69D6" Grid.Row="1"/>
+                    <Border Margin="342,180,88,129" CornerRadius="4" Background="#8764B8" Grid.Row="1"/>
+                    <Border Margin="419,180,11,129" CornerRadius="4" Background="#744DA9" Grid.Row="1"/>
+                    <Border Margin="34,237,396,72" CornerRadius="4" Background="#881798" Grid.Row="1"/>
+                    <Border Margin="111,237,319,72" CornerRadius="4" Background="#0099BC" Grid.Row="1"/>
+                    <Border Margin="187,237,243,72" CornerRadius="4" Background="#2D7D9A" Grid.Row="1"/>
+                    <Border Margin="264,237,166,72" CornerRadius="4" Background="#00B7C3" Grid.Row="1"/>
+                    <Border Margin="342,237,88,72" CornerRadius="4" Background="#B146C2" Grid.Row="1"/>
+                    <Border Margin="419,237,11,72" CornerRadius="4" Background="#038387" Grid.Row="1"/>
+                    <Border Margin="34,294,396,15" CornerRadius="4" Background="#00B294" Grid.Row="1"/>
+                    <Border Margin="111,294,319,15" CornerRadius="4" Background="#018574" Grid.Row="1"/>
+                    <Border Margin="187,294,243,15" CornerRadius="4" Background="#00CC6A" Grid.Row="1"/>
+                    <Border Margin="264,294,166,15" CornerRadius="4" Background="#10893E" Grid.Row="1"/>
+                    <Border Margin="342,294,88,15" CornerRadius="4" Background="#7A7574" Grid.Row="1"/>
+                    <Border Margin="419,294,11,15" CornerRadius="4" Background="#5D5A58" Grid.Row="1"/>
+
+                    <Label Content="自定义" HorizontalAlignment="Left" Margin="24,16,0,0" VerticalAlignment="Top" Width="60" Grid.Column="1" />
+
+                    <Button Content="设置颜色" VerticalAlignment="Top" Width="170" Click="ColorPicker_Set" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Height="34" Margin="0,8,0,0"/>
+
+                    <test:ColorPicker Margin="30,58,30,65" SelectColor="Black" x:Name="ColorBlock" Grid.Column="1" Grid.Row="1"/>
+
+                    <Button Content="重置" Width="170" Click="ColorPicker_ReSet" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="0,310,0,0" VerticalAlignment="Top" Height="34"/>
+
+
+
+
+
+
                 </Grid>
 
             </TabItem>
