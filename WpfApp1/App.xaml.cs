@@ -27,6 +27,7 @@ namespace OPL_WpfApp
         {
             
             base.OnStartup(e);
+            AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
             string[] args = e.Args;
             set set = new set();
             if (set.settings.Color != null && set.settings.Color != "")
@@ -131,6 +132,36 @@ namespace OPL_WpfApp
             }
 
         }
-      
+        private static Assembly OnResolveAssembly(object sender, ResolveEventArgs args)
+        {
+            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+            var executingAssemblyName = executingAssembly.GetName();
+            var resName = executingAssemblyName.Name + ".resources";
+
+            AssemblyName assemblyName = new AssemblyName(args.Name); string path = "";
+            if (resName == assemblyName.Name)
+            {
+                path = executingAssemblyName.Name + ".g.resources"; ;
+            }
+            else
+            {
+                path = assemblyName.Name + ".dll";
+                if (assemblyName.CultureInfo != null && assemblyName.CultureInfo.Equals(CultureInfo.InvariantCulture) == false)
+                {
+                    path = String.Format(@"{0}\{1}", assemblyName.CultureInfo, path);
+                }
+            }
+
+            using (Stream stream = executingAssembly.GetManifestResourceStream(path))
+            {
+                if (stream == null)
+                    return null;
+
+                byte[] assemblyRawBytes = new byte[stream.Length];
+                stream.Read(assemblyRawBytes, 0, assemblyRawBytes.Length);
+                return Assembly.Load(assemblyRawBytes);
+            }
+        }
+
     }
 }

@@ -552,7 +552,7 @@ namespace OPL_WpfApp
                 else Open();
 
                 openbutton.Content = "关闭";
-                Logger.Log("[提示]-----------------------程序已开始运行请耐心等待隧道连接----------------------------");
+                Logger.Log("-----------------------程序已开始运行请耐心等待隧道连接----------------------------","提示");
                 fstert.Fill = Brushes.Orange;
                 on = true;
                 Relist();
@@ -617,7 +617,14 @@ namespace OPL_WpfApp
                                 if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
                             }
                             Stop();
-                            MessageBox.Show("主程序程序openp2p异常退出，请查看软件状态，重新启动","错误");
+                            Logger.Log("主程序程序openp2p异常退出，请查看软件状态，重新启动","错误");
+                            try {
+                                _ = timeopen();
+                            }catch
+                            (Exception ex)
+                            {
+                                Logger.Log("[错误]异步启动失败" + ex.ToString());
+                            }
                             tl = false;
                         }
                     });
@@ -651,6 +658,11 @@ namespace OPL_WpfApp
         //    string cmdpath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "addcmd.bat");
         //    Process.Start(cmdpath,path);
         //}
+        private async Task timeopen()
+        {
+            await Task.Delay(3000);
+            Strapp();
+        }
         protected override void OnClosed(EventArgs e)
         {
             
@@ -687,6 +699,17 @@ namespace OPL_WpfApp
                 Directory.CreateDirectory(System.IO.Path.GetDirectoryName(absolutePath));
                 DateTime Date = DateTime.Now;
                 string outmessage = "[" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "]" + message + Environment.NewLine;
+                _output.AppendText(outmessage);
+                _output.ScrollToEnd();
+                AppendTextToFile(absolutePath, outmessage);
+
+            }
+            public static void Log(string message,string log)
+            {
+
+                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(absolutePath));
+                DateTime Date = DateTime.Now;
+                string outmessage = "[" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "][" + log + "]" + message + Environment.NewLine;
                 _output.AppendText(outmessage);
                 _output.ScrollToEnd();
                 AppendTextToFile(absolutePath, outmessage);

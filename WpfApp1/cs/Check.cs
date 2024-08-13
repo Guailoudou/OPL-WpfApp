@@ -16,17 +16,20 @@ namespace OPL_WpfApp
 {
     public partial class MainWindow : Window
     {
+        bool fsterto = false;
         public void Checkopen(string m)
         {
             if (m.Contains("autorunApp start"))
             {
                 Logger.Log("[提示]程序启动完毕，请耐心等待隧道连接"); //启动完毕
                 fstert.Fill = Brushes.Green;
+                fsterto = true;
             }
             if (m.Contains("autorunApp end"))
             {
                 Logger.Log("[提示]程序离线，请检查你的网络设置或查看网络连接是否正常");
                 fstert.Fill = Brushes.Orange;
+                fsterto = false;
             }
             if (m.Contains("LISTEN ON PORT")) //连接成功or断开
             {
@@ -82,7 +85,7 @@ namespace OPL_WpfApp
                 string pattern = @"(tcp|udp)\s*:\s*(\d+)";
                 Match match = Regex.Match(m, pattern);
 
-                if (match.Success)
+                if (match.Success && fsterto)
                 {
                     // 提取并输出匹配到的协议和端口号
                     string protocol = match.Groups[1].Value;
