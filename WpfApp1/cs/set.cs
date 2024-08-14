@@ -77,6 +77,8 @@ namespace userdata
     {
         public string Color { get; set; }
         public string Theme { get; set; }
+        public bool Auto_upop { get; set; } = true;
+        public bool Auto_up { get; set; } = true;
     }
     
 

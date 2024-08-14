@@ -13,22 +13,26 @@ using static OPL_WpfApp.MainWindow;
 using System.IO;
 using System.Windows.Controls;
 using System.Net.Sockets;
+using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+using OPL_WpfApp;
+
 namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 32;//协议版本号
+        private static readonly int pvn = 33;//协议版本号
         public static int Getpvn()
         {
             return pvn;
         }
         public static bool ismirror = true;
-        public async Task GetPreset()
+        public async Task GetPreset(Button button =null)
         {
             string isgitee = ismirror ? "gitee镜像" : "";
             Logger.Log($"[执行]网络请求文件preset.json-{isgitee}");
             string fileurl = "https://file.gldhn.top/file/json/preset.json"; //http://127.0.0.1:85/file/json/preset.json https://file.gldhn.top/file/json/preset.json
             fileurl = Getmirror(fileurl);
+            set set = new set();
             HttpClient httpClient = new HttpClient();
             try
             {
@@ -54,8 +58,15 @@ namespace userdata
                     string opPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
                     if (v > pvn)
                     {
-                        new Updata(Getmirror(presetss.upurl));
-                        Logger.Log($"[提示]获取预设完成,你的程序不是最新版本哦~ 开始后台下载更新包-{isgitee}");
+                        if (!set.settings.Auto_up)
+                        {
+                            Logger.Log("[提示]你的程序不是最新版本哦~ 但是你关闭了更新");
+                        }
+                        else
+                        {
+                            new Updata(Getmirror(presetss.upurl));
+                            Logger.Log($"[提示]获取预设完成,你的程序不是最新版本哦~ 开始后台下载更新包-{isgitee}");
+                        }
                     }
                     else
                     {
@@ -63,8 +74,17 @@ namespace userdata
                     }
                     if ((CalculateMD5Hash(opPath) != ophash && ophash != null) || !File.Exists(opPath))
                     {
-                        new Updata(Getmirror(presetss.opurl), false);
-                        Logger.Log("[提示]你的openp2p不是最新版本哦~ 开始后台下载更新包");
+                        
+                        if (!set.settings.Auto_upop)
+                        {
+                            Logger.Log("[提示]你的openp2p不是最新版本哦~ 但是你关闭了更新");
+                        }
+                        else
+                        {
+                            new Updata(Getmirror(presetss.opurl), false);
+                            Logger.Log("[提示]你的openp2p不是最新版本哦~ 开始后台下载更新包");
+                        }
+                        
                     }
                     Uplog.Log(presetss.uplog);
                 }

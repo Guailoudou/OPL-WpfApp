@@ -34,7 +34,7 @@ namespace updata
             }
             Console.WriteLine("文件校验完成，1s后将进行更新");
             Thread.Sleep(1000);
-            
+            DeleteAllDllFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory));
             if (File.Exists(savePath))
             {
                 ExtractZipAndOverwrite(savePath, Path.Combine(AppDomain.CurrentDomain.BaseDirectory));
@@ -115,5 +115,26 @@ namespace updata
                 return null;
             }
         }
+        static void DeleteAllDllFiles(string directoryPath)
+        {
+            try
+            {
+                // 获取指定目录下所有的 .dll 文件
+                string[] dllFiles = Directory.GetFiles(directoryPath, "*.dll");
+
+                // 遍历并删除每个 .dll 文件
+                foreach (string dllFile in dllFiles)
+                {
+                    File.Delete(dllFile);
+                    Console.WriteLine($"Deleted: {dllFile}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // 捕获并处理可能出现的异常
+                Console.WriteLine($"Error deleting files: {ex.Message}");
+            }
+        }
     }
+    
 }

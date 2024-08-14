@@ -252,21 +252,6 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Vanara.Core, Version=4.0.3.0, Culture=neutral, PublicKeyToken=c37e4080322237fa, processorArchitecture=MSIL">
-      <HintPath>..\packages\Vanara.Core.4.0.3\lib\net45\Vanara.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Vanara.PInvoke.IpHlpApi, Version=4.0.3.0, Culture=neutral, PublicKeyToken=c37e4080322237fa, processorArchitecture=MSIL">
-      <HintPath>..\packages\Vanara.PInvoke.IpHlpApi.4.0.3\lib\net45\Vanara.PInvoke.IpHlpApi.dll</HintPath>
-    </Reference>
-    <Reference Include="Vanara.PInvoke.Kernel32, Version=4.0.3.0, Culture=neutral, PublicKeyToken=c37e4080322237fa, processorArchitecture=MSIL">
-      <HintPath>..\packages\Vanara.PInvoke.Kernel32.4.0.3\lib\net45\Vanara.PInvoke.Kernel32.dll</HintPath>
-    </Reference>
-    <Reference Include="Vanara.PInvoke.Shared, Version=4.0.3.0, Culture=neutral, PublicKeyToken=c37e4080322237fa, processorArchitecture=MSIL">
-      <HintPath>..\packages\Vanara.PInvoke.Shared.4.0.3\lib\net45\Vanara.PInvoke.Shared.dll</HintPath>
-    </Reference>
-    <Reference Include="Vanara.PInvoke.Ws2_32, Version=4.0.3.0, Culture=neutral, PublicKeyToken=c37e4080322237fa, processorArchitecture=MSIL">
-      <HintPath>..\packages\Vanara.PInvoke.Ws2_32.4.0.3\lib\net45\Vanara.PInvoke.Ws2_32.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

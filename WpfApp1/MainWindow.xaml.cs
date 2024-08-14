@@ -83,8 +83,8 @@ namespace OPL_WpfApp
             string bgColor = ExtractBackgroundColor(args);
             if(bgColor != null) ColorBlock.SelectColor = new SolidColorBrush(set.ParseColor(bgColor));
             //richOutput.SelectionFont = new Font("楷体", 12, FontStyle.Bold);
-            
 
+            Initialization();
 
         }
         private static string ExtractBackgroundColor(string[] args)
@@ -969,6 +969,98 @@ namespace OPL_WpfApp
             set.settings.Color = color.Color.ToString();
             set.Write();
             MessageBox.Show($"设置颜色成功{color.Color} 部分样式可能需要重启生效");
+        }
+
+        private void Autoup_op(object sender, RoutedEventArgs e)
+        {
+            set set = new set();
+            set.settings.Auto_upop = true;
+            set.Write();
+        }
+
+        private void UnAutoup_op(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show(
+                "你确定要关闭openp2p文件校验吗，你需要知道你在做什么，如果你不了解这个的作用请不用动他！！!",
+                "警告",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Question);
+            if (result == MessageBoxResult.OK)
+            {
+                set set = new set();
+                set.settings.Auto_upop = false;
+                set.Write();
+            }
+            else
+            {
+                Autoup_opn.IsChecked = true;
+                return;
+            }
+            
+        }
+
+        private void Autoup(object sender, RoutedEventArgs e)
+        {
+            set set = new set();
+            set.settings.Auto_up = true;
+            set.Write();
+        }
+
+        private void UnAutoup(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show(
+                "你确定要关闭自动升级吗，你需要知道你在做什么，这可能会导致你的程序存在bug！！!",
+                "警告",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Question);
+            if (result == MessageBoxResult.OK)
+            {
+                set set = new set();
+                set.settings.Auto_up = false;
+                set.Write();
+            }
+            else
+            {
+                Autoupn.IsChecked = true;
+                return;
+            }
+            
+        }
+        public void Initialization()
+        {
+            set set = new set();
+            if (set.settings.Auto_upop)
+            {
+                Autoup_opn.IsChecked = true;
+            }
+            if(set.settings.Auto_up)
+            {
+                Autoupn.IsChecked = true;
+            }
+        }
+
+        private void Auto_boot(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("该功能暂未开放，制作ing");
+            Autoup_bootn.IsChecked = false;
+        }
+
+        private void Auto_open(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("该功能暂未开放，制作ing");
+            Autoup_openn.IsChecked = false;
+        }
+
+        private void UnAuto_boot(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("该功能暂未开放，制作ing");
+            Autoup_bootn.IsChecked = false;
+        }
+
+        private void UnAuto_open(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("该功能暂未开放，制作ing");
+            Autoup_openn.IsChecked = false;
         }
     }
 
