@@ -1056,10 +1056,12 @@ namespace OPL_WpfApp
             {
                 Autoup_bootn.IsChecked = true;
             }
+            Autoup_bootn.Checked += Auto_boot;
         }
 
         private void Auto_boot(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("开启此功能后开机仍然可能会弹出以管理员启动的同意弹窗\r想要不提示，可以在电脑底部搜索框输入UAC，打开”更改用户账户控制设置“把权限降到最低即可", "提示");
             AutoStartWith.AddToStartup();
         }
 
