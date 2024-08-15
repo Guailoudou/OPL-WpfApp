@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
@@ -69,7 +70,8 @@ namespace OPL_WpfApp
                 Logger.Log("[提示]当前操作系统版本过低，为防止显示问题已自动切换为黑夜模式");
 
             }else GetTheme();
-
+            bool temp = false;
+            
             Net net = new Net();
             _ = net.GetPreset();
             _ = net.Getthank(thank);
@@ -81,7 +83,12 @@ namespace OPL_WpfApp
             string bgColor = ExtractBackgroundColor(args);
             if(bgColor != null) ColorBlock.SelectColor = new SolidColorBrush(set.ParseColor(bgColor));
             //richOutput.SelectionFont = new Font("楷体", 12, FontStyle.Bold);
-            Initialization();
+            //if (args.Contains("-tempon"))
+            //{
+            //    temp = true;
+            //    Strapp();
+            //}
+            Initialization(temp);
 
         }
         private static string ExtractBackgroundColor(string[] args)
@@ -521,6 +528,12 @@ namespace OPL_WpfApp
         DateTime OpenDate;
         private void Strapp()
         {
+            //if (!IsProcessElevated())
+            //{
+            //    // 重启进程并请求管理员权限
+            //    RestartAsAdmin();
+            //    return;
+            //}
             if (!on&&OpenDate.AddSeconds(1)>DateTime.Now&&OpenDate!=null)
             {
                 MessageBox.Show("操作太频繁，请稍后再试 (请至少间隔1s，防止出现BUG)", "警告");
@@ -1023,7 +1036,7 @@ namespace OPL_WpfApp
             }
             
         }
-        private void Initialization()
+        private void Initialization(bool temp =false)
         {
             set set = new set();
             if (set.settings.Auto_upop)
@@ -1037,9 +1050,9 @@ namespace OPL_WpfApp
             if (set.settings.Auto_open)
             {
                 Autoup_openn.IsChecked = true;
-                Strapp();
+                if(!temp)Strapp();
             }
-            if (Registrys.IsInStartup())
+            if (AutoStartWith.IsInStartup())
             {
                 Autoup_bootn.IsChecked = true;
             }
@@ -1047,7 +1060,7 @@ namespace OPL_WpfApp
 
         private void Auto_boot(object sender, RoutedEventArgs e)
         {
-            Registrys.AddToStartup();
+            AutoStartWith.AddToStartup();
         }
 
         private void Auto_open(object sender, RoutedEventArgs e)
@@ -1059,7 +1072,7 @@ namespace OPL_WpfApp
 
         private void UnAuto_boot(object sender, RoutedEventArgs e)
         {
-            Registrys.RemoveFromStartup();
+            AutoStartWith.RemoveFromStartup();
 
         }
 

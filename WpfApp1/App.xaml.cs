@@ -10,11 +10,13 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Security.Policy;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using userdata;
+using static OPL_WpfApp.MainWindow;
 
 namespace OPL_WpfApp
 {
@@ -27,6 +29,13 @@ namespace OPL_WpfApp
         {
             
             base.OnStartup(e);
+            string OPPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","openp2p.exe");
+            if (!IsProcessElevated()&&File.Exists(OPPath))
+            {
+                // 重启进程并请求管理员权限
+                RestartAsAdmin();
+                return;
+            }
             AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
             string[] args = e.Args;
             set set = new set();
@@ -67,7 +76,7 @@ namespace OPL_WpfApp
                 string pathToExe = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "updata.exe");
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = pathToExe;
-                startInfo.Arguments = net.presetss.uphash;
+                startInfo.Arguments = net.presetss.uphash + " " +Process.GetCurrentProcess().MainModule.FileName;
                 startInfo.UseShellExecute = true;
                 startInfo.WorkingDirectory = Path.GetDirectoryName(pathToExe);
                 startInfo.CreateNoWindow = true; // 不显示新的命令行窗口
@@ -162,6 +171,34 @@ namespace OPL_WpfApp
                 return Assembly.Load(assemblyRawBytes);
             }
         }
+        private static bool IsProcessElevated()
+        {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
 
+        public static void RestartAsAdmin()
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.UseShellExecute = true;
+            startInfo.WorkingDirectory = Environment.CurrentDirectory;
+            startInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
+            startInfo.Verb = "runas"; // 请求管理员权限
+
+            try
+            {
+                Process.Start(startInfo);
+                Environment.Exit(0); // 退出当前进程
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                Logger.Log("The operation was cancelled by the user.");
+            }
+            catch (Exception e)
+            {
+                Logger.Log("Error: " + e.Message);
+            }
+        }
     }
 }

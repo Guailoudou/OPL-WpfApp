@@ -16,9 +16,15 @@ namespace updata
         {
             string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "nvb.zip");
             string filehash = "";
+            string oldopl = "";
             if(args.Length > 0)
             {
                 filehash = args[0];
+                if (args.Length > 1)
+                {
+                    oldopl = Path.GetFileName(args[1]);
+                }
+                
             }
             else
             {
@@ -75,6 +81,11 @@ namespace updata
                                 }
                             }
                         }
+                        if (oldopl != "OPL_WpfApp.exe" && oldopl != "")
+                        {
+                            File.Delete(args[1]);
+                            File.Move(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "OPL_WpfApp.exe"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, oldopl));
+                        }
                         Console.WriteLine("解压完成，更新完毕。");
                         File.Delete(zipPath);
                     }
@@ -113,26 +124,6 @@ namespace updata
             {
                 Console.WriteLine($"Error computing MD5: {ex.Message}");
                 return null;
-            }
-        }
-        static void DeleteAllDllFiles(string directoryPath)
-        {
-            try
-            {
-                // 获取指定目录下所有的 .dll 文件
-                string[] dllFiles = Directory.GetFiles(directoryPath, "*.dll");
-
-                // 遍历并删除每个 .dll 文件
-                foreach (string dllFile in dllFiles)
-                {
-                    File.Delete(dllFile);
-                    Console.WriteLine($"Deleted: {dllFile}");
-                }
-            }
-            catch (Exception ex)
-            {
-                // 捕获并处理可能出现的异常
-                Console.WriteLine($"Error deleting files: {ex.Message}");
             }
         }
     }

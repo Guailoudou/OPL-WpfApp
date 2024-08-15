@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace userdata
 {
-    internal class Registrys
+    internal class AutoStartWith
     {
         static string appName = "OPL";
         static string appPath = System.IO.Path.Combine(Process.GetCurrentProcess().MainModule.FileName);

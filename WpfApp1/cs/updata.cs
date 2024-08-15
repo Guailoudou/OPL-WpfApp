@@ -49,7 +49,11 @@ namespace userdata
 
                     Logger.Log($"[提示]ZIP更新文件已成功下载到：{savePath}");
                     if(name== "openp2p.zip")
-                        MessageBox.Show("更新包下载完毕，推荐立刻重启软件，完成最后更新，防止出现BUG", "提示");
+                    {
+                        MessageBox.Show("重要运行包下载完毕，即将自动重启", "提示");
+                        OPL_WpfApp.App.RestartAsAdmin();
+                    }
+                        
 
 
                 }

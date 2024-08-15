@@ -2,7 +2,7 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <PublishUrlHistory>D:\web\gitfileurl\urlfile\file\pack\</PublishUrlHistory>
-    <InstallUrlHistory />
+    <InstallUrlHistory>https://file.gldhn.top/file/pack/|https://file.gldhn.top/</InstallUrlHistory>
     <SupportUrlHistory />
     <UpdateUrlHistory />
     <BootstrapperUrlHistory />
