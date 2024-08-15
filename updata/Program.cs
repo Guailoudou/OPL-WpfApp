@@ -34,7 +34,7 @@ namespace updata
             }
             Console.WriteLine("文件校验完成，1s后将进行更新");
             Thread.Sleep(1000);
-            DeleteAllDllFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory));
+            //DeleteAllDllFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory));
             if (File.Exists(savePath))
             {
                 ExtractZipAndOverwrite(savePath, Path.Combine(AppDomain.CurrentDomain.BaseDirectory));

@@ -78,12 +78,9 @@ namespace OPL_WpfApp
             UUID.Text = sjson.config.Network.Node;
             share.Text = sjson.config.Network.ShareBandwidth.ToString();
             ver.Content = Getversion();
-            //thank.Navigate("https://file.gldhn.top/web/thank/"); 废案，内存占用过高
-            if(args.Length > 0 && args[0] == "-on") Strapp();
             string bgColor = ExtractBackgroundColor(args);
             if(bgColor != null) ColorBlock.SelectColor = new SolidColorBrush(set.ParseColor(bgColor));
             //richOutput.SelectionFont = new Font("楷体", 12, FontStyle.Bold);
-
             Initialization();
 
         }
@@ -1026,7 +1023,7 @@ namespace OPL_WpfApp
             }
             
         }
-        public void Initialization()
+        private void Initialization()
         {
             set set = new set();
             if (set.settings.Auto_upop)
@@ -1037,30 +1034,40 @@ namespace OPL_WpfApp
             {
                 Autoupn.IsChecked = true;
             }
+            if (set.settings.Auto_open)
+            {
+                Autoup_openn.IsChecked = true;
+                Strapp();
+            }
+            if (Registrys.IsInStartup())
+            {
+                Autoup_bootn.IsChecked = true;
+            }
         }
 
         private void Auto_boot(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("该功能暂未开放，制作ing");
-            Autoup_bootn.IsChecked = false;
+            Registrys.AddToStartup();
         }
 
         private void Auto_open(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("该功能暂未开放，制作ing");
-            Autoup_openn.IsChecked = false;
+            set set = new set();
+            set.settings.Auto_open = true;
+            set.Write();
         }
 
         private void UnAuto_boot(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("该功能暂未开放，制作ing");
-            Autoup_bootn.IsChecked = false;
+            Registrys.RemoveFromStartup();
+
         }
 
         private void UnAuto_open(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("该功能暂未开放，制作ing");
-            Autoup_openn.IsChecked = false;
+            set set = new set();
+            set.settings.Auto_open = false;
+            set.Write();
         }
     }
 

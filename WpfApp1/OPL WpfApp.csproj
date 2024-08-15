@@ -265,6 +265,7 @@
     <Compile Include="cs\Heart.cs" />
     <Compile Include="cs\Multicast.cs" />
     <Compile Include="cs\prcolor.cs" />
+    <Compile Include="cs\Registrys.cs" />
     <Compile Include="cs\set.cs" />
     <Compile Include="cs\tun.cs" />
     <Compile Include="cs\updata.cs" />
