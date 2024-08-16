@@ -91,7 +91,7 @@ namespace OPL_WpfApp
                 }
             }
         }
-        void ExtractZipAndOverwrite(string zipPath, string extractPath)
+        public static void ExtractZipAndOverwrite(string zipPath, string extractPath)
         {
             if (File.Exists(zipPath) && Directory.Exists(extractPath))
             {

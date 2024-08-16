@@ -70,7 +70,6 @@ namespace OPL_WpfApp
                 Logger.Log("[提示]当前操作系统版本过低，为防止显示问题已自动切换为黑夜模式");
 
             }else GetTheme();
-            bool temp = false;
             
             Net net = new Net();
             _ = net.GetPreset();
@@ -88,7 +87,7 @@ namespace OPL_WpfApp
             //    temp = true;
             //    Strapp();
             //}
-            Initialization(temp);
+            Initialization();
 
         }
         private static string ExtractBackgroundColor(string[] args)
@@ -651,7 +650,7 @@ namespace OPL_WpfApp
             {
 
                 Logger.Log("[错误]启动失败，看来被安全中心拦截" + ex.ToString());
-                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), "警告");
+                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin") + "\r"+AppDomain.CurrentDomain.BaseDirectory, "警告");
                 if (process != null && !process.HasExited)
                 {
                     process.Kill();
@@ -1057,6 +1056,13 @@ namespace OPL_WpfApp
                 Autoup_bootn.IsChecked = true;
             }
             Autoup_bootn.Checked += Auto_boot;
+            Autoup_bootn.Unchecked += UnAuto_boot;
+
+            Autoup_opn.Checked += Autoup_op;
+            Autoup_opn.Unchecked += UnAutoup_op;
+
+            Autoupn.Checked += Autoup;
+            Autoupn.Unchecked += UnAutoup;
         }
 
         private void Auto_boot(object sender, RoutedEventArgs e)

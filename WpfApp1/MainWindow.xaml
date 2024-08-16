@@ -231,10 +231,10 @@
                     <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Settings_20_Regular}"/>
                 </ui:TabItemHelper.Icon>
                 <Grid>
-                    <CheckBox Content="openp2p文件校验" Margin="50,28,0,0" Checked="Autoup_op" Unchecked="UnAutoup_op"  Name="Autoup_opn" VerticalAlignment="Top"/>
-                    <CheckBox Content="主程序自动更新" Margin="50,58,0,0" Checked="Autoup" Unchecked="UnAutoup" Name="Autoupn" VerticalAlignment="Top"/>
-                    <CheckBox Content="开机自动运行主程序" Margin="50,88,0,0" Unchecked="UnAuto_boot"  Name="Autoup_bootn"  VerticalAlignment="Top"/>
-                    <CheckBox Content="主程序运行后自动启动" Margin="50,118,0,0" Checked="Auto_open" Unchecked="UnAuto_open"  Name="Autoup_openn"  VerticalAlignment="Top"/>
+                    <CheckBox Content="openp2p文件校验" Margin="50,28,0,0"  Name="Autoup_opn" VerticalAlignment="Top"/>
+                    <CheckBox Content="主程序自动更新" Margin="50,58,0,0" Name="Autoupn" VerticalAlignment="Top"/>
+                    <CheckBox Content="开机自动运行主程序" Margin="50,88,0,0"  Name="Autoup_bootn"  VerticalAlignment="Top"/>
+                    <CheckBox Content="主程序运行后自动启动" Margin="50,118,0,0" Name="Autoup_openn"  VerticalAlignment="Top"/>
 
                 </Grid>
             </TabItem>

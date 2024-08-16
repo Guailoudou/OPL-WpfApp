@@ -50,7 +50,13 @@ namespace userdata
                     Logger.Log($"[提示]ZIP更新文件已成功下载到：{savePath}");
                     if(name== "openp2p.zip")
                     {
-                        MessageBox.Show("重要运行包下载完毕，即将自动重启", "提示");
+                        string saveOPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.zip");
+                        //string opPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
+                        if (File.Exists(saveOPath))
+                        {
+                            OPL_WpfApp.App.ExtractZipAndOverwrite(saveOPath, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"));
+                        }
+                        MessageBox.Show("已完成关键文件下载，即将重启！", "提示");
                         OPL_WpfApp.App.RestartAsAdmin();
                     }
                         
