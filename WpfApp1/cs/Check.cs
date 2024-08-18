@@ -14,6 +14,7 @@ using System.Net.Http;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 using System.Diagnostics;
 using System.Security.Principal;
+using System.Windows.Forms;
 
 namespace OPL_WpfApp
 {
@@ -94,7 +95,12 @@ namespace OPL_WpfApp
                     string protocol = match.Groups[1].Value;
                     string port = match.Groups[2].Value;
                     Logger.Log($"[错误]: 本地端口{protocol}:{port}被占用，请更换相关本地端口");
-                    MessageBox.Show($"本地端口{protocol}:{port}被占用，请更换相关本地端口！！注意！是连接的创建隧道，开房的仅续在无隧道启用情况下启动！！", "错误");
+                    MessageBox.Show($"本地端口{protocol}:{port}被占用，请更换相关本地端口！！注意！是连接的创建隧道，开房的仅续在无隧道启用情况下启动！！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (on) Strapp();
+                }
+                else if(!fsterto)
+                {
+                    MessageBox.Show($"注意，你的计算机可能中病毒了！！\r\n根据之前的反馈统计情况，如果你每次打开都弹出该窗口，你的计算机极有可能中病毒了，有黑客正在监视你的计算机网络数据，请立即尝试使用杀毒软件\r\n请尝试使用杀毒软件进行全盘查杀，或使用 卡巴斯基病毒清除工具、360系统急救箱或火绒恶性木马专杀工具\r\n等工具进行查杀", "警告", MessageBoxButton.OK, MessageBoxImage.Hand);
                     if (on) Strapp();
                 }
             }

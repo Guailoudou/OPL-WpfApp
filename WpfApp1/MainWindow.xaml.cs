@@ -516,7 +516,7 @@ namespace OPL_WpfApp
         }
         private async Task Woplog()
         {
-            string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "openp2p.log");
+            string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"log", "openp2p.log");
 
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(absolutePath));
             DateTime Date = DateTime.Now;
@@ -593,9 +593,9 @@ namespace OPL_WpfApp
                 {
                     Dispatcher.Invoke(() => // 必须在UI线程更新RichTextBox内容
                     {
-                        richOutput.AppendText(e.Data + Environment.NewLine);
-
-                        richOutput.ScrollToEnd(); 
+                        //richOutput.AppendText(e.Data + Environment.NewLine);
+                        richOutput.Text = e.Data + Environment.NewLine + richOutput.Text;
+                        //richOutput.ScrollToEnd(); 
 
 
 
@@ -603,13 +603,13 @@ namespace OPL_WpfApp
                     });
                 }
             });
-
+            bool tl = true;
             // 设置错误数据接收事件
             process.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
             {
                 if (!string.IsNullOrEmpty(e.Data))
                 {
-                    bool tl = true;
+                    
                     Dispatcher.Invoke(() =>
                     {
                         Logger.Log("【错误】: " + e.Data + Environment.NewLine);
@@ -626,14 +626,8 @@ namespace OPL_WpfApp
                                 if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
                             }
                             Stop();
-                            Logger.Log("主程序程序openp2p异常退出，请查看软件状态，重新启动","错误");
-                            try {
-                                _ = timeopen();
-                            }catch
-                            (Exception ex)
-                            {
-                                Logger.Log("[错误]异步启动失败" + ex.ToString());
-                            }
+                            Logger.Log("主程序程序openp2p崩掉了！请查看软件状态，尝试重新启动，或联系作者","错误");
+                            
                             tl = false;
                         }
                     });
@@ -696,9 +690,9 @@ namespace OPL_WpfApp
                 _output = output;
                 _output.FontFamily = new FontFamily("Times New Roman"); 
                 if(oon)
-                    absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log");
+                    absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log", "opl.log");
                 else
-                    absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "openp2p.log");
+                    absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log", "openp2p.log");
                 Log("----- OPENP2P Launcher by Guailoudou -----");
             }
 
@@ -708,8 +702,9 @@ namespace OPL_WpfApp
                 Directory.CreateDirectory(System.IO.Path.GetDirectoryName(absolutePath));
                 DateTime Date = DateTime.Now;
                 string outmessage = "[" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "]" + message + Environment.NewLine;
-                _output.AppendText(outmessage);
-                _output.ScrollToEnd();
+                //_output.AppendText(outmessage);
+                _output.Text = outmessage + _output.Text ;
+                //_output.ScrollToEnd();
                 AppendTextToFile(absolutePath, outmessage);
 
             }
@@ -719,8 +714,9 @@ namespace OPL_WpfApp
                 Directory.CreateDirectory(System.IO.Path.GetDirectoryName(absolutePath));
                 DateTime Date = DateTime.Now;
                 string outmessage = "[" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "][" + log + "]" + message + Environment.NewLine;
-                _output.AppendText(outmessage);
-                _output.ScrollToEnd();
+                //_output.AppendText(outmessage);
+                _output.Text = outmessage + _output.Text;
+                //_output.ScrollToEnd();
                 AppendTextToFile(absolutePath, outmessage);
 
             }
@@ -735,7 +731,7 @@ namespace OPL_WpfApp
                 }
                 catch (Exception ex)
                 {
-                    AppendTextToFile(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log"),ex.Message);
+                    AppendTextToFile(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log", "opl.log"),ex.Message);
                 }
             }
         }
@@ -783,6 +779,8 @@ namespace OPL_WpfApp
             string zipFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log-pack-"+Date.ToString("yyyyMMdd-HHmmssfff") +".zip");
             string packoplog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","bin","log","openp2p.log");
             string packopllog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log");
+            string newpackopllog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log", "opl.log");
+            string newpackoplog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log", "openp2p.log");
             string configfile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
             try
             {
@@ -790,11 +788,15 @@ namespace OPL_WpfApp
                 {
                     // 添加文件到ZIP存档
                     if (File.Exists(packopllog))
-                        archive.CreateEntryFromFile(packopllog, System.IO.Path.GetFileName(packopllog));
+                        archive.CreateEntryFromFile(packopllog, System.IO.Path.Combine("old",System.IO.Path.GetFileName(packopllog)));
                     if (File.Exists(packoplog))
-                        archive.CreateEntryFromFile(packoplog, System.IO.Path.GetFileName(packoplog));
+                        archive.CreateEntryFromFile(packoplog, System.IO.Path.Combine("old", System.IO.Path.GetFileName(packoplog)));
                     if (File.Exists(configfile))
                         archive.CreateEntryFromFile(configfile, System.IO.Path.GetFileName(configfile));
+                    if (File.Exists(newpackopllog))
+                        archive.CreateEntryFromFile(newpackopllog, System.IO.Path.GetFileName(newpackopllog));
+                    if (File.Exists(newpackoplog))
+                        archive.CreateEntryFromFile(newpackoplog, System.IO.Path.GetFileName(newpackoplog));
                 }
             }catch (Exception e)
             {
@@ -925,8 +927,8 @@ namespace OPL_WpfApp
             
             if (vers.Major <= 6 && vers.Minor <= 1)
             {
-                MessageBox.Show("当前系统暂不支持主题设置", "提示");
-                return;
+                MessageBox.Show("当前系统过低，主题设置可能存在意想不到的后果", "警告");
+                //return;
             }
              var comboBox = sender as ComboBox;
             if (comboBox != null && comboBox.SelectedItem is ComboBoxItem selectedItem)
@@ -1089,6 +1091,15 @@ namespace OPL_WpfApp
             set set = new set();
             set.settings.Auto_open = false;
             set.Write();
+        }
+
+        private void Button_help(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start("https://blog.gldhn.top/2024/07/12/oplwin_help/");
+            }
+            catch { }
         }
     }
 
