@@ -516,7 +516,7 @@ namespace OPL_WpfApp
         }
         private async Task Woplog()
         {
-            string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"log", "openp2p.log");
+            string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"bin", "log", "openp2p.log");
 
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(absolutePath));
             DateTime Date = DateTime.Now;
@@ -690,9 +690,9 @@ namespace OPL_WpfApp
                 _output = output;
                 _output.FontFamily = new FontFamily("Times New Roman"); 
                 if(oon)
-                    absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log", "opl.log");
+                    absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","log", "opl.log");
                 else
-                    absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log", "openp2p.log");
+                    absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "log", "openp2p.log");
                 Log("----- OPENP2P Launcher by Guailoudou -----");
             }
 
@@ -731,7 +731,7 @@ namespace OPL_WpfApp
                 }
                 catch (Exception ex)
                 {
-                    AppendTextToFile(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log", "opl.log"),ex.Message);
+                    AppendTextToFile(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "log", "opl.log"),ex.Message);
                 }
             }
         }
@@ -779,8 +779,8 @@ namespace OPL_WpfApp
             string zipFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log-pack-"+Date.ToString("yyyyMMdd-HHmmssfff") +".zip");
             string packoplog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","bin","log","openp2p.log");
             string packopllog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "bin", "log", "opl.log");
-            string newpackopllog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log", "opl.log");
-            string newpackoplog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log", "openp2p.log");
+            string newpackopllog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "log", "opl.log");
+            string newpackoplog = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "log", "openp2p.log");
             string configfile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
             try
             {
@@ -995,7 +995,7 @@ namespace OPL_WpfApp
                 "你确定要关闭openp2p文件校验吗，你需要知道你在做什么，如果你不了解这个的作用请不用动他！！!",
                 "警告",
                 MessageBoxButton.OKCancel,
-                MessageBoxImage.Question);
+                MessageBoxImage.Question); 
             if (result == MessageBoxResult.OK)
             {
                 set set = new set();
