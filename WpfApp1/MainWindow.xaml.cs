@@ -1101,6 +1101,13 @@ namespace OPL_WpfApp
             }
             catch { }
         }
+
+        private void CloseAll(object sender, RoutedEventArgs e)
+        {
+            json json = new json();
+            json.Alloff();
+            Relist();
+        }
     }
 
 }

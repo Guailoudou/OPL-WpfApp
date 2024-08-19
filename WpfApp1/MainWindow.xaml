@@ -299,6 +299,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <Button Content="关闭所有隧道" Margin="0,0,130,10" VerticalAlignment="Bottom" Click="CloseAll" Grid.Column="1" HorizontalAlignment="Right" Height="32" />
         <Button Content="启动" Margin="0,0,10,10" VerticalAlignment="Bottom" Click="Button_Click_open" x:Name="openbutton" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Grid.Column="1" HorizontalAlignment="Right" Height="32" Width="102"/>
     </Grid>
 </Window>
