@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using static OPL_WpfApp.MainWindow;
+using static OPL_WpfApp.MainWindow_opl;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 namespace userdata
 {

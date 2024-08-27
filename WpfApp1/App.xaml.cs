@@ -11,12 +11,17 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Policy;
 using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using userdata;
-using static OPL_WpfApp.MainWindow;
+using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+using static OPL_WpfApp.MainWindow_opl;
+using System.Runtime.InteropServices;
+using System.Text;
+
 
 namespace OPL_WpfApp
 {
@@ -25,10 +30,24 @@ namespace OPL_WpfApp
     /// </summary>
     public partial class App : Application
     {
+        private static Mutex mutex = new Mutex(true, "{OPL_Guailoudou}");
         protected override void OnStartup(StartupEventArgs e)
         {
-            
-            base.OnStartup(e);
+            // 检查互斥量是否已被其他实例占用
+            if (!mutex.WaitOne(0, false))
+            {
+                // 如果无法获取互斥量，说明已经有实例在运行
+                MessageBox.Show("程序正在运行，你无法重复开启.");
+                ActivateExistingWindow();
+                Current.Shutdown();
+                return;
+            }
+            else
+            {
+                // 如果获得了互斥量，那么继续执行
+                base.OnStartup(e);
+                
+            }
             string OPPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","openp2p.exe");
             if (!IsProcessElevated()&&File.Exists(OPPath))
             {
@@ -47,7 +66,7 @@ namespace OPL_WpfApp
             }
 
             // 应用程序启动时的自定义逻辑
-            var mainWindow = new MainWindow(args);
+            var mainWindow = new MainWindow_opl(args);
             mainWindow.Show();
             string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "nvb.zip");
             if (File.Exists(savePath))
@@ -62,6 +81,11 @@ namespace OPL_WpfApp
             
             // 应用程序退出时的清理操作
             base.OnExit(e);
+            if (mutex != null)
+            {
+                mutex.ReleaseMutex();
+                mutex.Close();
+            }
             string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "nvb.zip");
             string saveOPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.zip");
             //string opPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
@@ -199,6 +223,67 @@ namespace OPL_WpfApp
             {
                 Logger.Log("Error: " + e.Message);
             }
+        }
+        private void ActivateExistingWindow()
+        {
+            IntPtr hwnd = FindWindowByClassName("{OPL_WpfApp.MainWindow_opl}");
+
+            if (hwnd != IntPtr.Zero)
+            {
+                // 激活并置顶找到的窗口
+                MessageBox.Show("窗口已存在，正在激活并置顶。");
+                SetForegroundWindow(hwnd);
+                ShowWindow(hwnd, SW_RESTORE); // 使用 SW_RESTORE 常量
+                SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+                SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+            }
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool EnumWindows(WndEnumProc enumProc, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern bool GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        private delegate bool WndEnumProc(IntPtr hWnd, IntPtr lParam);
+
+        private IntPtr HWND_NOTOPMOST = new IntPtr(-1);
+        private IntPtr HWND_TOPMOST = new IntPtr(-2);
+
+        private const int SWP_NOMOVE = 0x0002;
+        private const int SWP_NOSIZE = 0x0001;
+        private const int SW_SHOW = 5;
+        private const int SW_RESTORE = 9;
+
+        private IntPtr FindWindowByClassName(string className)
+        {
+            IntPtr hwnd = IntPtr.Zero;
+
+            EnumWindows((hWnd, lParam) =>
+            {
+                StringBuilder sb = new StringBuilder(256);
+                GetClassName(hWnd, sb, sb.Capacity);
+                if (sb.ToString() == className)
+                {
+                    hwnd = hWnd;
+                    return false;
+                }
+                return true;
+            }, IntPtr.Zero);
+
+            return hwnd;
         }
     }
 }

@@ -22,7 +22,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
-
+using System.Windows.Interop;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -38,16 +38,17 @@ namespace OPL_WpfApp
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow_opl : Window
     {
         UserData userData ;
         json sjson;
         bool on = false;
         int tcpnum = 0;
-        public MainWindow(string[] args)
+        public MainWindow_opl(string[] args)
         {
             InitializeComponent();
             // 设置窗口位置居中显示
+            
             double screenWidth = SystemParameters.PrimaryScreenWidth;
             double screenHeight = SystemParameters.PrimaryScreenHeight;
             double windowWidth = this.Width;
@@ -78,7 +79,7 @@ namespace OPL_WpfApp
             Relist();
             UUID.Text = sjson.config.Network.Node;
             share.Text = sjson.config.Network.ShareBandwidth.ToString();
-            ver.Content = Getversion();
+            ver.Content = Getversion() + " - "+ Net.Getpvn();
             string bgColor = ExtractBackgroundColor(args);
             if(bgColor != null) ColorBlock.SelectColor = new SolidColorBrush(set.ParseColor(bgColor));
             //richOutput.SelectionFont = new Font("楷体", 12, FontStyle.Bold);
@@ -88,7 +89,6 @@ namespace OPL_WpfApp
             //    Strapp();
             //}
             Initialization();
-
         }
         private static string ExtractBackgroundColor(string[] args)
         {

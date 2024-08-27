@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
-using static OPL_WpfApp.MainWindow;
+using static OPL_WpfApp.MainWindow_opl;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 namespace userdata
 {

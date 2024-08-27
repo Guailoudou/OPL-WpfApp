@@ -9,7 +9,7 @@ using System.Windows;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 namespace OPL_WpfApp
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow_opl : Window
     {
         private void SetThene(string theme)
         {

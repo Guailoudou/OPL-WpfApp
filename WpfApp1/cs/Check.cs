@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static OPL_WpfApp.MainWindow;
+using static OPL_WpfApp.MainWindow_opl;
 using System.Windows.Media;
 using System.Windows;
 using userdata;
@@ -15,10 +15,12 @@ using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace OPL_WpfApp
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow_opl : Window
     {
         bool fsterto = false;
         public void Checkopen(string m)
@@ -98,7 +100,7 @@ namespace OPL_WpfApp
                     MessageBox.Show($"本地端口{protocol}:{port}被占用，请更换相关本地端口！！注意！是连接的创建隧道，开房的仅续在无隧道启用情况下启动！！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     if (on) Strapp();
                 }
-                else if(!fsterto)
+                else if (!fsterto)
                 {
                     MessageBox.Show($"注意，你的计算机可能中病毒了！！\r\n根据之前的反馈统计情况，如果你每次打开都弹出该窗口，你的计算机极有可能中病毒了，有黑客正在监视你的计算机网络数据，请立即尝试使用杀毒软件\r\n请尝试使用杀毒软件进行全盘查杀，或使用 卡巴斯基病毒清除工具、360系统急救箱或火绒恶性木马专杀工具\r\n等工具进行查杀", "警告", MessageBoxButton.OK, MessageBoxImage.Hand);
                     if (on) Strapp();
@@ -126,7 +128,7 @@ namespace OPL_WpfApp
                 //MessageBox.Show("你连接的人不在线！不在线！请查询对方UID是否输入错误，询问对方程序是否处于启动状态", "警告");
 
             }
-            if(m.Contains("NAT type"))
+            if (m.Contains("NAT type"))
             {
                 string pattern = @"NAT type:(\w+)";
                 Match match = Regex.Match(m, pattern);
@@ -171,7 +173,7 @@ namespace OPL_WpfApp
             HttpClient httpClient = new HttpClient();
             try
             {
-                if(oo)Logger.Log("[提示]获取一言 -UAPI公益API提供数据支持");
+                if (oo) Logger.Log("[提示]获取一言 -UAPI公益API提供数据支持");
                 HttpResponseMessage response = await httpClient.GetAsync("https://uapis.cn/api/say");
 
                 // 检查响应状态是否成功
@@ -179,8 +181,8 @@ namespace OPL_WpfApp
                 {
                     // 获取响应内容的字符串形式
                     string contentString = await response.Content.ReadAsStringAsync();
-                   
-                
+
+
 
                     daysay.Text = contentString;
                 }

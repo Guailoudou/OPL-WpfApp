@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.Security.Policy;
 using System.Windows;
 using System.Security.Cryptography;
-using static OPL_WpfApp.MainWindow;
+using static OPL_WpfApp.MainWindow_opl;
 using System.IO;
 using System.Windows.Controls;
 using System.Net.Sockets;
@@ -20,7 +20,7 @@ namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 35;//协议版本号
+        private static readonly int pvn = 36;//协议版本号
         public static int Getpvn()
         {
             return pvn;

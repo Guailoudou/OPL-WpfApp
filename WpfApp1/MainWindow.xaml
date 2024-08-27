@@ -1,4 +1,4 @@
-﻿<Window x:Class="OPL_WpfApp.MainWindow"
+﻿<Window x:Class="OPL_WpfApp.MainWindow_opl"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -260,7 +260,7 @@
                     <Label Content="作者： 乖漏斗" HorizontalAlignment="Left" Margin="1,63,0,0" VerticalAlignment="Top" Grid.Column="1"/>
                     <Label Content="开源：" HorizontalAlignment="Left" Margin="3,93,0,0" VerticalAlignment="Top" Grid.Column="1"/>-->
                     <Canvas Grid.ColumnSpan="3">
-                        <Label Content="*基于OPENP2P" HorizontalAlignment="Left" Canvas.Left="700" Canvas.Bottom="10" Grid.Column="1" FontSize="8"/>
+                        <Label Content="*基于OPENP2P" Canvas.Left="114" Canvas.Bottom="10" Grid.Column="1" FontSize="8" HorizontalAlignment="Left" Canvas.Top="26" VerticalAlignment="Top"/>
                         <TextBox Background="#7FFFFFFF" TextWrapping="Wrap" Text="联网获取中"  MaxHeight="64" x:Name="daysay" IsReadOnly="True" PreviewMouseLeftButtonDown="Redaysay" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="57" VerticalAlignment="Top" SelectionBrush="{x:Null}" MaxWidth="455"/>
                         <Label Content="随机一言：" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="40" VerticalAlignment="Top"/>
                         <Label Content="充电/发电鸣谢" HorizontalAlignment="Left" Canvas.Left="530" Canvas.Top="61" VerticalAlignment="Center" RenderTransformOrigin="0.493,0.155"/>
@@ -274,7 +274,7 @@
                                 </TransformGroup>
                             </Label.RenderTransform>
                         </Label>
-                        <Label Content="预设隧道为联网获取，需要增加常用预设隧道可以联系作者添加一般为固定多端口&#xD;&#xA;联机游戏，或特殊固定端口用途" Height="45" Width="515" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="121" VerticalAlignment="Center"/>
+                        <Label Content="预设隧道为联网获取，需要增加常用预设隧道可以联系作者添加一般为固定多端口&#xA;联机游戏，或特殊固定端口用途" Height="45" Width="515" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="121" VerticalAlignment="Center"/>
                         <Button x:Name="copysss" Content="复制" Width="55" Height="32" Canvas.Left="470" Canvas.Top="64" Click="copysss_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         <Button Content="重置程序" Click="ResetUUID_Button_Click" Height="32" Width="90" Canvas.Left="573" Canvas.Top="10" VerticalAlignment="Top">
                             <Button.ToolTip>

@@ -10,7 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using static OPL_WpfApp.MainWindow;
+using static OPL_WpfApp.MainWindow_opl;
 using userdata;
 //using System.Windows.Shapes;
 
