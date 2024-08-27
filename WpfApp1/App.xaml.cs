@@ -38,7 +38,7 @@ namespace OPL_WpfApp
             {
                 // 如果无法获取互斥量，说明已经有实例在运行
                 MessageBox.Show("程序正在运行，你无法重复开启.");
-                ActivateExistingWindow();
+                //ActivateExistingWindow();
                 Current.Shutdown();
                 return;
             }
