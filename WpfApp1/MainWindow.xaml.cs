@@ -1057,6 +1057,10 @@ namespace OPL_WpfApp
             {
                 Autoup_bootn.IsChecked = true;
             }
+            if (set.settings.ispwarning)
+            {
+                Ispwarning.IsChecked = true;
+            }
             Autoup_bootn.Checked += Auto_boot;
             Autoup_bootn.Unchecked += UnAuto_boot;
 
@@ -1065,6 +1069,9 @@ namespace OPL_WpfApp
 
             Autoupn.Checked += Autoup;
             Autoupn.Unchecked += UnAutoup;
+
+            Ispwarning.Checked += Ispwarn;
+            Ispwarning.Unchecked += UnIspwarn;
         }
 
         private void Auto_boot(object sender, RoutedEventArgs e)
@@ -1107,6 +1114,20 @@ namespace OPL_WpfApp
             json json = new json();
             json.Alloff();
             Relist();
+        }
+
+        private void Ispwarn(object sender, RoutedEventArgs e)
+        {
+            set set = new set();
+            set.settings.ispwarning = true;
+            set.Write();
+        }
+
+        private void UnIspwarn(object sender, RoutedEventArgs e)
+        {
+            set set = new set();
+            set.settings.ispwarning = false;
+            set.Write();
         }
     }
 

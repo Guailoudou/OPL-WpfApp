@@ -139,6 +139,16 @@ namespace OPL_WpfApp
                     if (type == "2")
                         Logger.Log("[提示]你的NAT类型为对称形 Symmetric NAT，连接可能受阻，或连接时间较长");
                 }
+
+                string pattern2 = @"publicIP:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})";
+                Match match2 = Regex.Match(m, pattern2);
+                if (match2.Success)
+                {
+                    string ip = match2.Groups[1].Value;
+                    //Logger.Log("[提示]你的公网IP为" + ip);
+                    Net net = new Net();
+                    _ = net.Getisp(ip);
+                }
             }
             if (m.Contains("login ok")) //登录中心成功
             {

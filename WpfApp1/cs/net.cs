@@ -199,6 +199,48 @@ namespace userdata
                 }
             }
         }
+
+        public async Task Getisp(string ip)
+        {
+            string url = "https://uapis.cn/api/ipinfo?ip=" + ip;
+            string isp="";
+            HttpClient httpClient = new HttpClient();
+            set set = new set();
+            
+            try
+            {
+                // 发起GET请求
+
+                HttpResponseMessage response = await httpClient.GetAsync(url);
+
+                // 检查响应状态是否成功
+                if (response.IsSuccessStatusCode)
+                {
+                    string contentString = await response.Content.ReadAsStringAsync();
+                    var ipinfo = JsonConvert.DeserializeObject<ipinfo>(contentString);
+                    if(ipinfo.code == 200)
+                    {
+                        isp = ipinfo.isp;
+                        Logger.Log($"[提示]经检测你的网络运营商为：{isp} --数据由Uapi提供");
+                        if (isp != "电信" && isp != "联通" && isp != "移动")
+                        {
+                            if(set.settings.ispwarning)
+                                MessageBox.Show($"检测到你的网络运营商为非电信、联通、移动，你的运营商为{isp}，可能为二级运营商，二级运营商连接或被连接可能受阻，或长时间无法成功连接。如果你不在国内或为其他一级运营商（国内仅这3家为一级运营商），你可以在设置关闭运营商检测提醒。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                    }
+                    else
+                    {
+                        Logger.Log($"[错误]获取{ip}的运营商信息失败");
+                    }
+                    
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"[错误]请求{url}过程中发生错误：{ex.Message}");
+            }
+        }
         public static string CalculateMD5Hash(string filePath)
         {
             try
@@ -251,5 +293,18 @@ namespace userdata
     {
         public string name {  get; set; }
         public string num { get; set; }
+    }
+    public class ipinfo //https://uapis.cn/api/ipinfo
+    {
+        public int code { get; set; }
+        public string ip { get; set; }
+        public string beginip { get; set; }
+        public string endip { get; set; }
+        public string region { get; set; }
+        public string asn { get; set; }
+        public string isp { get; set; }
+        public double latitude { get; set; }
+        public double longitude { get; set; }
+        public string LLC { get; set; }
     }
 }

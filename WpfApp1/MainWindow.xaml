@@ -239,7 +239,7 @@
                     <CheckBox Content="主程序自动更新" Margin="50,58,0,0" Name="Autoupn" VerticalAlignment="Top"/>
                     <CheckBox Content="开机自动运行主程序" Margin="50,88,0,0"  Name="Autoup_bootn"  VerticalAlignment="Top"/>
                     <CheckBox Content="主程序运行后自动启动" Margin="50,118,0,0" Name="Autoup_openn"  VerticalAlignment="Top"/>
-
+                    <CheckBox Content="运营商检测警告" Margin="50,148,0,0" Name="Ispwarning"  VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="关于" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
