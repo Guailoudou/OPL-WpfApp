@@ -145,7 +145,7 @@ namespace OPL_WpfApp
                 if (match2.Success)
                 {
                     string ip = match2.Groups[1].Value;
-                    //Logger.Log("[提示]你的公网IP为" + ip);
+                    //Logger.Log("[提示]公网IP为" + ip);
                     Net net = new Net();
                     _ = net.Getisp(ip);
                 }
