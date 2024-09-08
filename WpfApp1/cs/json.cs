@@ -60,12 +60,15 @@ namespace userdata
         }
         public void Alloff()
         {
-            if(config.Apps!=null && config.Apps.Count >0)
+            if(config.Apps!=null && config.Apps.Count > 0)
+            {
                 foreach (App app in config.Apps)
                 {
                     app.Enabled = 0;
-                    wejson();
                 }
+                wejson();
+            }
+                
         }
         public void Add1link(string type, string uid, int port,int cport)  
         {
