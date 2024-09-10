@@ -20,7 +20,7 @@ namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 37;//协议版本号
+        private static readonly int pvn = 38;//协议版本号
         public static int Getpvn()
         {
             return pvn;
@@ -303,8 +303,8 @@ namespace userdata
         public string region { get; set; }
         public string asn { get; set; }
         public string isp { get; set; }
-        public double latitude { get; set; }
-        public double longitude { get; set; }
+        public string latitude { get; set; }
+        public string longitude { get; set; }
         public string LLC { get; set; }
     }
 }
