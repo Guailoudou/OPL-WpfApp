@@ -627,8 +627,8 @@ namespace OPL_WpfApp
                             }
                             Stop();
                             Logger.Log("主程序程序openp2p崩掉了！请查看软件状态，尝试重新启动，或联系作者","错误");
-                            
                             tl = false;
+                            _ = Task.Run(async () => await DelayAndExecute());
                         }
                     });
                 }
@@ -1036,6 +1036,12 @@ namespace OPL_WpfApp
                 return;
             }
             
+        }
+        async Task DelayAndExecute()
+        {
+            Logger.Log("将在2s后自动重新启动...");
+            await Task.Delay(2000);
+            Strapp();
         }
         private void Initialization(bool temp =false)
         {
