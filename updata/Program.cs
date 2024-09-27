@@ -22,9 +22,21 @@ namespace updata
                 filehash = args[0];
                 if (args.Length > 1)
                 {
-                    oldopl = Path.GetFileName(args[1]);
+                    string filepath = "";
+                    foreach(string arg in args)
+                    {
+                        if (arg != filehash)
+                        {
+                            filepath += arg;
+                        }
+                    }
+                    oldopl = Path.GetFileName(filepath);
+                    Console.WriteLine("文件路径：" + filepath);
+                    
+                    
                 }
-                
+                Console.WriteLine("文件哈希：" + filehash);
+                Console.WriteLine("文件名：" + oldopl);
             }
             else
             {
@@ -38,7 +50,7 @@ namespace updata
                 File.Delete(savePath);
                 return;
             }
-            Console.WriteLine("文件校验完成，1s后将进行更新");
+            Console.WriteLine("文件校验完成，1s后将进行更新，请勿关闭本窗口");
             Thread.Sleep(1000);
             //DeleteAllDllFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory));
             if (File.Exists(savePath))
@@ -83,10 +95,10 @@ namespace updata
                         }
                         if (oldopl != "OPL_WpfApp.exe" && oldopl != "")
                         {
-                            File.Delete(args[1]);
+                            File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, oldopl));
                             File.Move(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "OPL_WpfApp.exe"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, oldopl));
                         }
-                        Console.WriteLine("解压完成，更新完毕。");
+                        Console.WriteLine("解压完成，更新完毕。已可关闭本窗口，再次启动即为最新版，更新内容请关注关于-日志");
                         File.Delete(zipPath);
                     }
                     catch (Exception ex)
@@ -100,6 +112,8 @@ namespace updata
                 }
                
             }
+            Console.WriteLine($"该窗口已可关闭，或等待5s后自动关闭");
+            Thread.Sleep(5000);
         }
         public static string CalculateMD5Hash(string filePath)
         {
