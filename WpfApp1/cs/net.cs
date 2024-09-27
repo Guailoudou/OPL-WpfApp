@@ -20,7 +20,7 @@ namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 38;//协议版本号
+        private static readonly int pvn = 40;//协议版本号
         public static int Getpvn()
         {
             return pvn;
@@ -163,7 +163,7 @@ namespace userdata
         public async Task Getthank(TextBox text)
         {
             string url = "https://file.gldhn.top/file/json/thank.json";
-            if(ismirror)url = Getmirror(url);
+            //if(ismirror)url = Getmirror(url);
             HttpClient httpClient = new HttpClient();
             try
             {
@@ -175,8 +175,8 @@ namespace userdata
                 if (response.IsSuccessStatusCode)
                 {
                     // 获取响应内容的字符串形式
-                    string isgitee = ismirror ? "gitee镜像" : "";
-                    Logger.Log($"[提示]获取充电/发电列表成功-{isgitee}");
+                    //string isgitee = ismirror ? "gitee镜像" : "";
+                    Logger.Log($"[提示]获取充电/发电列表成功");
                     string contentString = await response.Content.ReadAsStringAsync();
                     var lists = JsonConvert.DeserializeObject<thanklist>(contentString);
                     string info = "afdian.com/@guailoudou\n|用户名|金额|\n";
@@ -192,11 +192,11 @@ namespace userdata
             {
                 Logger.Log($"[错误]请求{url}过程中发生错误：{ex.Message}");
                 text.Text = "获取失败";
-                if (ismirror)
-                {
-                    ismirror = false;
-                    await Getthank(text);
-                }
+                //if (ismirror)
+                //{
+                //    ismirror = false;
+                //    await Getthank(text);
+                //}
             }
         }
 
