@@ -14,6 +14,11 @@ namespace updata
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("*************************");
+            Console.WriteLine("");
+            Console.WriteLine("Openp2p Launcher 更新程序");
+            Console.WriteLine("");
+            Console.WriteLine("*************************");
             string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "nvb.zip");
             string filehash = "";
             string oldopl = "";
