@@ -77,6 +77,7 @@ namespace userdata
     {
         public string Color { get; set; } // 颜色
         public string Theme { get; set; } // 主题("Light" 或 "Dark")
+        public string csproduct { get; set; } //BIOSUUID
         public bool Auto_upop { get; set; } = true; // 自动更新openp2p
         public bool Auto_up { get; set; } = true;  // 自动更新
         public bool Auto_open { get; set; } = false; //运行后自动启动

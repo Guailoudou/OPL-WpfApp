@@ -135,7 +135,7 @@ namespace OPL_WpfApp
                 MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
                 return;
             }
-            MessageBox.Show("复制成功", "提示");
+            MessageBox.Show("复制成功，可在游戏中使用ctrl+v粘贴", "提示");
         }
         private void ResetUUID_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -899,8 +899,8 @@ namespace OPL_WpfApp
             }
             catch (Exception ex)
             {
-                Logger.Log($"无法识别的连接码: {ex.Message}");
-                MessageBox.Show($"无法识别的连接码-请复制连接码后点击\r该功能为一键添加/编辑隧道为连接码隧道，房主可直接编辑发送连接码供连接方使用。 \r\r连接码用法： \r用法1：\r uid:端口 --> tcp协议连接码 \r示例：qwertyuioop:25565 \r\r 用法2：\r<1/2>:uid:端口[:本地端口] --> 1为tcp，2为udp 本地端口可省略\r示例：1:qwertyuiop:25565:25575 \r多个连接可以用;间隔同时输入\r复制后直接点击该按钮即可完成添加，后直接启动即可  \r\r {ex.Message}", "错误");
+                Logger.Log($"无法识别的连接码: {pastedText} - {ex.Message}");
+                MessageBox.Show($"无法识别的连接码: {pastedText} \n请复制连接码后点击\r该功能为一键添加/编辑隧道为连接码隧道，房主可直接编辑发送连接码供连接方使用。 \r\r连接码用法： \r用法1：\r uid:端口 --> tcp协议连接码 \r示例：qwertyuioop:25565 \r\r 用法2：\r<1/2>:uid:端口[:本地端口] --> 1为tcp，2为udp 本地端口可省略\r示例：1:qwertyuiop:25565:25575 \r多个连接可以用;间隔同时输入\r复制后直接点击该按钮即可完成添加，后直接启动即可  \r如果确认你复制的符合格式，可尝试点击右边按钮自行添加隧道\r\r {ex.Message}", "错误");
             }
         }
 
@@ -1078,6 +1078,41 @@ namespace OPL_WpfApp
 
             Ispwarning.Checked += Ispwarn;
             Ispwarning.Unchecked += UnIspwarn;
+
+            string newuuid;
+            try
+            {
+                newuuid = GetSmBIOSUUID();
+                if (newuuid == null) throw new ArgumentException("未获取到正确数据");
+            }
+            catch (Exception e)
+            {
+                Logger.Log("获取设备id失败 : "+e.Message,"错误");
+                return;
+            }
+            Logger.Log("设备ID为："+newuuid,"信息");
+            if(set.settings.csproduct==null||set.settings.csproduct=="")
+                set.settings.csproduct = newuuid;
+            else if(set.settings.csproduct!=newuuid)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                "检测到设备更改，是否要重置UID？（如果这是别人发你的，请点确认，否则可能会导致运行问题）",
+                "提示",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Question);
+                if (result == MessageBoxResult.OK)
+                {
+                    userData.ResetUUID();
+                    TextBox uuidTextBox = (TextBox)this.FindName("UUID");
+                    uuidTextBox.Text = userData.UUID;
+                    sjson.newjson(userData);
+                    MessageBox.Show("已重置UID,新的UID为：" + userData.UUID, "提示");
+                    Relist();
+                }
+                set.settings.csproduct = newuuid;
+            }
+            set.Write();
+
         }
 
         private void Auto_boot(object sender, RoutedEventArgs e)
