@@ -43,6 +43,7 @@ namespace OPL_WpfApp
         UserData userData ;
         json sjson;
         bool on = false;
+        public static bool over = true;
         int tcpnum = 0;
         public MainWindow_opl(string[] args)
         {
@@ -499,7 +500,12 @@ namespace OPL_WpfApp
 
         private void Button_Click_open(object sender, RoutedEventArgs e)
         {
-            Strapp();
+            if(over)
+                Strapp();
+            else
+            {
+                MessageBox.Show("暂时无法启动，正在进行关键文件下载，请等待片刻，如果下载失败可以尝试下载压缩包，并解压使用，完成下载后会有弹窗提示", "提示");
+            }
 
         }
         //程序结束后的处理
@@ -628,7 +634,7 @@ namespace OPL_WpfApp
                             Stop();
                             Logger.Log("主程序程序openp2p崩掉了！请查看软件状态，尝试重新启动，或联系作者","错误");
                             tl = false;
-                            _ = Task.Run(async () => await DelayAndExecute());
+                            _ =  DelayAndExecute();
                         }
                     });
                 }
@@ -1169,6 +1175,45 @@ namespace OPL_WpfApp
             set set = new set();
             set.settings.ispwarning = false;
             set.Write();
+        }
+
+        private void Outlist(object sender, RoutedEventArgs e)
+        {
+            string output = "";
+            json json = new json();
+            if (json.config.Apps != null)
+            {
+                foreach (userdata.App app in json.config.Apps)
+                {
+                    if (app.Enabled == 1)
+                    {
+                        if(output!="")output += ";";
+                        output += app.Protocol == "tcp" ? 1 : 2 ;
+                        output +=  ":" + app.PeerNode + ":" + app.DstPort + ":" + app.SrcPort;
+                    }
+                }
+                if (output == "")
+                {
+                    MessageBox.Show("你目前没有启用的隧道，无法导出，请将需要导出的隧道启用", "提示");
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("你目前没有隧道，无法导出", "提示");
+                return;
+            }
+            try
+            {
+                Clipboard.SetText(output);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"[错误]复制失败：{ex.Message} - {output}");
+                MessageBox.Show($"自动复制可能失败了，--{ex.Message}", "提示");
+                return;
+            }
+            MessageBox.Show("已经将启用的隧道导出为连接码，并已复制，可粘贴保存，复制连接码点击添加左边加号可添加", "提示");
         }
     }
 

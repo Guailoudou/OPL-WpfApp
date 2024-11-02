@@ -49,7 +49,7 @@ namespace OPL_WpfApp
                 
             }
             string OPPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","openp2p.exe");
-            if (!IsProcessElevated()&&File.Exists(OPPath))
+            if (!IsProcessElevated())
             {
                 // 重启进程并请求管理员权限
                 RestartAsAdmin();

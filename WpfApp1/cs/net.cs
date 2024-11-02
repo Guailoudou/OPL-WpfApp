@@ -83,6 +83,8 @@ namespace userdata
                         {
                             new Updata(Getmirror(presetss.opurl), false);
                             Logger.Log("[提示]你的openp2p不是最新版本哦~ 开始后台下载更新包");
+                            over = false;
+                            //MessageBox.Show("将开始关键文件下载~ 开始后台下载更新包", "提示");
                         }
                         
                     }

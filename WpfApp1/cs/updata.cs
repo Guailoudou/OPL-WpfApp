@@ -58,8 +58,10 @@ namespace userdata
                         {
                             OPL_WpfApp.App.ExtractZipAndOverwrite(saveOPath, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"));
                         }
-                        MessageBox.Show("已完成关键文件下载/更新，即将重启！", "提示");
-                        OPL_WpfApp.App.RestartAsAdmin();
+                        over = true;
+                        Logger.Log($"[提示]已完成关键文件下载！可以启动程序了");
+                        //MessageBox.Show("已完成关键文件下载/更新！", "提示");
+                        //OPL_WpfApp.App.RestartAsAdmin();
                     }
                         
 
@@ -67,7 +69,11 @@ namespace userdata
                 }
                 catch (HttpRequestException ex)
                 {
-                    Logger.Log($"下载失败: {ex.Message} 可尝试设置hosts来保障连接的可行性：\r\n172.64.32.5 file.gldhn.top\r\n172.64.32.5 blog.gldhn.top");
+                    Logger.Log($"下载失败: {ex.Message} ");
+                    if (name == "openp2p.zip")
+                    {
+                        MessageBox.Show("关键文件下载失败，你可以尝试重启或者下载压缩包版本，如果你之前可以正常启动，可以在设置关闭openp2p文件校验后重启", "错误");
+                    }
                 }
                 catch (IOException ex)
                 {

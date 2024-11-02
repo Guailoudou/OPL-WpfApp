@@ -177,7 +177,7 @@ namespace userdata
         }
         public void del(int index)
         {
-            Logger.Log("[执行]删除隧道 序号:"+index);
+            Logger.Log($"[执行]删除隧道 序号:{index} - {config.Apps[index].ToString()}");
             getjosn();
             config.Apps.RemoveAt(index);
             config.LogLevel = Ologv;
@@ -307,7 +307,7 @@ namespace userdata
 
     public class App
     {
-        public string AppName { get; set; }
+        public string AppName { get; set; } //隧道名
         public string Protocol { get; set; } //隧道类型
         public string Whitelist { get; set; }
         public int SrcPort { get; set; } //本地端口
@@ -317,6 +317,10 @@ namespace userdata
         public string PeerUser { get; set; }
         public string RelayNode { get; set; }
         public int Enabled { get; set; } //开启？
+        public override string ToString() 
+        {
+            return AppName+"-"+Protocol+"-"+ PeerNode + "-"+ DstPort + "-"+ SrcPort;
+        }
     }
 
     public class Network
