@@ -1082,6 +1082,9 @@ namespace OPL_WpfApp
             Autoupn.Checked += Autoup;
             Autoupn.Unchecked += UnAutoup;
 
+            Autoup_openn.Checked += Auto_open;
+            Autoup_openn.Unchecked += UnAuto_open;
+
             Ispwarning.Checked += Ispwarn;
             Ispwarning.Unchecked += UnIspwarn;
 
@@ -1215,6 +1218,7 @@ namespace OPL_WpfApp
             }
             MessageBox.Show("已经将启用的隧道导出为连接码，并已复制，可粘贴保存，复制连接码点击添加左边加号可添加", "提示");
         }
+
     }
 
 }
