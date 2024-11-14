@@ -32,4 +32,5 @@ jobs:
       with:
         name: wpf-app
         path: |
-          bin\Release\OPL_WpfApp.exe
+          WpfApp1\bin\Release\OPL_WpfApp.exe
+          updata\bin\Release\updata.exe
