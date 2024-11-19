@@ -1225,7 +1225,6 @@ namespace OPL_WpfApp
             mult.Owner = this;
             mult.Topmost = true;
             mult.ShowDialog();
-            Relist();
         }
     }
 

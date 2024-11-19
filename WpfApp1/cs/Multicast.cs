@@ -38,7 +38,7 @@ namespace userdata
             if (SrcPort != 0 && MulticastOpen)
             {
                 
-                using (UdpClient client = new UdpClient(SrcPort))
+                using (UdpClient client = new UdpClient(0))
                 {
                     IPEndPoint remoteEP = new IPEndPoint(IPAddress.Parse(multicastGroup), multicastPort);
 
@@ -62,18 +62,17 @@ namespace userdata
             }
             
         }
-        private bool _isRunning = true;
+        public bool _isRunning = false;
         private UdpClient _udpClient;
-        private int _localPort = 4445;
         public event EventHandler<string> DataReceived;
         public async Task StartListeningAsync()
         {
             try
             {
-                _udpClient = new UdpClient(_localPort);
-                var groupEP = new IPEndPoint(IPAddress.Parse(multicastGroup), multicastPort);
+                _udpClient = new UdpClient(multicastPort);
+                var groupEP = new IPEndPoint(IPAddress.Parse(multicastGroup), 0);
                 _udpClient.JoinMulticastGroup(groupEP.Address);
-
+                _isRunning = true;
                 Logger.Log("开始监听多播消息...");
 
                 while (_isRunning)
@@ -85,12 +84,13 @@ namespace userdata
                     OnDataReceived(receivedMessage);
                     // 停止监听
                     StopListening();
+                    _isRunning = false;
                     break;
                 }
             }
             catch (Exception ex)
             {
-                Logger.Log($"发生错误: {ex.Message}");
+                Logger.Log($"发生错误/已关闭监听: {ex.Message}");
             }
             finally
             {

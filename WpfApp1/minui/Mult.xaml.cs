@@ -19,6 +19,7 @@ using static OPL_WpfApp.MainWindow_opl;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 using userdata;
 using System.ComponentModel.Composition.Primitives;
+using System.ComponentModel;
 
 namespace OPL_WpfApp.minui
 {
@@ -27,6 +28,7 @@ namespace OPL_WpfApp.minui
     /// </summary>
     public partial class Mult : Window
     {
+        Multicast multicast = new Multicast();
         public Mult()
         {
             InitializeComponent();
@@ -36,14 +38,21 @@ namespace OPL_WpfApp.minui
             double windowHeight = this.Height;
             this.Left = (screenWidth - windowWidth) / 2;
             this.Top = (screenHeight - windowHeight) / 2;
+            this.Closing += ClosingMult;
             _ = Getport();
 
 
         }
+        void ClosingMult(object sender, CancelEventArgs e)
+        {
+            //Logger.Log("Multicast窗口已销毁");
+            if (multicast._isRunning == true)
+                multicast.StopListening();
+        }
 
         public async Task Getport()
         {
-            Multicast multicast = new Multicast();
+            
             multicast.DataReceived += (sender, message) =>
             {
                 // 在主进程中处理接收到的数据
