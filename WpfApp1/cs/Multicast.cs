@@ -18,6 +18,8 @@ namespace userdata
         }
         private static bool MulticastOpen;
         private static int SrcPort = 0;
+        private static string multicastGroup = "224.0.2.60";
+        private static int multicastPort = 4445;
         public static void SetSrcPort(int port)
         {
             SrcPort = port;
@@ -35,9 +37,7 @@ namespace userdata
             MulticastOpen = true;
             if (SrcPort != 0 && MulticastOpen)
             {
-                string multicastGroup = "224.0.2.60";
-                int multicastPort = 4445;
-
+                
                 using (UdpClient client = new UdpClient(SrcPort))
                 {
                     IPEndPoint remoteEP = new IPEndPoint(IPAddress.Parse(multicastGroup), multicastPort);
@@ -61,6 +61,51 @@ namespace userdata
                 }
             }
             
+        }
+        private bool _isRunning = true;
+        private UdpClient _udpClient;
+        private int _localPort = 4445;
+        public event EventHandler<string> DataReceived;
+        public async Task StartListeningAsync()
+        {
+            try
+            {
+                _udpClient = new UdpClient(_localPort);
+                var groupEP = new IPEndPoint(IPAddress.Parse(multicastGroup), multicastPort);
+                _udpClient.JoinMulticastGroup(groupEP.Address);
+
+                Logger.Log("开始监听多播消息...");
+
+                while (_isRunning)
+                {
+                    UdpReceiveResult result = await _udpClient.ReceiveAsync();
+                    string receivedMessage = Encoding.UTF8.GetString(result.Buffer);
+
+                    //Logger.Log($"接收到的消息: {receivedMessage}");
+                    OnDataReceived(receivedMessage);
+                    // 停止监听
+                    StopListening();
+                    break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"发生错误: {ex.Message}");
+            }
+            finally
+            {
+                _udpClient?.Close();
+            }
+        }
+        protected virtual void OnDataReceived(string message)
+        {
+            DataReceived?.Invoke(this, message);
+        }
+        public void StopListening()
+        {
+            _isRunning = false;
+            _udpClient?.Close();
+            Logger.Log("停止监听多播消息...");
         }
     }
 }

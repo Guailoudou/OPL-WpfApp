@@ -301,6 +301,7 @@
         </TabControl>
         <Button Content="关闭所有隧道" Margin="0,0,130,10" VerticalAlignment="Bottom" Click="CloseAll" Grid.Column="1" HorizontalAlignment="Right" Height="32" />
         <Button Content="启动" Margin="0,0,10,10" VerticalAlignment="Bottom" Click="Button_Click_open" x:Name="openbutton" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Grid.Column="1" HorizontalAlignment="Right" Height="32" Width="102"/>
-        <Button Content="导出已启用隧道为连接码" Margin="0,0,516,13" VerticalAlignment="Bottom" Click="Outlist" Grid.Column="1" HorizontalAlignment="Right" Height="32" Width="193" />
+        <Button Content="导出已启用隧道为连接码" Margin="0,0,516,10" VerticalAlignment="Bottom" Click="Outlist" Grid.Column="1" HorizontalAlignment="Right" Height="32" Width="193" />
+        <Button Content="生成联机码" Margin="0,0,372,10" VerticalAlignment="Bottom" Click="Multput" Grid.Column="1" HorizontalAlignment="Right" Height="32" Width="125" />
     </Grid>
 </Window>

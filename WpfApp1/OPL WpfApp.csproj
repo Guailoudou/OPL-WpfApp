@@ -293,6 +293,9 @@
     </Compile>
     <Compile Include="cs\json.cs" />
     <Compile Include="cs\net.cs" />
+    <Compile Include="minui\Mult.xaml.cs">
+      <DependentUpon>Mult.xaml</DependentUpon>
+    </Compile>
     <Compile Include="minui\preset.xaml.cs">
       <DependentUpon>preset.xaml</DependentUpon>
     </Compile>
@@ -325,6 +328,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="minui\Mult.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="minui\preset.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

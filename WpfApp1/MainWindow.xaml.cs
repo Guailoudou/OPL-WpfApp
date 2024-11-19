@@ -1219,6 +1219,14 @@ namespace OPL_WpfApp
             MessageBox.Show("已经将启用的隧道导出为连接码，并已复制，可粘贴保存，复制连接码点击添加左边加号可添加", "提示");
         }
 
+        private void Multput(object sender, RoutedEventArgs e)
+        {
+            minui.Mult mult = new minui.Mult();
+            mult.Owner = this;
+            mult.Topmost = true;
+            mult.ShowDialog();
+            Relist();
+        }
     }
 
 }
