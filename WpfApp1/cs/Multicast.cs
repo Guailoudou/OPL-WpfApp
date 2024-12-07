@@ -90,7 +90,7 @@ namespace userdata
             }
             catch (Exception ex)
             {
-                Logger.Log($"发生错误/已关闭监听: {ex.Message}");
+                Logger.Log($"已关闭监听: {ex.Message}");
             }
             finally
             {

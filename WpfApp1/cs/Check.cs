@@ -252,7 +252,7 @@ namespace OPL_WpfApp
         {
             try
             {
-                System.Windows.Clipboard.SetText(text);
+                System.Windows.Clipboard.SetDataObject(text);
             }
             catch (Exception ex)
             {

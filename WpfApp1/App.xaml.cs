@@ -285,5 +285,11 @@ namespace OPL_WpfApp
 
             return hwnd;
         }
+
+        void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+           MessageBox.Show("出现未经处理的异常，如果影响到看功能的使用，可以的话，请将该页面截图给开发者，这有助于解决这个问题: \n" + e.Exception.Message);
+           e.Handled = true;
+        }
     }
 }

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:OPL_WpfApp"
              xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+             DispatcherUnhandledException="Application_DispatcherUnhandledException"
              >
 
     <Application.Resources>
