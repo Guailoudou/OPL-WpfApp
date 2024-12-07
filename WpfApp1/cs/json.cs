@@ -177,8 +177,8 @@ namespace userdata
         }
         public void del(int index)
         {
-            Logger.Log($"[执行]删除隧道 序号:{index} - {config.Apps[index].ToString()}");
             getjosn();
+            Logger.Log($"[执行]删除隧道 序号:{index} - {config.Apps[index].ToString()}");
             config.Apps.RemoveAt(index);
             config.LogLevel = Ologv;
             wejson();
@@ -319,7 +319,7 @@ namespace userdata
         public int Enabled { get; set; } //开启？
         public override string ToString() 
         {
-            return AppName+"-"+Protocol+"-"+ PeerNode + "-"+ DstPort + "-"+ SrcPort;
+            return AppName+"-"+Protocol+"-"+ PeerNode + "-"+ DstPort + "->"+ SrcPort;
         }
     }
 

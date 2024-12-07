@@ -72,20 +72,6 @@ namespace OPL_WpfApp.minui
                 {
                     Logger.Log("未找到 AD 标签");
                 }
-
-                //string pattern = @"[AD](.*?)[/AD]";
-                //Match match = Regex.Match(message, pattern);
-                //if (match.Success)
-                //{
-                //    // 提取匹配到的数字
-                //    Logger.Log($"读取到: {match.Groups[3].Value}");
-                //    string adValue = match.Groups[1].Value;
-                //    port_text.Text = adValue;
-                //}
-                //else
-                //{
-                //    Logger.Log("未找到匹配的 AD 标签");
-                //}
             };
 
             // 启动监听
@@ -113,17 +99,8 @@ namespace OPL_WpfApp.minui
             UserData userData = new UserData();
             string uuid = userData.UUID;
             string output = $"{uuid}:{port}";
-            try
-            {
-                Clipboard.SetText(output);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log($"[错误]复制失败：{ex.Message} - {output}");
-                MessageBox.Show($"自动复制可能失败了，--{ex.Message}", "提示");
-                return;
-            }
-            MessageBox.Show("已经复制快捷联机码，请粘贴给需要连接的好友", "提示");
+            if (Copy_text(output))
+                MessageBox.Show("已经复制快捷联机码，请粘贴给需要连接的好友", "提示");
             this.Close();
         }
     }

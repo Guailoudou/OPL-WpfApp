@@ -246,5 +246,24 @@ namespace OPL_WpfApp
             }
             return lastText;
         }
+
+
+        public static bool Copy_text(string text)
+        {
+            try
+            {
+                System.Windows.Clipboard.SetText(text);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"[错误]自动复制失败：{ex.Message} - {text}");
+                minui.copy_ui ui= new minui.copy_ui(text);
+                ui.Owner = App.Current.MainWindow;
+                ui.Topmost = true;
+                ui.ShowDialog();
+                return false;
+            }
+            return true;
+        }
     }
 }

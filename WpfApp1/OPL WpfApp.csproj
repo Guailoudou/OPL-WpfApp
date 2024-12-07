@@ -288,6 +288,9 @@
       <DependentUpon>Add.xaml</DependentUpon>
     </Compile>
     <Compile Include="minui\ColorPicker.xaml.cs" />
+    <Compile Include="minui\copy_ui.xaml.cs">
+      <DependentUpon>copy_ui.xaml</DependentUpon>
+    </Compile>
     <Compile Include="minui\edit.xaml.cs">
       <DependentUpon>edit.xaml</DependentUpon>
     </Compile>
@@ -311,6 +314,10 @@
     <Page Include="minui\ColorPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="minui\copy_ui.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="minui\edit.xaml">
       <SubType>Designer</SubType>

@@ -109,34 +109,19 @@ namespace OPL_WpfApp
 
         private void CopyUUID_Button_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Clipboard.SetText(UUID.Text);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log($"[错误]复制失败：{ex.Message}");
-                MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
-                return;
-            }
-            MessageBox.Show("复制成功", "提示");
+            if(Copy_text(UUID.Text))
+                MessageBox.Show("复制成功", "提示");
 
         }
         private void CopyipLink(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
             int index = (int)button.Tag;
-            try
+            if (Copy_text(iplink[index]))
             {
-                Clipboard.SetText(iplink[index]);
+                MessageBox.Show("复制成功，可在游戏中使用ctrl+v粘贴", "提示");
             }
-            catch (Exception ex)
-            {
-                Logger.Log($"[错误]复制失败：{ex.Message}");
-                MessageBox.Show($"自动复制可能失败了，尝试手动复制--{ex.Message}", "提示");
-                return;
-            }
-            MessageBox.Show("复制成功，可在游戏中使用ctrl+v粘贴", "提示");
+            
         }
         private void ResetUUID_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -650,7 +635,7 @@ namespace OPL_WpfApp
             {
 
                 Logger.Log("[错误]启动失败，看来被安全中心拦截" + ex.ToString());
-                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin") + "\r"+AppDomain.CurrentDomain.BaseDirectory, "警告");
+                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin") + "\r"+AppDomain.CurrentDomain.BaseDirectory + "\n\n如果还是不行请进行如下尝试\r\nWindows安全中心->应用和浏览器控制->智能应用控制设置->关闭", "警告");
                 if (process != null && !process.HasExited)
                 {
                     process.Kill();
@@ -912,17 +897,8 @@ namespace OPL_WpfApp
 
         private void copysss_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Clipboard.SetText(daysay.Text);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log($"[错误]复制失败：{ex.Message}");
-                MessageBox.Show($"自动复制可能失败了，--{ex.Message}", "提示");
-                return;
-            }
-            MessageBox.Show("复制成功", "提示");
+            if(Copy_text(daysay.Text))
+                MessageBox.Show("复制成功", "提示");
         }
 
         
@@ -1206,17 +1182,8 @@ namespace OPL_WpfApp
                 MessageBox.Show("你目前没有隧道，无法导出", "提示");
                 return;
             }
-            try
-            {
-                Clipboard.SetText(output);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log($"[错误]复制失败：{ex.Message} - {output}");
-                MessageBox.Show($"自动复制可能失败了，--{ex.Message}", "提示");
-                return;
-            }
-            MessageBox.Show("已经将启用的隧道导出为连接码，并已复制，可粘贴保存，复制连接码点击添加左边加号可添加", "提示");
+            if(Copy_text(output))
+                MessageBox.Show("已经将启用的隧道导出为连接码，并已复制，可粘贴保存，复制连接码点击添加左边加号可添加", "提示");
         }
 
         private void Multput(object sender, RoutedEventArgs e)
