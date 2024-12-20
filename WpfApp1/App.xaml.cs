@@ -288,8 +288,11 @@ namespace OPL_WpfApp
 
         void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-           MessageBox.Show("出现未经处理的异常，如果影响到看功能的使用，可以的话，请将该页面截图给开发者，这有助于解决这个问题: \n" + e.Exception.Message);
-           e.Handled = true;
+           MessageBox.Show($"出现未经处理的异常，如果影响到看功能的使用，可以的话，请将该页面截图给开发者，这有助于解决这个问题: \nMessage:{e.Exception.Message}\nSource: {e.Exception.Source}\nStack Trace: {e.Exception.StackTrace}");
+            Logger.Log($"Message: {e.Exception.Message}","错误");
+            Logger.Log($"Source: {e.Exception.Source}", "错误");
+            Logger.Log($"Stack Trace: {e.Exception.StackTrace}", "错误");
+            e.Handled = true;
         }
     }
 }

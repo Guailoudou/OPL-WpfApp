@@ -32,6 +32,7 @@ using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
 using FontFamily = System.Windows.Media.FontFamily;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+using System.Threading;
 
 namespace OPL_WpfApp
 {
@@ -489,7 +490,7 @@ namespace OPL_WpfApp
                 Strapp();
             else
             {
-                MessageBox.Show("暂时无法启动，正在进行关键文件下载，请等待片刻，如果下载失败可以尝试下载压缩包，并解压使用，完成下载后会有弹窗提示", "提示");
+                MessageBox.Show("暂时无法启动，正在进行关键文件下载，请等待片刻后再试，如果下载失败可以尝试下载压缩包，并解压使用，完成下载后会有日志提示", "提示");
             }
 
         }
@@ -890,7 +891,7 @@ namespace OPL_WpfApp
             }
             catch (Exception ex)
             {
-                Logger.Log($"无法识别的连接码: {pastedText} - {ex.Message}");
+                Logger.Log($"无法识别的连接码: {pastedText} - {ex.Message} - {ex.Source} - {ex.StackTrace}");
                 MessageBox.Show($"无法识别的连接码: {pastedText} \n请复制连接码后点击\r该功能为一键添加/编辑隧道为连接码隧道，房主可直接编辑发送连接码供连接方使用。 \r\r连接码用法： \r用法1：\r uid:端口 --> tcp协议连接码 \r示例：qwertyuioop:25565 \r\r 用法2：\r<1/2>:uid:端口[:本地端口] --> 1为tcp，2为udp 本地端口可省略\r示例：1:qwertyuiop:25565:25575 \r多个连接可以用;间隔同时输入\r复制后直接点击该按钮即可完成添加，后直接启动即可  \r如果确认你复制的符合格式，可尝试点击右边按钮自行添加隧道\r\r {ex.Message}", "错误");
             }
         }
@@ -1023,7 +1024,24 @@ namespace OPL_WpfApp
         {
             Logger.Log("将在2s后自动重新启动...");
             await Task.Delay(2000);
-            Strapp();
+            
+            // 假设这是一个需要在主线程上执行的方法
+            Action actionOnMainThread = () =>
+            {
+                // 调用主进程中的方法
+                Strapp();
+            };
+
+            if (SynchronizationContext.Current != null)
+            {
+                // 如果存在同步上下文，则使用它来调度操作
+                SynchronizationContext.Current.Post(state => actionOnMainThread(), null);
+            }
+            else
+            {
+                // 如果没有同步上下文（例如控制台应用程序），则直接调用
+                actionOnMainThread();
+            }
         }
         private void Initialization(bool temp =false)
         {

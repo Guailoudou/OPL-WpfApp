@@ -92,6 +92,10 @@ namespace userdata
         public int Finduid(string uid,string type)
         {
             int index = 0;
+            if (config.Apps == null)
+            {
+                return -1;
+            }
             foreach (App app in config.Apps)
             {
                 if (app.PeerNode==uid && app.Protocol==type && !oindex.Contains(index))

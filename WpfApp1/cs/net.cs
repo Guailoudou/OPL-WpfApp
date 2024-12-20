@@ -20,7 +20,7 @@ namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 46;//协议版本号
+        private static readonly int pvn = 47;//协议版本号
         public static int Getpvn()
         {
             return pvn;
