@@ -13,11 +13,9 @@ public partial class AddViewModel : ObservableObject
 
     public string Uuid { get; set; } = "";
 
-    [ObservableProperty]
-    public partial int SPort { get; set; }
+    [ObservableProperty] public partial int SPort { get; set; }
 
-    [ObservableProperty]
-    public partial int CPort { get; set; }
+    [ObservableProperty] public partial int CPort { get; set; }
 
     public string Type { get; set; } = "tcp";
 
@@ -27,7 +25,7 @@ public partial class AddViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void AddApp(Window window)
+    private void AddApp(Window window)
     {
         var config = ConfigManager.Instance.Config;
         Name = Name.Trim();
@@ -38,12 +36,14 @@ public partial class AddViewModel : ObservableObject
             MessageBox.Show("不能自己连自己啊！！这无异于试图左脚踩右脚升天！！", "错误");
             return;
         }
-        if (SPort is not > 0 and < 65536 || CPort is not > 0 and < 65536)
+
+        if (SPort is <= 0 or >= 65536 || CPort is <= 0 or >= 65536)
         {
             MessageBox.Show("端口正常范围为1-65535", "提示");
             return;
         }
-        config.AddNewApp(Name, Uuid, SPort, CPort, Type);
+
+        ConfigManager.Instance.AddNewApp(Name, Uuid, SPort, CPort, Type);
         window.Close();
     }
 }

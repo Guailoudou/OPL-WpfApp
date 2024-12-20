@@ -1,4 +1,5 @@
-﻿using Page = iNKORE.UI.WPF.Modern.Controls.Page;
+﻿using System.Windows.Controls;
+using Page = iNKORE.UI.WPF.Modern.Controls.Page;
 
 namespace OplWpf.Pages
 {
@@ -10,6 +11,11 @@ namespace OplWpf.Pages
         public Log()
         {
             InitializeComponent();
+        }
+
+        private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            LogTextBox.CaretIndex = LogTextBox.Text.Length;
         }
     }
 }

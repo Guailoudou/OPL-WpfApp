@@ -9,25 +9,26 @@ namespace OplWpf.ViewModels;
 
 public partial class LogViewModel : ObservableObject, ILogEventSink
 {
-    public string LogText => stringWriter.ToString();
+    [ObservableProperty] public partial string LogText { get; set; } = "";
 
-    private readonly StringWriter stringWriter = new();
+    private readonly StringWriter _stringWriter = new();
 
-    private readonly MessageTemplateTextFormatter formatter;
+    private readonly MessageTemplateTextFormatter _formatter;
 
     public LogViewModel()
     {
-        var logFormat = "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] {Message:lj}{NewLine}{Exception}";
-        formatter = new MessageTemplateTextFormatter(logFormat, null);
+        const string logFormat = "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+        _formatter = new MessageTemplateTextFormatter(logFormat);
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Sink(this)
-            .WriteTo.File(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "log", "opl.log"), outputTemplate: logFormat)
+            .WriteTo.File(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "log", "opl.log"),
+                outputTemplate: logFormat)
             .CreateLogger();
     }
 
     public void Emit(LogEvent logEvent)
     {
-        formatter.Format(logEvent, stringWriter);
-        OnPropertyChanged(nameof(LogText));
+        _formatter.Format(logEvent, _stringWriter);
+        LogText = _stringWriter.ToString();
     }
 }

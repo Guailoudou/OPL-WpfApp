@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using CommunityToolkit.Mvvm.Input;
 using Serilog;
 
 namespace OplWpf.Models;
@@ -31,45 +32,50 @@ public class App
     public required string PeerUser { get; set; }
     public required string RelayNode { get; set; }
     public required int Enabled { get; set; } //开启？
+
+    [JsonIgnore]
+    public int BindingEnabled
+    {
+        get => Enabled;
+        set
+        {
+            Enabled = value;
+            ConfigManager.Instance.Config.Save();
+        }
+    }
+
     public override string ToString() => $"{AppName}-{Protocol}-{PeerNode}-{DstPort}->{SrcPort}";
 }
 
-public class Config
+public partial class Config
 {
-    private static readonly string configFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
+    private static readonly string ConfigFile =
+        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
 
     [JsonPropertyName("network")]
-    public Network Network { get; set; }
-
-    [JsonPropertyName("apps")]
-    public ObservableCollection<App> Apps { get; set; }
-
-    public int LogLevel { get; set; }
-
-    public Config()
+    public Network Network { get; init; } = new()
     {
-        Network = new()
-        {
-            Token = 11602319472897248650UL,
-            Node = GenerateUuid(),
-            User = "gldoffice",
-            ShareBandwidth = 10,
-            ServerHost = "api.openp2p.cn",
-            ServerPort = 27183,
-            UDPPort1 = 27182,
-            UDPPort2 = 27183,
-            TCPPort = 50448
-        };
-        Apps = [];
-        LogLevel = 2;
-    }
+        Token = 11602319472897248650UL,
+        Node = GenerateUuid(),
+        User = "gldoffice",
+        ShareBandwidth = 10,
+        ServerHost = "api.openp2p.cn",
+        ServerPort = 27183,
+        UDPPort1 = 27182,
+        UDPPort2 = 27183,
+        TCPPort = 50448
+    };
+
+    [JsonPropertyName("apps")] public ObservableCollection<App> Apps { get; init; } = [];
+
+    public int LogLevel { get; set; } = 2;
 
     public static Config Load()
     {
         try
         {
-            var jsonString = File.ReadAllText(configFile);
-            if (JsonSerializer.Deserialize<Config>(jsonString) is not Config config)
+            var jsonString = File.ReadAllText(ConfigFile);
+            if (JsonSerializer.Deserialize<Config>(jsonString) is not { } config)
             {
                 throw new InvalidDataException("Json格式不正确");
             }
@@ -90,33 +96,14 @@ public class Config
     public static string GenerateUuid()
     {
         var bytes = new byte[8]; // 每两个十六进制字符对应一个字节
-        new Random().NextBytes(bytes);
+        Random.Shared.NextBytes(bytes);
         return Convert.ToHexStringLower(bytes); // 转换为十六进制
     }
 
     public void Save()
     {
         var json = JsonSerializer.Serialize(this, ConfigManager.SerializerOptions);
-        File.WriteAllText(configFile, json);
-    }
-
-    public void AddNewApp(string appName, string sUuid, int sPort, int cPort, string type)
-    {
-        Apps.Add(new App
-        {
-            AppName = appName,
-            PeerNode = sUuid,
-            Whitelist = "",
-            Protocol = type,
-            SrcPort = cPort,
-            DstPort = sPort,
-            DstHost = "localhost",
-            Enabled = 1,
-            PeerUser = "",
-            RelayNode = ""
-        });
-        Log.Information("创建新的隧道{sUuid}:{sPort}--{type}>>{cPort}", sUuid, sPort, type, cPort);
-        Save();
+        File.WriteAllText(ConfigFile, json);
     }
 
     public void ResetToken()

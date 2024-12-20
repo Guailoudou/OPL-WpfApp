@@ -9,7 +9,6 @@ public class TcpClientWithKeepAlive
 {
     private const int KEEP_ALIVE_INTERVAL_SEC = 1; // 设置心跳间隔为1秒
     private readonly Socket _client;
-    private readonly Thread? _keepAliveThread;
     private bool _shouldStopKeepAlive = true;
     private string ipAddress;
     private int port;
@@ -28,11 +27,11 @@ public class TcpClientWithKeepAlive
             Log.Information("TCP Connected to {ipAddress}:{port}开启隧道保活", ipAddress, port);
             _shouldStopKeepAlive = false;
             // 启动心跳线程
-            _keepAliveThread = new(SendKeepAliveMessage)
+            Thread keepAliveThread = new(SendKeepAliveMessage)
             {
                 IsBackground = true
             };
-            _keepAliveThread.Start();
+            keepAliveThread.Start();
         }
         catch (SocketException se)
         {
@@ -46,8 +45,8 @@ public class TcpClientWithKeepAlive
         {
             if (_client.Connected)
             {
-                string keepAliveMessage = "\x00";
-                byte[] buffer = Encoding.ASCII.GetBytes(keepAliveMessage);
+                const string keepAliveMessage = "\0";
+                var buffer = Encoding.ASCII.GetBytes(keepAliveMessage);
                 try
                 {
                     _client.Send(buffer);
@@ -59,18 +58,18 @@ public class TcpClientWithKeepAlive
                 }
 
                 // 延迟至下一次心跳
-
             }
             else
             {
                 //IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
                 //_client.Connect(endPoint);
                 //break;
-
             }
+
             Thread.Sleep(TimeSpan.FromSeconds(KEEP_ALIVE_INTERVAL_SEC));
         }
     }
+
     public void StopSendingKeepAlive()
     {
         _shouldStopKeepAlive = true;
@@ -116,7 +115,7 @@ public class UdpClientKeepAlive
         // 创建一个定时器来定期发送心跳包
         _keepAliveTimer = new Timer((state) =>
         {
-            string keepAliveMessage = "\x00";
+            const string keepAliveMessage = "\0";
             byte[] buffer = Encoding.ASCII.GetBytes(keepAliveMessage);
 
             // 发送心跳包

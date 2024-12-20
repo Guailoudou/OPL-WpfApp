@@ -1,4 +1,5 @@
-﻿using iNKORE.UI.WPF.Modern.Controls;
+﻿using System.ComponentModel;
+using iNKORE.UI.WPF.Modern.Controls;
 using OplWpf.Pages;
 using System.Windows;
 using Page = iNKORE.UI.WPF.Modern.Controls.Page;
@@ -18,18 +19,20 @@ namespace OplWpf
         {
             InitializeComponent();
             NavigationView_Root.SelectedItem = Navigation_Tunnel;
+            Closing += Stop;
         }
 
-        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        private void NavigationView_SelectionChanged(NavigationView sender,
+            NavigationViewSelectionChangedEventArgs args)
         {
             var item = sender.SelectedItem;
             Page? page = null;
 
-            if (item == Navigation_Tunnel)
+            if (Equals(item, Navigation_Tunnel))
             {
                 page = TunnelPage;
             }
-            else if (item == Navigation_Log)
+            else if (Equals(item, Navigation_Log))
             {
                 page = LogPage;
             }
@@ -37,7 +40,7 @@ namespace OplWpf
             //{
             //    page = Page_Apps;
             //}
-            else if (item == Navigation_About)
+            else if (Equals(item, Navigation_About))
             {
                 page = AboutPage;
             }
@@ -47,11 +50,11 @@ namespace OplWpf
                 Frame_Main.Navigate(page);
             }
         }
-        protected override void OnClosed(EventArgs e)
+
+        private void Stop(object? sender, CancelEventArgs e)
         {
             ConfigManager.Instance.Openp2p.Stop();
             Serilog.Log.CloseAndFlush();
-            base.OnClosed(e);
         }
     }
 }

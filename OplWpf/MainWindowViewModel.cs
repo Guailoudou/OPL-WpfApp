@@ -3,10 +3,11 @@ using OplWpf.Models;
 using Serilog;
 using System.Diagnostics;
 using System.Reflection;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace OplWpf;
 
-public partial class MainWindowViewModel
+public partial class MainWindowViewModel : ObservableObject
 {
     public MainWindowViewModel()
     {
@@ -27,8 +28,12 @@ public partial class MainWindowViewModel
 
     public string DisplayVersion => Version + " - " + Net.Pvn;
 
+    public string ButtonText => ConfigManager.Instance.MainState == State.Stop
+        ? "启动"
+        : "停止";
+
     [RelayCommand]
-    public void Start()
+    private void Start()
     {
         if (ConfigManager.Instance.MainState == State.Stop)
         {
@@ -36,7 +41,9 @@ public partial class MainWindowViewModel
         }
         else
         {
-            ConfigManager.Instance.MainState = State.Stop;
+            ConfigManager.Instance.Openp2p.Stop();
         }
+
+        OnPropertyChanged(nameof(ButtonText));
     }
 }
