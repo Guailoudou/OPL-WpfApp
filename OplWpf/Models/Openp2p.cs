@@ -10,7 +10,7 @@ namespace OplWpf.Models;
 
 public class Openp2p
 {
-    private static readonly string ExePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
+    private static readonly string ExePath = Path.Combine(AppContext.BaseDirectory, "bin", "openp2p.exe");
 
     private Process? _process;
 
@@ -75,8 +75,8 @@ public class Openp2p
                              启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动
                              内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性
                              请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径
-                             {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin")}
-                             {AppDomain.CurrentDomain.BaseDirectory}
+                             {Path.Combine(AppContext.BaseDirectory, "bin")}
+                             {AppContext.BaseDirectory}
                              如果还是不行请进行如下尝试
                              Windows安全中心->应用和浏览器控制->智能应用控制设置->关闭
                              """, "警告");

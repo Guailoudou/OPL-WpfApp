@@ -20,8 +20,9 @@ public partial class MainWindowViewModel : ObservableObject
     {
         get
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            var fileName = Process.GetCurrentProcess().MainModule?.FileName;
+            if (fileName == null) return "";
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(fileName);
             return fileVersionInfo.FileVersion ?? "";
         }
     }

@@ -21,7 +21,7 @@ public partial class LogViewModel : ObservableObject, ILogEventSink
         _formatter = new MessageTemplateTextFormatter(logFormat);
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Sink(this)
-            .WriteTo.File(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "log", "opl.log"),
+            .WriteTo.File(Path.Combine(AppContext.BaseDirectory, "bin", "log", "opl.log"),
                 outputTemplate: logFormat)
             .CreateLogger();
     }

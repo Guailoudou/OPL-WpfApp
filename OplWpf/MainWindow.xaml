@@ -74,7 +74,7 @@
             </ikw:SimpleStackPanel>
             <ikw:SimpleStackPanel Grid.Column="2" Spacing="15" Orientation="Horizontal" FlowDirection="RightToLeft">
                 <Button Content="{Binding ButtonText}" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Width="102"
-                        Command="{Binding StartCommand}"/>
+                        d:Content="启动" Command="{Binding StartCommand}"/>
                 <Button Content="关闭所有隧道"  />
             </ikw:SimpleStackPanel>
         </Grid>

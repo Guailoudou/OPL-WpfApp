@@ -50,7 +50,7 @@ public class App
 public partial class Config
 {
     private static readonly string ConfigFile =
-        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
+        Path.Combine(AppContext.BaseDirectory, "bin", "config.json");
 
     [JsonPropertyName("network")]
     public Network Network { get; init; } = new()

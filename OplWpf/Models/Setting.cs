@@ -6,7 +6,7 @@ namespace OplWpf.Models;
 
 public class Setting
 {
-    private static readonly string SettingFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "set.json");
+    private static readonly string SettingFile = Path.Combine(AppContext.BaseDirectory, "bin", "set.json");
 
     public string Color { get; set; } = "#FF0078D4"; // 颜色
     public string Theme { get; set; } = ""; // 主题("Light" 或 "Dark")
