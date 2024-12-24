@@ -1,4 +1,4 @@
-﻿<ui:Page x:Class="OplWpf.Pages.Tunnel"
+﻿<ui:Page x:Class="OplWpf.Pages.TunnelPage"
          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,9 +11,6 @@
          mc:Ignorable="d"
          d:DesignHeight="463" d:DesignWidth="801"
          Title="Tunnel">
-    <ui:Page.DataContext>
-        <vm:TunnelViewModel />
-    </ui:Page.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

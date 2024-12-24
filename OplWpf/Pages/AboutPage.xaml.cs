@@ -5,9 +5,9 @@ namespace OplWpf.Pages
     /// <summary>
     /// About.xaml 的交互逻辑
     /// </summary>
-    public partial class About : Page
+    public partial class AboutPage : Page
     {
-        public About()
+        public AboutPage()
         {
             InitializeComponent();
         }

@@ -47,28 +47,17 @@ public class App
     public override string ToString() => $"{AppName}-{Protocol}-{PeerNode}-{DstPort}->{SrcPort}";
 }
 
-public partial class Config
+public class Config(Network network, IEnumerable<App> apps, int logLevel)
 {
     private static readonly string ConfigFile =
         Path.Combine(AppContext.BaseDirectory, "bin", "config.json");
 
     [JsonPropertyName("network")]
-    public Network Network { get; init; } = new()
-    {
-        Token = 11602319472897248650UL,
-        Node = GenerateUuid(),
-        User = "gldoffice",
-        ShareBandwidth = 10,
-        ServerHost = "api.openp2p.cn",
-        ServerPort = 27183,
-        UDPPort1 = 27182,
-        UDPPort2 = 27183,
-        TCPPort = 50448
-    };
+    public Network Network => network;
 
-    [JsonPropertyName("apps")] public ObservableCollection<App> Apps { get; init; } = [];
+    [JsonPropertyName("apps")] public ObservableCollection<App> Apps { get; } = new(apps);
 
-    public int LogLevel { get; set; } = 2;
+    public int LogLevel { get; set; } = logLevel;
 
     public static Config Load()
     {
@@ -87,7 +76,22 @@ public partial class Config
         catch (Exception e)
         {
             Log.Error(e, "读取配置文件失败，使用默认配置");
-            var config = new Config();
+            var config = new Config(
+                 new()
+                 {
+                     Token = 11602319472897248650UL,
+                     Node = GenerateUuid(),
+                     User = "gldoffice",
+                     ShareBandwidth = 10,
+                     ServerHost = "api.openp2p.cn",
+                     ServerPort = 27183,
+                     UDPPort1 = 27182,
+                     UDPPort2 = 27183,
+                     TCPPort = 50448
+                 },
+                 [],
+                 2
+            );
             config.Save();
             return config;
         }
@@ -109,8 +113,8 @@ public partial class Config
     public void ResetToken()
     {
         Network.Token = 11602319472897248650UL;
-        LogLevel = 2;
         Network.User = "gldoffice";
+        LogLevel = 2;
         Save();
     }
 }

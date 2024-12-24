@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:OplWpf"
         xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
         xmlns:ikw="http://schemas.inkore.net/lib/ui/wpf"
-        xmlns:cnvt="clr-namespace:OplWpf.Converters"
+        xmlns:conv="clr-namespace:OplWpf.Converters"
         ui:WindowHelper.UseModernWindowStyle="True"
         ui:WindowHelper.SystemBackdropType="Mica"
         mc:Ignorable="d"
@@ -65,7 +65,7 @@
             </Grid.ColumnDefinitions>
             <ikw:SimpleStackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
                 <Ellipse Stroke="Black" Width="10" Height="10" 
-                         Fill="{Binding MainState, Source={x:Static local:ConfigManager.Instance},Converter={cnvt:StateToColorConverter}}"/>
+                         Fill="{Binding MainState, Source={x:Static local:ConfigManager.Instance},Converter={conv:StateToColorConverter}}"/>
                 <Label Content="{Binding DisplayVersion, Mode=OneTime}" Margin="10,0,0,0" />
             </ikw:SimpleStackPanel>
             <ikw:SimpleStackPanel Grid.Column="1" Spacing="15" Orientation="Horizontal">
@@ -75,7 +75,8 @@
             <ikw:SimpleStackPanel Grid.Column="2" Spacing="15" Orientation="Horizontal" FlowDirection="RightToLeft">
                 <Button Content="{Binding ButtonText}" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Width="102"
                         d:Content="启动" Command="{Binding StartCommand}"/>
-                <Button Content="关闭所有隧道"  />
+                <Button Content="关闭所有隧道"  
+                        IsEnabled="{Binding MainState, Source={x:Static local:ConfigManager.Instance}, Converter={conv:StateToEnableConverter}}"/>
             </ikw:SimpleStackPanel>
         </Grid>
     </Grid>

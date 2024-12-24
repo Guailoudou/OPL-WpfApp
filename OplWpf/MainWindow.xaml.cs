@@ -11,9 +11,10 @@ namespace OplWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Tunnel TunnelPage { get; init; } = new();
-        public Log LogPage { get; init; } = new();
-        public About AboutPage { get; init; } = new();
+        //log在前确保日志注册
+        public LogPage LogPage { get; init; } = new();
+        public TunnelPage TunnelPage { get; init; } = new();
+        public AboutPage AboutPage { get; init; } = new();
 
         public MainWindow()
         {
