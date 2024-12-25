@@ -10,7 +10,8 @@ public partial class ConfigManager : ObservableObject
 {
     public static JsonSerializerOptions SerializerOptions { get; } = new()
     {
-        WriteIndented = true
+        WriteIndented = true,
+        PropertyNameCaseInsensitive = true
     };
 
     private static readonly Lazy<ConfigManager> instance = new(() => new ConfigManager());
@@ -40,7 +41,7 @@ public partial class ConfigManager : ObservableObject
 
     public void AddNewApp(string appName, string sUuid, int sPort, int cPort, string type)
     {
-        Config.Apps.Add(new Models.App
+        Config.Apps.Add(new Models.AppConfig
         {
             AppName = appName,
             PeerNode = sUuid,
@@ -58,10 +59,10 @@ public partial class ConfigManager : ObservableObject
     }
 
     [RelayCommand]
-    private void RemoveApp(Models.App app)
+    private void RemoveApp(Models.AppConfig appConfig)
     {
-        Config.Apps.Remove(app);
-        Log.Information("删除隧道 {app}", app);
+        Config.Apps.Remove(appConfig);
+        Log.Information("删除隧道 {app}", appConfig);
         Config.Save();
     }
 

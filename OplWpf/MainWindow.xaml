@@ -14,16 +14,16 @@
         WindowStartupLocation="CenterScreen"
         Height="500" Width="850">
     <Window.DataContext>
-        <local:MainWindowViewModel/>
+        <local:MainWindowViewModel />
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="50"/>
+            <RowDefinition />
+            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-        <ui:NavigationView x:Name="NavigationView_Root" PaneDisplayMode="Left" 
+        <ui:NavigationView x:Name="NavigationView_Root" PaneDisplayMode="Left"
                            IsPaneToggleButtonVisible="False" IsBackButtonVisible="Collapsed"
-                       SelectionChanged="NavigationView_SelectionChanged" OpenPaneLength="120">
+                           SelectionChanged="NavigationView_SelectionChanged" OpenPaneLength="120">
             <!--<FrameworkElement.Resources>
                 <SolidColorBrush x:Key="{x:Static ui:ThemeKeys.NavigationViewContentBackgroundKey}" Color="Transparent"/>
                 <SolidColorBrush x:Key="{x:Static ui:ThemeKeys.ExpanderHeaderBorderBrushKey}" Color="Transparent"/>
@@ -32,40 +32,40 @@
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem x:Name="Navigation_Tunnel" Content="隧道">
                     <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Link_20_Regular}"/>
+                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Link_20_Regular}" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
 
                 <ui:NavigationViewItem x:Name="Navigation_Log" Content="日志">
                     <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.WindowConsole_20_Regular}"/>
+                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.WindowConsole_20_Regular}" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
 
                 <ui:NavigationViewItem x:Name="Navigation_Color" Content="配色">
                     <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Color_20_Regular}"/>
+                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Color_20_Regular}" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
 
                 <ui:NavigationViewItem x:Name="Navigation_About" Content="关于">
                     <ui:NavigationViewItem.Icon>
-                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.PersonSettings_20_Regular}"/>
+                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.PersonSettings_20_Regular}" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
             </ui:NavigationView.MenuItems>
 
-            <ui:Frame x:Name="Frame_Main" Margin="10"/>
+            <ui:Frame x:Name="Frame_Main" Margin="10" />
         </ui:NavigationView>
         <Grid Grid.Row="1" Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="110"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="110" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <ikw:SimpleStackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
-                <Ellipse Stroke="Black" Width="10" Height="10" 
-                         Fill="{Binding MainState, Source={x:Static local:ConfigManager.Instance},Converter={conv:StateToColorConverter}}"/>
+                <Ellipse Stroke="Black" Width="10" Height="10"
+                         Fill="{Binding MainState, Source={x:Static local:ConfigManager.Instance},Converter={conv:StateToColorConverter}}" />
                 <Label Content="{Binding DisplayVersion, Mode=OneTime}" Margin="10,0,0,0" />
             </ikw:SimpleStackPanel>
             <ikw:SimpleStackPanel Grid.Column="1" Spacing="15" Orientation="Horizontal">
@@ -73,10 +73,12 @@
                 <Button Content="生成联机码" Width="125" />
             </ikw:SimpleStackPanel>
             <ikw:SimpleStackPanel Grid.Column="2" Spacing="15" Orientation="Horizontal" FlowDirection="RightToLeft">
-                <Button Content="{Binding ButtonText}" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Width="102"
-                        d:Content="启动" Command="{Binding StartCommand}"/>
-                <Button Content="关闭所有隧道"  
-                        IsEnabled="{Binding MainState, Source={x:Static local:ConfigManager.Instance}, Converter={conv:StateToEnableConverter}}"/>
+                <Button Content="{Binding ButtonText}"
+                        Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Width="102"
+                        Command="{Binding StartCommand}"
+                        IsEnabled="{Binding StartCommand.IsRunning, Converter={conv:ReverseBoolConverter}}" />
+                <Button Content="关闭所有隧道"
+                        IsEnabled="{Binding MainState, Source={x:Static local:ConfigManager.Instance}, Converter={conv:StateToEnableConverter}}" />
             </ikw:SimpleStackPanel>
         </Grid>
     </Grid>

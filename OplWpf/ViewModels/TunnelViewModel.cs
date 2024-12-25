@@ -8,10 +8,10 @@ namespace OplWpf.ViewModels;
 
 public partial class TunnelViewModel
 {
-    public Config Config => ConfigManager.Instance.Config;
+    public Config Config { get; } = ConfigManager.Instance.Config;
 
     [RelayCommand]
-    public void CopyUid(string uid)
+    private void CopyUid(string uid)
     {
         Clipboard.SetText(uid);
         MessageBox.Show("复制成功", "提示");

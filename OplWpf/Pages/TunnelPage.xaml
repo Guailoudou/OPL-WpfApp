@@ -10,7 +10,8 @@
          xmlns:conv="clr-namespace:OplWpf.Converters"
          mc:Ignorable="d"
          d:DesignHeight="463" d:DesignWidth="801"
-         Title="Tunnel">
+         Title="Tunnel"
+         d:DataContext="{d:DesignInstance vm:TunnelViewModel}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

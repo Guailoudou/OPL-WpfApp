@@ -14,7 +14,7 @@ public class Openp2p
 
     private Process? _process;
 
-    public void Start()
+    public async Task Start()
     {
         if (!File.Exists(ExePath))
         {
@@ -53,7 +53,7 @@ public class Openp2p
         };
         try
         {
-            process.Start();
+            await Task.Run(() => process.Start());
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             _process = process;

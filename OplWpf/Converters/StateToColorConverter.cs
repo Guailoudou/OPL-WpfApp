@@ -13,7 +13,7 @@ public class StateToColorConverter : MarkupExtension, IValueConverter
         return this;
     }
 
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is State state)
         {
@@ -29,7 +29,7 @@ public class StateToColorConverter : MarkupExtension, IValueConverter
         return Brushes.Gray;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return Binding.DoNothing;
     }

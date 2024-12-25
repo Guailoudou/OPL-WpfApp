@@ -7,7 +7,7 @@ using Serilog;
 
 namespace OplWpf.Models;
 
-public class Network
+public class NetworkConfig
 {
     public required ulong Token { get; set; }
     public required string Node { get; set; }
@@ -20,7 +20,7 @@ public class Network
     public required int TCPPort { get; set; }
 }
 
-public class App
+public class AppConfig
 {
     public required string AppName { get; set; } //隧道名
     public required string Protocol { get; set; } //隧道类型
@@ -47,17 +47,15 @@ public class App
     public override string ToString() => $"{AppName}-{Protocol}-{PeerNode}-{DstPort}->{SrcPort}";
 }
 
-public class Config(Network network, IEnumerable<App> apps, int logLevel)
+public class Config
 {
-    private static readonly string ConfigFile =
-        Path.Combine(AppContext.BaseDirectory, "bin", "config.json");
+    private static readonly string ConfigFile = Path.Combine(AppContext.BaseDirectory, "bin", "config.json");
 
-    [JsonPropertyName("network")]
-    public Network Network => network;
+    [JsonPropertyName("network")] public required NetworkConfig Network { get; init; }
 
-    [JsonPropertyName("apps")] public ObservableCollection<App> Apps { get; } = new(apps);
+    [JsonPropertyName("apps")] public required ObservableCollection<AppConfig> Apps { get; init; }
 
-    public int LogLevel { get; set; } = logLevel;
+    public int LogLevel { get; set; }
 
     public static Config Load()
     {
@@ -68,30 +66,29 @@ public class Config(Network network, IEnumerable<App> apps, int logLevel)
             {
                 throw new InvalidDataException("Json格式不正确");
             }
-            else
-            {
-                return config;
-            }
+
+            return config;
         }
         catch (Exception e)
         {
             Log.Error(e, "读取配置文件失败，使用默认配置");
-            var config = new Config(
-                 new()
-                 {
-                     Token = 11602319472897248650UL,
-                     Node = GenerateUuid(),
-                     User = "gldoffice",
-                     ShareBandwidth = 10,
-                     ServerHost = "api.openp2p.cn",
-                     ServerPort = 27183,
-                     UDPPort1 = 27182,
-                     UDPPort2 = 27183,
-                     TCPPort = 50448
-                 },
-                 [],
-                 2
-            );
+            var config = new Config
+            {
+                Network = new NetworkConfig
+                {
+                    Token = 11602319472897248650UL,
+                    Node = GenerateUuid(),
+                    User = "gldoffice",
+                    ShareBandwidth = 10,
+                    ServerHost = "api.openp2p.cn",
+                    ServerPort = 27183,
+                    UDPPort1 = 27182,
+                    UDPPort2 = 27183,
+                    TCPPort = 50448
+                },
+                Apps = [],
+                LogLevel = 2
+            };
             config.Save();
             return config;
         }

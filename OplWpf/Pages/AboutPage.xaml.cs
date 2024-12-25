@@ -1,4 +1,5 @@
-﻿using Page = iNKORE.UI.WPF.Modern.Controls.Page;
+﻿using OplWpf.ViewModels;
+using Page = iNKORE.UI.WPF.Modern.Controls.Page;
 
 namespace OplWpf.Pages
 {
@@ -10,6 +11,7 @@ namespace OplWpf.Pages
         public AboutPage()
         {
             InitializeComponent();
+            DataContext = new AboutViewModel();
         }
     }
 }
