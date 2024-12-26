@@ -84,11 +84,12 @@ namespace userdata
             _shouldStopKeepAlive = true;
             try
             {
-                _client.Shutdown(SocketShutdown.Both); // 先关闭发送和接收
+                if (_client.Connected)
+                    _client.Shutdown(SocketShutdown.Both); // 先关闭发送和接收
             }
             catch (Exception ex) when (ex is ObjectDisposedException || ex is InvalidOperationException)
             {
-                // 处理可能的异常情况
+                Logger.Log("SocketException: {0}" + ex.Message);
             }
             finally
             {

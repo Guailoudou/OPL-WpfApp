@@ -630,6 +630,8 @@ namespace OPL_WpfApp
             try
             {
                 process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
 
             }
             catch (Exception ex)
@@ -644,8 +646,7 @@ namespace OPL_WpfApp
                 Stop();
                 return;
             }
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
+            
         }
         //public void Addbmd()
         //{
