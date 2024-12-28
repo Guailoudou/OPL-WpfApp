@@ -8,7 +8,7 @@ using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace OplWpf.Models;
 
-public class Openp2p
+public partial class Openp2p
 {
     private static readonly string ExePath = Path.Combine(AppContext.BaseDirectory, "bin", "openp2p.exe");
 
@@ -53,7 +53,7 @@ public class Openp2p
         };
         try
         {
-            await Task.Run(() => process.Start());
+            await Task.Run(process.Start);
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             _process = process;
@@ -105,7 +105,7 @@ public class Openp2p
     public void Restart()
     {
         Stop();
-        Start();
+        Start().GetAwaiter().GetResult();
     }
 
     public void ShowMessageBox(RaiseMessage msg)
@@ -136,7 +136,7 @@ public class Openp2p
 
         if (message.Contains("LISTEN ON PORT")) //连接成功or断开
         {
-            var match = Regex.Match(message, @"PORT\s+(\w+:\d+)");
+            var match = PortRegex().Match(message);
             if (match.Success)
             {
                 var portInfo = match.Groups[1].Value;
@@ -176,12 +176,12 @@ public class Openp2p
             Log.Error("请检查是否连接网络，或是程序是否拥有网络访问权限！");
             ConfigManager.Instance.AppState.Clear();
             ConfigManager.Instance.MainState = State.Stop;
-            Start();
+            Restart();
         }
 
         if (message.Contains("Only one usage of each socket address"))
         {
-            var match = Regex.Match(message, @"(tcp|udp)\s*:\s*(\d+)");
+            var match = SocketRegex().Match(message);
 
             if (match.Success && ConfigManager.Instance.MainState == State.Running)
             {
@@ -195,7 +195,7 @@ public class Openp2p
                     Caption = "错误",
                     Icon = MessageBoxImage.Error,
                 });
-                //if (on) Strapp();
+                Stop();
             }
             else if (ConfigManager.Instance.MainState == State.Loading)
             {
@@ -210,7 +210,7 @@ public class Openp2p
                     Caption = "警告",
                     Icon = MessageBoxImage.Hand,
                 });
-                //if (on) Strapp();
+                Stop();
             }
         }
 
@@ -221,7 +221,7 @@ public class Openp2p
 
         if (message.Contains("it will auto reconnect when peer node online")) //对方不在线
         {
-            var match = Regex.Match(message, @"INFO\s+(\w+)\s+offline");
+            var match = OfflineRegex().Match(message);
             if (match.Success)
             {
                 var id = match.Groups[1].Value;
@@ -242,7 +242,7 @@ public class Openp2p
 
         if (message.Contains("NAT type"))
         {
-            var match = Regex.Match(message, @"NAT type:(\w+)");
+            var match = NatRegex().Match(message);
             if (match.Success)
             {
                 var type = match.Groups[1].Value;
@@ -253,19 +253,19 @@ public class Openp2p
                 }
             }
 
-            var match2 = Regex.Match(message, @"publicIP:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})");
+            var match2 = IpRegex().Match(message);
             if (match2.Success)
             {
                 var ip = match2.Groups[1].Value;
                 //Logger.Log("[提示]公网IP为" + ip);
-                _ = Net.GetIsp(ip);
+                Task.Run(async () => await Net.GetIsp(ip));
             }
         }
 
         if (message.Contains("login ok")) //登录中心成功
         {
-            var match = Regex.Match(message, @"node=(\w+)");
-            var umatch = Regex.Match(message, @"user=(\w+)");
+            var match = NodeRegex().Match(message);
+            var umatch = UserRegex().Match(message);
             if (match.Success)
             {
                 var id = match.Groups[1].Value;
@@ -284,4 +284,25 @@ public class Openp2p
             Restart();
         }
     }
+
+    [GeneratedRegex(@"PORT\s+(\w+:\d+)")]
+    private static partial Regex PortRegex();
+
+    [GeneratedRegex(@"(tcp|udp)\s*:\s*(\d+)")]
+    private static partial Regex SocketRegex();
+
+    [GeneratedRegex(@"INFO\s+(\w+)\s+offline")]
+    private static partial Regex OfflineRegex();
+
+    [GeneratedRegex(@"NAT type:(\w+)")]
+    private static partial Regex NatRegex();
+
+    [GeneratedRegex(@"publicIP:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})")]
+    private static partial Regex IpRegex();
+
+    [GeneratedRegex(@"node=(\w+)")]
+    private static partial Regex NodeRegex();
+
+    [GeneratedRegex(@"user=(\w+)")]
+    private static partial Regex UserRegex();
 }

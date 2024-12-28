@@ -1,8 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+﻿using CommunityToolkit.Mvvm.Input;
 using System.Windows;
 using OplWpf.Models;
+using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace OplWpf.ViewModels;
 

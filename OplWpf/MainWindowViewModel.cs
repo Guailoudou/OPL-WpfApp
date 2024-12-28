@@ -2,7 +2,6 @@
 using OplWpf.Models;
 using Serilog;
 using System.Diagnostics;
-using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace OplWpf;
@@ -18,7 +17,6 @@ public partial class MainWindowViewModel : ObservableObject
             var fileVersionInfo = FileVersionInfo.GetVersionInfo(fileName);
             Version = fileVersionInfo.FileVersion ?? "";
         }
-
         Log.Information("----- OPENP2P Launcher by Guailoudou -----");
         Log.Information("程序启动，当前版本：{@Version}，更新包号：{@Pvn}，系统版本：{Os}", Version, Net.Pvn, osVersion);
     }

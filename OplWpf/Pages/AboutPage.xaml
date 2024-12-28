@@ -3,7 +3,7 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-         xmlns:local="clr-namespace:OplWpf.Pages"
+         xmlns:local="clr-namespace:OplWpf"
          xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
          xmlns:ikw="http://schemas.inkore.net/lib/ui/wpf"
          xmlns:vm="clr-namespace:OplWpf.ViewModels"
@@ -15,7 +15,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
@@ -38,33 +38,53 @@
             </Button>
             <Label Content="*基于OPENP2P" FontSize="8" VerticalAlignment="Center" />
         </ikw:SimpleStackPanel>
-        <ikw:SimpleStackPanel Grid.Row="1" Grid.Column="0">
-            <Label Content="随机一言：" VerticalAlignment="Top" />
-            <ikw:SimpleStackPanel Orientation="Horizontal">
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" VerticalAlignment="Top">随机一言：</Label>
+            <ikw:SimpleStackPanel Grid.Row="1" Orientation="Horizontal" Spacing="5">
                 <TextBox Background="#7FFFFFFF" TextWrapping="Wrap" Text="{Binding DaySay}" IsReadOnly="True"
-                         HorizontalAlignment="Center" Width="300" />
-                <Button Width="55" Margin="5,0">复制</Button>
-                <Button Margin="5,0" Command="{Binding RefreshDaySayCommand}"
+                         HorizontalAlignment="Center" Width="350" />
+                <Button Width="55" Command="{Binding CopyDaySayCommand}"
+                        IsEnabled="{Binding RefreshDaySayCommand.IsRunning, Converter={conv:ReverseBoolConverter}}">复制</Button>
+                <Button Width="55" Command="{Binding RefreshDaySayCommand}"
                         IsEnabled="{Binding RefreshDaySayCommand.IsRunning, Converter={conv:ReverseBoolConverter}}">
                     刷新
                 </Button>
             </ikw:SimpleStackPanel>
-            <Label Margin="0,10">
+            <Label Grid.Row="2" Margin="0,20">
                 <TextBlock TextWrapping="Wrap">预设隧道为联网获取，需要增加常用预设隧道可以联系作者添加。一般为固定多端口联机游戏，或特殊固定端口用途</TextBlock>
             </Label>
-            <Label Margin="0,10">
-                更新日志：
-            </Label>
-            <TextBox Text="联网获取中" IsReadOnly="True"
-                     SelectionBrush="{x:Null}" />
-        </ikw:SimpleStackPanel>
+            <Label Grid.Row="3" Margin="0,0">更新日志：</Label>
+            <TextBox Grid.Row="4" IsReadOnly="True" Text="{Binding Update.UpdateLog,Source={x:Static local:ConfigManager.Instance}}"/>
+        </Grid>
         <Button Grid.Row="0" Grid.Column="1" Height="32" Width="90" ToolTip="这将会重置你的uuid，同时你会失去下面所有隧道！谨慎点击">
             重置程序
         </Button>
-        <ikw:SimpleStackPanel Grid.Row="1" Grid.Column="1">
-            <Label Content="充电/发电鸣谢" HorizontalAlignment="Left" VerticalAlignment="Top"
-                   RenderTransformOrigin="0.493,0.155" />
-            <TextBox Text="联网获取中" IsReadOnly="True" />
-        </ikw:SimpleStackPanel>
+        <Grid Grid.Row="1" Grid.Column="1" Margin="10,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0">
+                <TextBlock TextWrapping="Wrap">
+                    充电/发电鸣谢
+                    <LineBreak/>
+                    afdian.com/@guailoudou
+                </TextBlock>
+            </Label>
+            <DataGrid Grid.Row="1" ItemsSource="{Binding ThankList}" IsReadOnly="True"
+                      AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="用户名" Binding="{Binding Name}" Width="*"/>
+                    <DataGridTextColumn Header="金额" Binding="{Binding Num}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </ui:Page>

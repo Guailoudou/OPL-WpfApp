@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using CommunityToolkit.Mvvm.Input;
 using Serilog;
 
 namespace OplWpf.Models;
@@ -62,12 +61,8 @@ public class Config
         try
         {
             var jsonString = File.ReadAllText(ConfigFile);
-            if (JsonSerializer.Deserialize<Config>(jsonString) is not { } config)
-            {
-                throw new InvalidDataException("Json格式不正确");
-            }
-
-            return config;
+            return JsonSerializer.Deserialize<Config>(jsonString)
+                ?? throw new InvalidDataException("Json格式不正确");
         }
         catch (Exception e)
         {

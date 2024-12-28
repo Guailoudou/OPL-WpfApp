@@ -21,14 +21,8 @@ public class Setting
         try
         {
             var jsonString = File.ReadAllText(SettingFile);
-            if (JsonSerializer.Deserialize<Setting>(jsonString) is not { } setting)
-            {
-                throw new InvalidDataException("Json格式不正确");
-            }
-            else
-            {
-                return setting;
-            }
+            return JsonSerializer.Deserialize<Setting>(jsonString)
+                ?? throw new InvalidDataException("Json格式不正确");
         }
         catch (Exception e)
         {

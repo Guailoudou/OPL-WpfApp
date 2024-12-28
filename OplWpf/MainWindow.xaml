@@ -12,7 +12,8 @@
         mc:Ignorable="d"
         Title="Openp2p Launcher - 联机工具"
         WindowStartupLocation="CenterScreen"
-        Height="500" Width="850">
+        Height="500" Width="850"
+        ResizeMode="CanMinimize">
     <Window.DataContext>
         <local:MainWindowViewModel />
     </Window.DataContext>

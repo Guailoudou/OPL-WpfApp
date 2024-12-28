@@ -18,6 +18,8 @@ public partial class ConfigManager : ObservableObject
 
     public static ConfigManager Instance => instance.Value;
 
+    public Update Update { get; set; } = new();
+
     [ObservableProperty] public partial State MainState { get; set; }
 
     public Config Config { get; }
@@ -34,6 +36,7 @@ public partial class ConfigManager : ObservableObject
 
     private ConfigManager()
     {
+        Update = new Update();
         MainState = State.Stop;
         Config = Config.Load();
         Setting = Setting.Load();
@@ -41,7 +44,7 @@ public partial class ConfigManager : ObservableObject
 
     public void AddNewApp(string appName, string sUuid, int sPort, int cPort, string type)
     {
-        Config.Apps.Add(new Models.AppConfig
+        Config.Apps.Add(new AppConfig
         {
             AppName = appName,
             PeerNode = sUuid,
@@ -59,7 +62,7 @@ public partial class ConfigManager : ObservableObject
     }
 
     [RelayCommand]
-    private void RemoveApp(Models.AppConfig appConfig)
+    private void RemoveApp(AppConfig appConfig)
     {
         Config.Apps.Remove(appConfig);
         Log.Information("删除隧道 {app}", appConfig);
