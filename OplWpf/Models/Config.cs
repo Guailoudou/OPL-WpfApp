@@ -1,8 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Serilog;
 
 namespace OplWpf.Models;
 
@@ -32,61 +33,55 @@ public class AppConfig
     public required string RelayNode { get; set; }
     public required int Enabled { get; set; } //开启？
 
-    [JsonIgnore]
-    public int BindingEnabled
-    {
-        get => Enabled;
-        set
-        {
-            Enabled = value;
-            ConfigManager.Instance.Config.Save();
-        }
-    }
-
     public override string ToString() => $"{AppName}-{Protocol}-{PeerNode}-{DstPort}->{SrcPort}";
 }
 
 public class Config
 {
-    private static readonly string ConfigFile = Path.Combine(AppContext.BaseDirectory, "bin", "config.json");
+    public static readonly string ConfigFile = Path.Combine(AppContext.BaseDirectory, "bin", "config.json");
 
-    [JsonPropertyName("network")] public required NetworkConfig Network { get; init; }
-
-    [JsonPropertyName("apps")] public required ObservableCollection<AppConfig> Apps { get; init; }
-
-    public int LogLevel { get; set; }
-
-    public static Config Load()
+    [JsonPropertyName("network")]
+    public NetworkConfig Network { get; set; } = new NetworkConfig
     {
-        try
+        Token = 11602319472897248650UL,
+        Node = GenerateUuid(),
+        User = "gldoffice",
+        ShareBandwidth = 10,
+        ServerHost = "api.openp2p.cn",
+        ServerPort = 27183,
+        UDPPort1 = 27182,
+        UDPPort2 = 27183,
+        TCPPort = 50448
+    };
+
+    [JsonPropertyName("apps")] public ObservableCollection<AppConfig> Apps { get; set; } = [];
+
+    public int LogLevel { get; set; } = 2;
+
+    private readonly JsonSerializerOptions serializerOptions = App.GetService<JsonSerializerOptions>();
+
+    public void AddNewApp(string appName, string sUuid, int sPort, int cPort, string type)
+    {
+        Apps.Add(new AppConfig
         {
-            var jsonString = File.ReadAllText(ConfigFile);
-            return JsonSerializer.Deserialize<Config>(jsonString)
-                ?? throw new InvalidDataException("Json格式不正确");
-        }
-        catch (Exception e)
-        {
-            Log.Error(e, "读取配置文件失败，使用默认配置");
-            var config = new Config
-            {
-                Network = new NetworkConfig
-                {
-                    Token = 11602319472897248650UL,
-                    Node = GenerateUuid(),
-                    User = "gldoffice",
-                    ShareBandwidth = 10,
-                    ServerHost = "api.openp2p.cn",
-                    ServerPort = 27183,
-                    UDPPort1 = 27182,
-                    UDPPort2 = 27183,
-                    TCPPort = 50448
-                },
-                Apps = [],
-                LogLevel = 2
-            };
-            config.Save();
-            return config;
-        }
+            AppName = appName,
+            PeerNode = sUuid,
+            Whitelist = "",
+            Protocol = type,
+            SrcPort = cPort,
+            DstPort = sPort,
+            DstHost = "localhost",
+            Enabled = 1,
+            PeerUser = "",
+            RelayNode = ""
+        });
+        Save();
+    }
+
+    public void RemoveApp(AppConfig appConfig)
+    {
+        Apps.Remove(appConfig);
+        Save();
     }
 
     public static string GenerateUuid()
@@ -98,7 +93,7 @@ public class Config
 
     public void Save()
     {
-        var json = JsonSerializer.Serialize(this, ConfigManager.SerializerOptions);
+        var json = JsonSerializer.Serialize(this, serializerOptions);
         File.WriteAllText(ConfigFile, json);
     }
 

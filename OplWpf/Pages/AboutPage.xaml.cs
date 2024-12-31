@@ -1,17 +1,14 @@
 ﻿using OplWpf.ViewModels;
 using Page = iNKORE.UI.WPF.Modern.Controls.Page;
 
-namespace OplWpf.Pages
+namespace OplWpf.Pages;
+
+[Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient)]
+public partial class AboutPage : Page
 {
-    /// <summary>
-    /// About.xaml 的交互逻辑
-    /// </summary>
-    public partial class AboutPage : Page
+    public AboutPage(AboutViewModel viewModel)
     {
-        public AboutPage()
-        {
-            InitializeComponent();
-            DataContext = new AboutViewModel();
-        }
+        InitializeComponent();
+        DataContext = viewModel;
     }
 }

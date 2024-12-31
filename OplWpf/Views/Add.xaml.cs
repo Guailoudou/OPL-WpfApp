@@ -1,27 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using OplWpf.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace OplWpf.Views
+namespace OplWpf.Views;
+
+/// <summary>
+/// Add.xaml 的交互逻辑
+/// </summary>
+[Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient)]
+public partial class Add : Window, IDisposable
 {
-    /// <summary>
-    /// Add.xaml 的交互逻辑
-    /// </summary>
-    public partial class Add : Window
+    public Add(AddViewModel viewModel)
     {
-        public Add()
+        InitializeComponent();
+        DataContext = viewModel;
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        var res = WeakReferenceMessenger.Default.Send(new RequestMessage<bool>());
+        if (res.Response) Close();
+    }
+
+    public void Dispose()
+    {
+        if (DataContext is IDisposable vm)
         {
-            InitializeComponent();
+            vm.Dispose();
         }
     }
+
 }

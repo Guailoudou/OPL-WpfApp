@@ -6,15 +6,13 @@
         xmlns:local="clr-namespace:OplWpf.Views"
         xmlns:vm="clr-namespace:OplWpf.ViewModels"
         xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+        d:DataContext="{d:DesignInstance vm:AddViewModel}"
         ui:ThemeManager.IsThemeAware="True"
         ui:WindowHelper.SystemBackdropType="Mica"
         ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
         Title="添加隧道" Height="300" Width="250" WindowStyle="ToolWindow"
         WindowStartupLocation="CenterScreen">
-    <Window.DataContext>
-        <vm:AddViewModel/>
-    </Window.DataContext>
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -28,22 +26,27 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="名称" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="2.5"/>
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+            </Style>
+        </Grid.Resources>
+        <Label Margin="2.5">名称</Label>
         <TextBox Grid.Column="1" Background="#3FFFFFFF" TextWrapping="Wrap" Text="{Binding Name}" Margin="2.5"/>
         <Label Grid.Row="1" Content="UID*" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="2.5" ToolTip="输入房主的UID"/>
         <TextBox Grid.Row="1" Grid.Column="1" Background="#3FFFFFFF" Text="{Binding Uuid}" Margin="2.5"/>
-        <Label Grid.Row="2" Content="远程端口*" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="2.5" ToolTip="输入房主游戏对外开放的端口"/>
-        <ui:NumberBox Grid.Row="2" Grid.Column="1" Background="#3FFFFFFF" Margin="2.5" Text="{Binding SPort, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Grid.Row="3" Content="本地端口" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="2.5" />
-        <ui:NumberBox Grid.Row="3" Grid.Column="1" Background="#3FFFFFFF" Margin="2.5" Text="{Binding CPort, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Grid.Row="4" Content="协议*" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="2.5" ToolTip="MC选择TCP"/>
+        <Label Grid.Row="2" Margin="2.5" ToolTip="输入房主游戏对外开放的端口">远程端口*</Label>
+        <ui:NumberBox Grid.Row="2" Grid.Column="1" Background="#3FFFFFFF" Margin="2.5" VerticalAlignment="Center" Text="{Binding SPort}"/>
+        <Label Grid.Row="3" Margin="2.5">本地端口</Label>
+        <ui:NumberBox Grid.Row="3" Grid.Column="1" Background="#3FFFFFFF" Margin="2.5" VerticalAlignment="Center" Text="{Binding CPort}"/>
+        <Label Grid.Row="4" Margin="2.5" ToolTip="MC选择TCP">协议*</Label>
         <ComboBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2.5" BorderBrush="#B2EFECEC" Background="#3FEDE9E9"
                   SelectedValue="{Binding Type}" SelectedValuePath="Content">
             <ComboBoxItem>tcp</ComboBoxItem>
             <ComboBoxItem>udp</ComboBoxItem>
         </ComboBox>
         <Button Grid.Row="5" Grid.Column="0" Content="预设" HorizontalAlignment="Center" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Height="35" Width="67"/>
-        <Button Grid.Row="5" Grid.Column="1" Content="添加" HorizontalAlignment="Center" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Width="151" Height="35"
-                Command="{Binding AddAppCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+        <Button Grid.Row="5" Grid.Column="1" Content="添加" HorizontalAlignment="Center" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Height="35" Width="151" Click="Button_Click"/>
     </Grid>
 </Window>

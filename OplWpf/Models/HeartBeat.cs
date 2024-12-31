@@ -1,134 +1,76 @@
 ﻿using System.Net.Sockets;
 using System.Net;
-using System.Text;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace OplWpf.Models;
 
-public class TcpClientWithKeepAlive
+public class HeartBeat(ILogger<HeartBeat> logger)
 {
-    private const int KEEP_ALIVE_INTERVAL_SEC = 1; // 设置心跳间隔为1秒
-    private readonly Socket _client;
-    private bool _shouldStopKeepAlive = true;
-    private string ipAddress;
-    private int port;
+    private readonly List<Socket> tcps = [];
+    private readonly List<UdpClient> udps = [];
 
-    public TcpClientWithKeepAlive(string ipAddress, int port)
+    public IReadOnlyList<Socket> Tcps => tcps;
+    public IReadOnlyList<UdpClient> Udps => udps;
+
+    public void AddTcp(string ipAddress, int port)
     {
-        this.ipAddress = ipAddress;
-        this.port = port;
-        _client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
+        var client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         try
         {
-            IPEndPoint endPoint = new(IPAddress.Parse(ipAddress), port);
-            _client.Connect(endPoint);
-
-            Log.Information("TCP Connected to {ipAddress}:{port}开启隧道保活", ipAddress, port);
-            _shouldStopKeepAlive = false;
+            var endPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+            client.Connect(endPoint);
+            logger.LogInformation("TCP Connected to {ipAddress}:{port}开启隧道保活", ipAddress, port);
             // 启动心跳线程
-            Thread keepAliveThread = new(SendKeepAliveMessage)
-            {
-                IsBackground = true
-            };
-            keepAliveThread.Start();
+            tcps.Add(client);
         }
         catch (SocketException se)
         {
-            Log.Error(se, "SocketException");
+            logger.LogError(se, "SocketException");
         }
     }
 
-    private void SendKeepAliveMessage()
+    public void ClearTcp()
     {
-        while (!_shouldStopKeepAlive)
+        foreach (var tcpClient in tcps)
         {
-            if (_client.Connected)
+            try
             {
-                const string keepAliveMessage = "\0";
-                var buffer = Encoding.ASCII.GetBytes(keepAliveMessage);
-                try
-                {
-                    _client.Send(buffer);
-                }
-                catch (SocketException)
-                {
-                    //Logger.Log(se.Message);
-                    //break;
-                }
-
-                // 延迟至下一次心跳
+                tcpClient.Shutdown(SocketShutdown.Both); // 先关闭发送和接收
             }
-            else
+            catch (Exception ex)
             {
-                //IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
-                //_client.Connect(endPoint);
-                //break;
+                // 处理可能的异常情况
             }
-
-            Thread.Sleep(TimeSpan.FromSeconds(KEEP_ALIVE_INTERVAL_SEC));
+            finally
+            {
+                tcpClient.Close(); // 然后关闭 Socket
+            }
         }
+        tcps.Clear();
     }
 
-    public void StopSendingKeepAlive()
+    public void AddUdp(string ipAddress, int port)
     {
-        _shouldStopKeepAlive = true;
-        try
-        {
-            _client.Shutdown(SocketShutdown.Both); // 先关闭发送和接收
-        }
-        catch (Exception ex) when (ex is ObjectDisposedException || ex is InvalidOperationException)
-        {
-            // 处理可能的异常情况
-        }
-        finally
-        {
-            _client.Close(); // 然后关闭 Socket
-        }
-    }
-}
-
-public class UdpClientKeepAlive
-{
-    private const int KEEP_ALIVE_INTERVAL_SEC = 1; // 设置心跳间隔为10秒
-    private readonly UdpClient _udpClient;
-    private Timer? _keepAliveTimer;
-
-    public UdpClientKeepAlive(string ipAddress, int port)
-    {
-        _udpClient = new UdpClient();
         try
         {
             var remoteEP = new IPEndPoint(IPAddress.Parse(ipAddress), port);
-            Log.Information("UDP Connected to {ipAddress}:{port}开启隧道保活", ipAddress, port);
+            var udpClient = new UdpClient(remoteEP);
+            logger.LogInformation("UDP Connected to {ipAddress}:{port}开启隧道保活", ipAddress, port);
             // 开始发送心跳包
-            StartSendingKeepAlive(remoteEP);
+            udps.Add(udpClient);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Error");
+            logger.LogError(ex, "Error");
         }
     }
 
-    private void StartSendingKeepAlive(IPEndPoint remoteEP)
+    public void ClearUdp()
     {
-        // 创建一个定时器来定期发送心跳包
-        _keepAliveTimer = new Timer((state) =>
+        foreach (var udpClient in udps)
         {
-            const string keepAliveMessage = "\0";
-            byte[] buffer = Encoding.ASCII.GetBytes(keepAliveMessage);
-
-            // 发送心跳包
-            _udpClient.Send(buffer, buffer.Length, remoteEP);
-
-            //Logger.Log("Sent UDP KeepAlive packet at {0}"+DateTime.Now.ToString("HH:mm:ss"));
-        }, null, TimeSpan.Zero, TimeSpan.FromSeconds(KEEP_ALIVE_INTERVAL_SEC));
-    }
-
-    public void StopSendingKeepAlive()
-    {
-        // 停止发送心跳包并清理资源
-        _keepAliveTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-        _udpClient?.Close();
+            udpClient.Close();
+        }
+        udps.Clear();
     }
 }

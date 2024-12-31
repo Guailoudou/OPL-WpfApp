@@ -1,12 +1,11 @@
-﻿using Serilog;
-using System.IO;
+﻿using System.IO;
 using System.Text.Json;
 
 namespace OplWpf.Models;
 
 public class Setting
 {
-    private static readonly string SettingFile = Path.Combine(AppContext.BaseDirectory, "bin", "set.json");
+    public static readonly string SettingFile = Path.Combine(AppContext.BaseDirectory, "bin", "set.json");
 
     public string Color { get; set; } = "#FF0078D4"; // 颜色
     public string Theme { get; set; } = ""; // 主题("Light" 或 "Dark")
@@ -16,26 +15,16 @@ public class Setting
     public bool AutoOpen { get; set; } = false; //运行后自动启动
     public bool IspWarning { get; set; } = true; // 获取isp
 
-    public static Setting Load()
+    private readonly JsonSerializerOptions serializerOptions;
+
+    public Setting(JsonSerializerOptions serializerOptions)
     {
-        try
-        {
-            var jsonString = File.ReadAllText(SettingFile);
-            return JsonSerializer.Deserialize<Setting>(jsonString)
-                ?? throw new InvalidDataException("Json格式不正确");
-        }
-        catch (Exception e)
-        {
-            Log.Error(e, "读取设置文件失败，使用默认设置");
-            var setting = new Setting();
-            setting.Save();
-            return setting;
-        }
+        this.serializerOptions = serializerOptions;
     }
 
     public void Save()
     {
-        var json = JsonSerializer.Serialize(this, ConfigManager.SerializerOptions);
+        var json = JsonSerializer.Serialize(this, serializerOptions);
         File.WriteAllText(SettingFile, json);
     }
 }

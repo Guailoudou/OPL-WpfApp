@@ -1,13 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using OplWpf.Models;
-using Serilog;
-using System.Windows;
+using System;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace OplWpf.ViewModels;
 
-public partial class AddViewModel : ObservableObject
+[Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient)]
+public partial class AddViewModel : ObservableObject, IDisposable
 {
     public string Name { get; set; } = "自定义";
 
@@ -19,31 +22,45 @@ public partial class AddViewModel : ObservableObject
 
     public string Type { get; set; } = "tcp";
 
+    private readonly Config config;
+    private readonly ILogger<AddViewModel> logger;
+
+    public AddViewModel(IOptions<Config> config, ILogger<AddViewModel> logger)
+    {
+        this.config = config.Value;
+        this.logger = logger;
+        WeakReferenceMessenger.Default.Register<RequestMessage<bool>>(this, (_, m) => m.Reply(AddApp()));
+    }
+
     partial void OnSPortChanged(int value)
     {
         CPort = value;
     }
 
-    [RelayCommand]
-    private void AddApp(Window window)
+    private bool AddApp()
     {
-        var config = ConfigManager.Instance.Config;
         Name = Name.Trim();
         Uuid = Uuid.Trim();
         if (config.Network.Node == Uuid)
         {
-            Log.Error("自己连自己？");
+            logger.LogError("自己连自己？");
             MessageBox.Show("不能自己连自己啊！！这无异于试图左脚踩右脚升天！！", "错误");
-            return;
+            return false;
         }
 
-        if (SPort is <= 0 or >= 65536 || CPort is <= 0 or >= 65536)
+        if (SPort is not > 0 and < 65536 || CPort is not > 0 and < 65536)
         {
             MessageBox.Show("端口正常范围为1-65535", "提示");
-            return;
+            return false;
         }
 
-        ConfigManager.Instance.AddNewApp(Name, Uuid, SPort, CPort, Type);
-        window.Close();
+        config.AddNewApp(Name, Uuid, SPort, CPort, Type);
+        logger.LogInformation("创建新的隧道{sUuid}:{sPort}--{type}>>{cPort}", Uuid, SPort, Type, CPort);
+        return true;
+    }
+
+    public void Dispose()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 }

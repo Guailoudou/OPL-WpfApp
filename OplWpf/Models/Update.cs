@@ -19,35 +19,9 @@ public class LatestInfo
     public required string OpHash { get; set; }
 }
 
+[Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton)]
 public partial class Update : ObservableObject
 {
     [ObservableProperty]
     public partial string UpdateLog { get; set; } = "联网获取中";
-
-    public Update()
-    {
-        Task.Run(GetUpdateAsync);
-    }
-
-    public async Task GetUpdateAsync()
-    {
-        var url = "https://file.gldhn.top/file/json/preset.json";
-        var httpClient = new HttpClient();
-        try
-        {
-            var response = await httpClient.GetAsync(url);
-            if (response.IsSuccessStatusCode)
-            {
-                var info = await response.Content.ReadFromJsonAsync<LatestInfo>();
-                if (info?.UpLog != null)
-                {
-                    UpdateLog = info.UpLog;
-                }
-            }
-        }
-        catch
-        {
-
-        }
-    }
 }

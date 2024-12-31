@@ -8,10 +8,10 @@
          xmlns:ikw="http://schemas.inkore.net/lib/ui/wpf"
          xmlns:vm="clr-namespace:OplWpf.ViewModels"
          xmlns:conv="clr-namespace:OplWpf.Converters"
+         d:DataContext="{d:DesignInstance vm:TunnelViewModel}"
          mc:Ignorable="d"
          d:DesignHeight="463" d:DesignWidth="801"
-         Title="Tunnel"
-         d:DataContext="{d:DesignInstance vm:TunnelViewModel}">
+         Title="Tunnel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -26,8 +26,7 @@
                 <Label Content="UID：" VerticalContentAlignment="Center" />
                 <TextBox IsReadOnly="True" x:Name="UUID" TextWrapping="Wrap"
                          Text="{Binding Config.Network.Node, Mode=OneTime}" />
-                <Button Command="{Binding CopyUidCommand}" CommandParameter="{Binding Text, ElementName=UUID}"
-                        ToolTip="复制到剪切板">
+                <Button Command="{Binding CopyUidCommand}" ToolTip="复制到剪切板">
                     <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Copy}" />
                 </Button>
 
@@ -71,15 +70,15 @@
                                 <ColumnDefinition Width="80" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.ColumnSpan="2" d:Text="adfasdfasdfds" Text="{Binding AppName}"
+                            <TextBlock Grid.ColumnSpan="2" Text="{Binding AppName}"
                                        VerticalAlignment="Center" />
                             <Label Grid.Row="1" Content="目标UID：" VerticalAlignment="Center" />
-                            <TextBlock Grid.Row="1" Grid.Column="1" d:Text="uiduiduiduid" Text="{Binding PeerNode}"
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PeerNode}"
                                        VerticalAlignment="Center" />
                             <Label Grid.Column="2" Content="远程端口：" VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="3" d:Text="25555" VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="3" d:Text="25555" VerticalAlignment="Center" Text="{Binding DstPort}"/>
                             <Label Grid.Row="1" Grid.Column="2" Content="本地端口：" VerticalAlignment="Center" />
-                            <TextBlock Grid.Row="1" Grid.Column="3" d:Text="25566" VerticalAlignment="Center" />
+                            <TextBlock Grid.Row="1" Grid.Column="3" d:Text="25566" VerticalAlignment="Center" Text="{Binding SrcPort}"/>
                             <Label Grid.Column="4" Content="协议：" Margin="30,0,0,0" VerticalAlignment="Center" />
                             <TextBlock Grid.Column="5" d:Text="tcp" Text="{Binding Protocol}"
                                        VerticalAlignment="Center" />
@@ -88,14 +87,15 @@
                                      ToolTip="灰色：未启动/未启用 橙色：连接中 绿色：连接成功">
                                 <Ellipse.Fill>
                                     <MultiBinding Converter="{conv:AppToColorConverter}">
-                                        <Binding Path="Protocol" />
-                                        <Binding Path="SrcPort" />
-                                        <Binding Path="AppState" Source="{x:Static local:ConfigManager.Instance}" />
+                                        <Binding Path="Protocol"/>
+                                        <Binding Path="SrcPort"/>
+                                        <Binding Path="DataContext.StateManager.AppState" RelativeSource="{RelativeSource AncestorType=ui:Page}" />
                                     </MultiBinding>
                                 </Ellipse.Fill>
                             </Ellipse>
-                            <CheckBox Grid.Column="8" Margin="20,0,0,0" IsChecked="{Binding BindingEnabled}"
-                                      IsEnabled="{Binding MainState, Source={x:Static local:ConfigManager.Instance}, Converter={conv:StateToEnableConverter}}">
+                            <CheckBox Grid.Column="8" Margin="20,0,0,0" IsChecked="{Binding Enabled}"
+                                      Checked="CheckChanged" Unchecked="CheckChanged"
+                                      IsEnabled="{Binding DataContext.StateManager.MainState, RelativeSource={RelativeSource AncestorType=ui:Page}, Converter={conv:StateToEnableConverter}}">
                                 启用
                             </CheckBox>
                             <Label Grid.Row="1" Grid.Column="4" Content="连接ip：" Margin="30,0,0,0"
@@ -106,13 +106,13 @@
                                      Width="125" IsReadOnly="True" Background="#BFFFFFFF" />
                             <Button Grid.Row="1" Grid.Column="8" Margin="20,0,0,0">复制</Button>
                             <Button Grid.Column="9" Width="60" Margin="20,0,10,0"
-                                    IsEnabled="{Binding MainState, Source={x:Static local:ConfigManager.Instance}, Converter={conv:StateToEnableConverter}}"
-                                    Command="{Binding RemoveAppCommand,Source={x:Static local:ConfigManager.Instance}}"
+                                    IsEnabled="{Binding DataContext.StateManager.MainState, RelativeSource={RelativeSource AncestorType=ui:Page}, Converter={conv:StateToEnableConverter}}"
+                                    Command="{Binding DataContext.DeleteAppCommand, RelativeSource={RelativeSource AncestorType=ui:Page}}"
                                     CommandParameter="{Binding}">
                                 <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Delete}" />
                             </Button>
                             <Button Grid.Row="1" Grid.Column="9" Width="60" Margin="20,0,10,0"
-                                    IsEnabled="{Binding MainState, Source={x:Static local:ConfigManager.Instance}, Converter={conv:StateToEnableConverter}}">
+                                    IsEnabled="{Binding DataContext.StateManager.MainState, RelativeSource={RelativeSource AncestorType=ui:Page}, Converter={conv:StateToEnableConverter}}">
                                 编辑
                             </Button>
                         </Grid>

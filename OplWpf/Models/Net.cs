@@ -57,15 +57,16 @@ public class Net
                 {
                     var isp = ipInfo.Isp;
                     Log.Information("经检测你的网络运营商为：{isp} --数据由Uapi提供", isp);
-                    if (!CommonIsp.Contains(isp) && ConfigManager.Instance.Setting.IspWarning)
-                    {
-                        MessageBox.Show(
-                            $"检测到你的网络运营商为非电信、联通、移动，你的运营商为{isp}，可能为二级运营商，二级运营商连接或被连接可能受阻，或长时间无法成功连接。如果你不在国内或为其他一级运营商（国内仅这3家为一级运营商），你可以在设置关闭运营商检测提醒。",
-                            "提示",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning
-                        );
-                    }
+                    // TODO 配置
+                    //if (!CommonIsp.Contains(isp) && ConfigManager.Instance.Setting.IspWarning)
+                    //{
+                    //    MessageBox.Show(
+                    //        $"检测到你的网络运营商为非电信、联通、移动，你的运营商为{isp}，可能为二级运营商，二级运营商连接或被连接可能受阻，或长时间无法成功连接。如果你不在国内或为其他一级运营商（国内仅这3家为一级运营商），你可以在设置关闭运营商检测提醒。",
+                    //        "提示",
+                    //        MessageBoxButton.OK,
+                    //        MessageBoxImage.Warning
+                    //    );
+                    //}
                 }
                 else
                 {

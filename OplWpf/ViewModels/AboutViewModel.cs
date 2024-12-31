@@ -7,13 +7,17 @@ using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace OplWpf.ViewModels;
 
+[Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient)]
 public partial class AboutViewModel : ObservableObject
 {
     [ObservableProperty] public partial string DaySay { get; set; } = "联网获取中";
     [ObservableProperty] public partial IReadOnlyList<Thank> ThankList { get; set; } = [];
 
-    public AboutViewModel()
+    public Update Update { get; }
+
+    public AboutViewModel(Update update)
     {
+        Update = update;
         Net.GetDaySayAsync().ContinueWith(s => DaySay = s.Result);
         Net.GetThankListAsync().ContinueWith(t => ThankList = t.Result);
     }
