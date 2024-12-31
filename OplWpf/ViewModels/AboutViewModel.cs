@@ -23,22 +23,11 @@ public partial class AboutViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void OpenWiki()
+    private void OpenLink(string url) => Process.Start(new ProcessStartInfo
     {
-        Process.Start("explorer.exe", "https://blog.gldhn.top/2024/04/19/opl_ui/");
-    }
-
-    [RelayCommand]
-    private void OpenMe()
-    {
-        Process.Start("explorer.exe", "https://space.bilibili.com/496960407");
-    }
-
-    [RelayCommand]
-    private void OpenGit()
-    {
-        Process.Start("explorer.exe", "https://github.com/Guailoudou/OPL-WpfApp");
-    }
+        FileName = url,
+        UseShellExecute = true
+    });
 
     [RelayCommand]
     private async Task RefreshDaySay()
