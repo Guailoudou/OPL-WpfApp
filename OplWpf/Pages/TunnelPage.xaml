@@ -39,12 +39,12 @@
                                   FlowDirection="RightToLeft" HorizontalAlignment="Right">
                 <Button Content="新建连接" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}"
                         Click="ShowAddDialog" />
-                <Button ToolTip="从剪切板导入">
+                <Button ToolTip="从剪切板导入" Command="{Binding ImportCommand}">
                     <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Import}" />
                 </Button>
             </ikw:SimpleStackPanel>
         </Grid>
-        <ItemsControl Grid.Row="1" Background="Transparent" ItemsSource="{Binding Config.Apps, Mode=OneWay}">
+        <ItemsControl Grid.Row="1" Background="Transparent" ItemsSource="{Binding Apps, Mode=OneWay}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ikw:SimpleStackPanel />
@@ -52,7 +52,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border CornerRadius="5" Margin="0,5,0,5" Padding="5" BorderThickness="1" Background="LightGray">
+                    <Border CornerRadius="5" Margin="0,5,0,5" Padding="5" BorderThickness="1" Background="#ECEEF5">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -67,52 +67,46 @@
                                 <ColumnDefinition Width="50" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="15" />
-                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition Width="100" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.ColumnSpan="2" Text="{Binding AppName}"
-                                       VerticalAlignment="Center" />
-                            <Label Grid.Row="1" Content="目标UID：" VerticalAlignment="Center" />
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PeerNode}"
-                                       VerticalAlignment="Center" />
-                            <Label Grid.Column="2" Content="远程端口：" VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="3" d:Text="25555" VerticalAlignment="Center" Text="{Binding DstPort}"/>
-                            <Label Grid.Row="1" Grid.Column="2" Content="本地端口：" VerticalAlignment="Center" />
-                            <TextBlock Grid.Row="1" Grid.Column="3" d:Text="25566" VerticalAlignment="Center" Text="{Binding SrcPort}"/>
-                            <Label Grid.Column="4" Content="协议：" Margin="30,0,0,0" VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="5" d:Text="tcp" Text="{Binding Protocol}"
-                                       VerticalAlignment="Center" />
-                            <Label Grid.Column="6" Content="状态：" VerticalAlignment="Center" />
+                            <Grid.Resources>
+                                <Style TargetType="Label">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </Grid.Resources>
+                            <Label Grid.ColumnSpan="2" Content="{Binding Name,Mode=OneWay}"/>
+                            <Label Grid.Row="1">目标UID：</Label>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Uid,Mode=OneWay}"/>
+                            <Label Grid.Column="2">远程端口：</Label>
+                            <TextBlock Grid.Column="3" Text="{Binding DstPort,Mode=OneWay}"/>
+                            <Label Grid.Row="1" Grid.Column="2">本地端口：</Label>
+                            <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding SrcPort,Mode=OneWay}"/>
+                            <Label Grid.Column="4" Margin="30,0,0,0">协议：</Label>
+                            <TextBlock Grid.Column="5" Text="{Binding Protocol,Mode=OneWay}"/>
+                            <Label Grid.Column="6">状态：</Label>
                             <Ellipse Grid.Column="7" Stroke="Black" Height="14" Width="14"
-                                     ToolTip="灰色：未启动/未启用 橙色：连接中 绿色：连接成功">
-                                <Ellipse.Fill>
-                                    <MultiBinding Converter="{conv:AppToColorConverter}">
-                                        <Binding Path="Protocol"/>
-                                        <Binding Path="SrcPort"/>
-                                        <Binding Path="DataContext.StateManager.AppState" RelativeSource="{RelativeSource AncestorType=ui:Page}" />
-                                    </MultiBinding>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                            <CheckBox Grid.Column="8" Margin="20,0,0,0" IsChecked="{Binding Enabled}"
-                                      Checked="CheckChanged" Unchecked="CheckChanged"
-                                      IsEnabled="{Binding DataContext.StateManager.MainState, RelativeSource={RelativeSource AncestorType=ui:Page}, Converter={conv:StateToEnableConverter}}">
-                                启用
-                            </CheckBox>
-                            <Label Grid.Row="1" Grid.Column="4" Content="连接ip：" Margin="30,0,0,0"
-                                   VerticalAlignment="Center" />
-                            <TextBox Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" HorizontalAlignment="Left"
-                                     TextWrapping="Wrap"
-                                     d:Text="127.0.0.1:25565" Text="{Binding SrcPort, StringFormat=127.0.0.1:{0}}"
+                                     Fill="{Binding State, Converter={conv:StateToColorConverter}}"
+                                     ToolTip="灰色：未启动/未启用 橙色：连接中 绿色：连接成功"/>
+                            <ui:ToggleSwitch Grid.Column="8" Margin="20,0,0,0" MinWidth="0" IsOn="{Binding Enabled}"
+                                      IsEnabled="{Binding MainState, Converter={conv:StateToEnableConverter}}"/>
+                            <Label Grid.Row="1" Grid.Column="4" Margin="30,0,0,0">连接ip：</Label>
+                            <TextBox Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3"
+                                     TextWrapping="Wrap" Text="{Binding Address,Mode=OneWay}"
                                      Width="125" IsReadOnly="True" Background="#BFFFFFFF" />
-                            <Button Grid.Row="1" Grid.Column="8" Margin="20,0,0,0">复制</Button>
+                            <Button Grid.Row="1" Grid.Column="8" Margin="20,0,0,0"
+                                    Command="{Binding CopyAddressCommand}">复制</Button>
                             <Button Grid.Column="9" Width="60" Margin="20,0,10,0"
-                                    IsEnabled="{Binding DataContext.StateManager.MainState, RelativeSource={RelativeSource AncestorType=ui:Page}, Converter={conv:StateToEnableConverter}}"
-                                    Command="{Binding DataContext.DeleteAppCommand, RelativeSource={RelativeSource AncestorType=ui:Page}}"
+                                    IsEnabled="{Binding MainState, Converter={conv:StateToEnableConverter}}"
+                                    Command="{Binding DeleteCommand}"
                                     CommandParameter="{Binding}">
                                 <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Delete}" />
                             </Button>
                             <Button Grid.Row="1" Grid.Column="9" Width="60" Margin="20,0,10,0"
-                                    IsEnabled="{Binding DataContext.StateManager.MainState, RelativeSource={RelativeSource AncestorType=ui:Page}, Converter={conv:StateToEnableConverter}}">
+                                    IsEnabled="{Binding MainState, Converter={conv:StateToEnableConverter}}">
                                 编辑
                             </Button>
                         </Grid>

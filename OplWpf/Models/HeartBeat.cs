@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace OplWpf.Models;
 
+[Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton)]
 public class HeartBeat(ILogger<HeartBeat> logger)
 {
     private readonly List<Socket> tcps = [];

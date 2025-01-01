@@ -15,7 +15,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Command="{Binding PushLogCommand}">导出日志</Button>
+        <Button>导出日志</Button>
         <TextBox Grid.Row="1" x:Name="LogTextBox" Text="{Binding TextSink.LogText, Mode=OneWay}" IsReadOnly="True"
                  VerticalScrollBarVisibility="Auto"
                  TextChanged="TextBoxBase_OnTextChanged"></TextBox>

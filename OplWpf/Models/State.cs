@@ -19,7 +19,7 @@ public partial class StateManager : ObservableObject
 
     public State this[string ip]
     {
-        get => AppState[ip];
+        get => AppState.GetValueOrDefault(ip, State.Stop);
         set
         {
             AppState[ip] = value;

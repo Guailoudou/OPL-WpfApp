@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -52,7 +53,7 @@ public partial class App : Application
                 services.Configure<Setting>(context.Configuration);
                 services.AddInjections();
 
-                services.AddSingleton<HeartBeat>();
+                services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
                 services.AddHostedService<HeartBeatService>();
                 services.AddHostedService<UpdateService>();

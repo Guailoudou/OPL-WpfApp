@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OplWpf.Models;
-using System;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace OplWpf.ViewModels;
@@ -24,12 +23,14 @@ public partial class AddViewModel : ObservableObject, IDisposable
 
     private readonly Config config;
     private readonly ILogger<AddViewModel> logger;
+    private readonly IMessenger messenger;
 
-    public AddViewModel(IOptions<Config> config, ILogger<AddViewModel> logger)
+    public AddViewModel(IOptions<Config> config, ILogger<AddViewModel> logger, IMessenger messenger)
     {
         this.config = config.Value;
         this.logger = logger;
-        WeakReferenceMessenger.Default.Register<RequestMessage<bool>>(this, (_, m) => m.Reply(AddApp()));
+        this.messenger = messenger;
+        messenger.Register<RequestMessage<bool>>(this, (_, m) => m.Reply(AddApp()));
     }
 
     partial void OnSPortChanged(int value)
@@ -41,6 +42,12 @@ public partial class AddViewModel : ObservableObject, IDisposable
     {
         Name = Name.Trim();
         Uuid = Uuid.Trim();
+        if (string.IsNullOrEmpty(Uuid))
+        {
+            MessageBox.Show("UUID不能为空", "错误");
+            return false;
+        }
+
         if (config.Network.Node == Uuid)
         {
             logger.LogError("自己连自己？");
@@ -48,19 +55,19 @@ public partial class AddViewModel : ObservableObject, IDisposable
             return false;
         }
 
-        if (SPort is not > 0 and < 65536 || CPort is not > 0 and < 65536)
+        if (SPort is not (> 0 and < 65536) || CPort is not (> 0 and < 65536))
         {
             MessageBox.Show("端口正常范围为1-65535", "提示");
             return false;
         }
 
-        config.AddNewApp(Name, Uuid, SPort, CPort, Type);
-        logger.LogInformation("创建新的隧道{sUuid}:{sPort}--{type}>>{cPort}", Uuid, SPort, Type, CPort);
+        var newApp = config.AddNewApp(Name, Uuid, SPort, CPort, Type);
+        messenger.Send(newApp, "add");
         return true;
     }
 
     public void Dispose()
     {
-        WeakReferenceMessenger.Default.UnregisterAll(this);
+        messenger.UnregisterAll(this);
     }
 }

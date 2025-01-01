@@ -60,9 +60,9 @@ public class Config
 
     private readonly JsonSerializerOptions serializerOptions = App.GetService<JsonSerializerOptions>();
 
-    public void AddNewApp(string appName, string sUuid, int sPort, int cPort, string type)
+    public AppConfig AddNewApp(string appName, string sUuid, int sPort, int cPort, string type)
     {
-        Apps.Add(new AppConfig
+        var appConfig = new AppConfig
         {
             AppName = appName,
             PeerNode = sUuid,
@@ -74,8 +74,10 @@ public class Config
             Enabled = 1,
             PeerUser = "",
             RelayNode = ""
-        });
+        };
+        Apps.Add(appConfig);
         Save();
+        return appConfig;
     }
 
     public void RemoveApp(AppConfig appConfig)
