@@ -1,73 +1,83 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.Mvvm.Messaging.Messages;
+using CommunityToolkit.Mvvm.Input;
+using iNKORE.UI.WPF.Modern.Controls;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OplWpf.Models;
-using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace OplWpf.ViewModels;
 
-[Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient)]
-public partial class AddViewModel : ObservableObject, IDisposable
+public partial class AddViewModel(AppConfig app) : ObservableObject
 {
-    public string Name { get; set; } = "自定义";
-
-    public string Uuid { get; set; } = "";
-
-    [ObservableProperty] public partial int SPort { get; set; }
-
-    [ObservableProperty] public partial int CPort { get; set; }
-
-    public string Type { get; set; } = "tcp";
-
-    private readonly Config config;
-    private readonly ILogger<AddViewModel> logger;
-    private readonly IMessenger messenger;
-
-    public AddViewModel(IOptions<Config> config, ILogger<AddViewModel> logger, IMessenger messenger)
+    public string Name
     {
-        this.config = config.Value;
-        this.logger = logger;
-        this.messenger = messenger;
-        messenger.Register<RequestMessage<bool>>(this, (_, m) => m.Reply(AddApp()));
+        get => app.AppName;
+        set => app.AppName = value;
     }
 
-    partial void OnSPortChanged(int value)
+    public string Uuid
     {
-        CPort = value;
+        get => app.PeerNode;
+        set => app.PeerNode = value;
     }
 
-    private bool AddApp()
+    public int SPort
     {
+        get => app.DstPort;
+        set
+        {
+            app.DstPort = value;
+            app.SrcPort = value;
+            OnPropertyChanged(nameof(CPort));
+        }
+    }
+
+    public int CPort
+    {
+        get => app.SrcPort;
+        set => app.SrcPort = value;
+    }
+
+    public string Type
+    {
+        get => app.Protocol;
+        set => app.Protocol = value;
+    }
+
+    public Action? CloseWindow { get; set; }
+
+    [RelayCommand]
+    private void AddApp()
+    {
+        var config = App.GetService<IOptions<Config>>().Value;
+        var logger = App.GetService<ILogger<AddViewModel>>();
+
         Name = Name.Trim();
         Uuid = Uuid.Trim();
         if (string.IsNullOrEmpty(Uuid))
         {
             MessageBox.Show("UUID不能为空", "错误");
-            return false;
+            return;
         }
 
         if (config.Network.Node == Uuid)
         {
             logger.LogError("自己连自己？");
             MessageBox.Show("不能自己连自己啊！！这无异于试图左脚踩右脚升天！！", "错误");
-            return false;
+            return;
         }
 
         if (SPort is not (> 0 and < 65536) || CPort is not (> 0 and < 65536))
         {
             MessageBox.Show("端口正常范围为1-65535", "提示");
-            return false;
+            return;
         }
 
-        var newApp = config.AddNewApp(Name, Uuid, SPort, CPort, Type);
-        messenger.Send(newApp, "add");
-        return true;
-    }
-
-    public void Dispose()
-    {
-        messenger.UnregisterAll(this);
+        if (config.Apps.Contains(app))
+        {
+            MessageBox.Show("不能添加相同的连接", "提示");
+            return;
+        }
+        CloseWindow?.Invoke();
     }
 }

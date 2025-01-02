@@ -18,6 +18,8 @@
     <FileVersion>1.0.1.24</FileVersion>
     <NeutralLanguage>zh-Hans</NeutralLanguage>
     <ApplicationIcon>..\opl_icon.ico</ApplicationIcon>
+    <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
+    <InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.Extensions.Configuration.Binder.SourceGeneration</InterceptorsNamespaces>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,6 +3,8 @@ using OplWpf.Models;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace OplWpf.ViewModels;
 
@@ -12,7 +14,7 @@ public partial class MainWindowViewModel : ObservableObject
     public StateManager StateManager { get; }
     private readonly Openp2p openp2p;
 
-    public MainWindowViewModel(StateManager stateManager, Openp2p openp2p, ILogger<MainWindowViewModel> logger)
+    public MainWindowViewModel(ILogger<MainWindowViewModel> logger, StateManager stateManager, Openp2p openp2p)
     {
         StateManager = stateManager;
         this.openp2p = openp2p;
@@ -36,6 +38,18 @@ public partial class MainWindowViewModel : ObservableObject
     public partial string ButtonText { get; set; } = "启动";
 
     [RelayCommand]
+    private void DisableAll()
+    {
+        var config = App.GetService<IOptions<Config>>().Value;
+        foreach (var app in config.Apps)
+        {
+            app.Enabled = 0;
+        }
+        config.Save();
+        App.GetService<IMessenger>().Send(DisableAllMessage.Default);
+    }
+
+    [RelayCommand]
     private async Task Start()
     {
         if (StateManager.MainState == State.Stop)
@@ -50,3 +64,5 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 }
+
+public class DisableAllMessage { public static DisableAllMessage Default { get; } = new(); };

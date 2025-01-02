@@ -69,16 +69,18 @@
                 <Label Content="{Binding DisplayVersion, Mode=OneTime}" Margin="10,0,0,0" />
             </ikw:SimpleStackPanel>
             <ikw:SimpleStackPanel Grid.Column="1" Spacing="15" Orientation="Horizontal">
-                <Button Content="导出已启用隧道为连接码" Width="193" />
-                <Button Content="生成联机码" Width="125" />
+                <Button Width="193">导出已启用隧道为连接码</Button>
+                <Button Width="125">生成联机码</Button>
             </ikw:SimpleStackPanel>
             <ikw:SimpleStackPanel Grid.Column="2" Spacing="15" Orientation="Horizontal" FlowDirection="RightToLeft">
                 <Button Content="{Binding ButtonText}"
                         Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Width="102"
                         Command="{Binding StartCommand}"
                         IsEnabled="{Binding StartCommand.IsRunning, Converter={conv:ReverseBoolConverter}}" />
-                <Button Content="关闭所有隧道"
-                        IsEnabled="{Binding StateManager.MainState, Converter={conv:StateToEnableConverter}}" />
+                <Button Command="{Binding DisableAllCommand}"
+                        IsEnabled="{Binding StateManager.MainState, Converter={conv:StateToEnableConverter}}" >
+                    关闭所有隧道
+                </Button>
             </ikw:SimpleStackPanel>
         </Grid>
     </Grid>

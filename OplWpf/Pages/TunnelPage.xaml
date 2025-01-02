@@ -38,7 +38,7 @@
             <ikw:SimpleStackPanel Orientation="Horizontal" Spacing="5"
                                   FlowDirection="RightToLeft" HorizontalAlignment="Right">
                 <Button Content="新建连接" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}"
-                        Click="ShowAddDialog" />
+                        Command="{Binding AddAppCommand}"/>
                 <Button ToolTip="从剪切板导入" Command="{Binding ImportCommand}">
                     <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Import}" />
                 </Button>

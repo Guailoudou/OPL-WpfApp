@@ -6,8 +6,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 using System.Text.RegularExpressions;
+using OplWpf.Services;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace OplWpf.ViewModels;
 
@@ -15,33 +16,22 @@ namespace OplWpf.ViewModels;
 public partial class TunnelViewModel
 {
     private readonly ILogger<TunnelViewModel> logger;
+    private readonly DialogService dialogService;
     public Config Config { get; }
     public StateManager StateManager { get; }
     public ObservableCollection<AppViewModel> Apps { get; }
 
-    public TunnelViewModel(IOptions<Config> config, ILogger<TunnelViewModel> logger, IMessenger messenger,
+    public TunnelViewModel(IOptions<Config> config, ILogger<TunnelViewModel> logger, DialogService dialogService,
         StateManager stateManager)
     {
         this.logger = logger;
+        this.dialogService = dialogService;
         Config = config.Value;
         StateManager = stateManager;
-        Apps = new(config.Value.Apps.Select(app => new AppViewModel(app)));
-
-        messenger.Register<AppConfig, string>(this, "add", (_, newApp) =>
+        Apps = new(config.Value.Apps.Select(app => new AppViewModel(app)
         {
-            Apps.Add(new AppViewModel(newApp));
-            logger.LogInformation(
-                "创建新的隧道{sUuid}:{sPort}--{type}>>{cPort}",
-                newApp.PeerNode, newApp.DstPort, newApp.Protocol, newApp.SrcPort
-            );
-        });
-
-        messenger.Register<AppConfig, string>(this, "delete", (_, app) =>
-        {
-            Config.RemoveApp(app);
-            Apps.Remove(Apps.First(vm => vm.AppConfig == app));
-            logger.LogInformation("删除隧道 {app}", app);
-        });
+            DeleteApp = DeleteApp
+        }));
     }
 
     [RelayCommand]
@@ -94,9 +84,34 @@ public partial class TunnelViewModel
 
         foreach (var (protocol, uid, sPort, cPort) in connectStrings)
         {
-            var newApp = Config.AddNewApp("自定义", uid, sPort, cPort, protocol);
-            Apps.Add(new AppViewModel(newApp));
+            var newApp = new AppConfig("自定义", protocol, cPort, uid, sPort);
+            if (Config.AddNewApp(newApp))
+            {
+                Apps.Add(new AppViewModel(newApp));
+            }
         }
+    }
+
+    [RelayCommand]
+    private void AddApp()
+    {
+        var newApp = new AppConfig("自定义", "tcp", 0, "", 0);
+        if (dialogService.Show(new AddViewModel(newApp)) == true)
+        {
+            Config.AddNewApp(newApp);
+            Apps.Add(new AppViewModel(newApp) { DeleteApp = DeleteApp });
+            logger.LogInformation(
+                "创建新的隧道{sUuid}:{sPort}--{type}>>{cPort}",
+                newApp.PeerNode, newApp.DstPort, newApp.Protocol, newApp.SrcPort
+            );
+        }
+    }
+
+    private void DeleteApp(AppViewModel vm)
+    {
+        Config.RemoveApp(vm.AppConfig);
+        Apps.Remove(vm);
+        logger.LogInformation("删除隧道 {appConfig}", vm.AppConfig);
     }
 
     [GeneratedRegex(@"^(?:([12]):)?(\w+):(\d+)(?::(\d+))?$")]
@@ -106,7 +121,6 @@ public partial class TunnelViewModel
 public partial class AppViewModel : ObservableObject
 {
     private readonly StateManager stateManager;
-    private readonly IMessenger messenger;
     public AppConfig AppConfig { get; }
     public string Name => AppConfig.AppName;
     public string Uid => AppConfig.PeerNode;
@@ -140,12 +154,14 @@ public partial class AppViewModel : ObservableObject
                 OnPropertyChanged(nameof(State));
             }
         };
-        messenger = App.GetService<IMessenger>();
         AppConfig = appConfig;
+        App.GetService<IMessenger>().Register<DisableAllMessage>(this, (_, _) => OnPropertyChanged(nameof(Enabled)));
     }
 
     public State State => stateManager[Protocol + ':' + SrcPort];
     public State MainState => stateManager.MainState;
+
+    public Action<AppViewModel>? DeleteApp { get; set; }
 
     [RelayCommand]
     private void CopyAddress()
@@ -155,5 +171,5 @@ public partial class AppViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void Delete() => messenger.Send(AppConfig, "delete");
+    private void Delete() => DeleteApp?.Invoke(this);
 }

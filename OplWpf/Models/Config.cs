@@ -1,37 +1,35 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.Extensions.Logging;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace OplWpf.Models;
 
-public class NetworkConfig
+public class NetworkConfig(string node)
 {
-    public required ulong Token { get; set; }
-    public required string Node { get; set; }
-    public required string User { get; set; }
-    public required int ShareBandwidth { get; set; }
-    public required string ServerHost { get; set; }
-    public required int ServerPort { get; set; }
-    public required int UDPPort1 { get; set; }
-    public required int UDPPort2 { get; set; }
-    public required int TCPPort { get; set; }
+    public ulong Token { get; set; } = 11602319472897248650UL;
+    public string Node { get; set; } = node;
+    public string User { get; set; } = "gldoffice";
+    public int ShareBandwidth { get; set; } = 10;
+    public string ServerHost { get; set; } = "api.openp2p.cn";
+    public int ServerPort { get; set; } = 27183;
+    public int UDPPort1 { get; set; } = 27182;
+    public int UDPPort2 { get; set; } = 27183;
+    public int TCPPort { get; set; } = 50448;
 }
 
-public class AppConfig
+public class AppConfig(string appName, string protocol, int srcPort, string peerNode, int dstPort)
 {
-    public required string AppName { get; set; } //隧道名
-    public required string Protocol { get; set; } //隧道类型
-    public required string Whitelist { get; set; }
-    public required int SrcPort { get; set; } //本地端口
-    public required string PeerNode { get; set; } //被连uuid
-    public required int DstPort { get; set; } //远程端口
-    public required string DstHost { get; set; } //远程ip
-    public required string PeerUser { get; set; }
-    public required string RelayNode { get; set; }
-    public required int Enabled { get; set; } //开启？
+    public string AppName { get; set; } = appName; //隧道名
+    public string Protocol { get; set; } = protocol; //隧道类型
+    public string Whitelist { get; set; } = "";
+    public int SrcPort { get; set; } = srcPort; //本地端口
+    public string PeerNode { get; set; } = peerNode; //被连uuid
+    public int DstPort { get; set; } = dstPort;//远程端口
+    public string DstHost { get; set; } = "localhost"; //远程ip
+    public string PeerUser { get; set; } = "";
+    public string RelayNode { get; set; } = "";
+    public int Enabled { get; set; } = 1;//开启？
 
     public override string ToString() => $"{AppName}-{Protocol}-{PeerNode}-{DstPort}->{SrcPort}";
 }
@@ -41,43 +39,19 @@ public class Config
     public static readonly string ConfigFile = Path.Combine(AppContext.BaseDirectory, "bin", "config.json");
 
     [JsonPropertyName("network")]
-    public NetworkConfig Network { get; set; } = new NetworkConfig
-    {
-        Token = 11602319472897248650UL,
-        Node = GenerateUuid(),
-        User = "gldoffice",
-        ShareBandwidth = 10,
-        ServerHost = "api.openp2p.cn",
-        ServerPort = 27183,
-        UDPPort1 = 27182,
-        UDPPort2 = 27183,
-        TCPPort = 50448
-    };
+    public NetworkConfig Network { get; set; } = new NetworkConfig(GenerateUuid());
 
-    [JsonPropertyName("apps")] public ObservableCollection<AppConfig> Apps { get; set; } = [];
+    [JsonPropertyName("apps")] public HashSet<AppConfig> Apps { get; set; } = [];
 
     public int LogLevel { get; set; } = 2;
 
     private readonly JsonSerializerOptions serializerOptions = App.GetService<JsonSerializerOptions>();
 
-    public AppConfig AddNewApp(string appName, string sUuid, int sPort, int cPort, string type)
+    public bool AddNewApp(AppConfig appConfig)
     {
-        var appConfig = new AppConfig
-        {
-            AppName = appName,
-            PeerNode = sUuid,
-            Whitelist = "",
-            Protocol = type,
-            SrcPort = cPort,
-            DstPort = sPort,
-            DstHost = "localhost",
-            Enabled = 1,
-            PeerUser = "",
-            RelayNode = ""
-        };
-        Apps.Add(appConfig);
+        var res = Apps.Add(appConfig);
         Save();
-        return appConfig;
+        return res;
     }
 
     public void RemoveApp(AppConfig appConfig)

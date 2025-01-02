@@ -47,6 +47,7 @@
             <ComboBoxItem>udp</ComboBoxItem>
         </ComboBox>
         <Button Grid.Row="5" Grid.Column="0" Content="预设" HorizontalAlignment="Center" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Height="35" Width="67"/>
-        <Button Grid.Row="5" Grid.Column="1" Content="添加" HorizontalAlignment="Center" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Height="35" Width="151" Click="Button_Click"/>
+        <Button Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Height="35" Width="151"
+                Command="{Binding AddAppCommand}">添加</Button>
     </Grid>
 </Window>
