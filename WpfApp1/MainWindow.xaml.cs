@@ -531,14 +531,16 @@ namespace OPL_WpfApp
                 return;
             }
             OpenDate = DateTime.Now;
-            if (process != null && !process.HasExited)
+            if (process != null)
             {
-                process.CancelOutputRead();
-                process.CancelErrorRead();
-                process.Kill();
-                Stop();
-                //if (udps != null) foreach (UdpClientKeepAlive app in udps) app.StopSendingKeepAlive();
-                if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
+                if (!process.HasExited)
+                {
+                    process.CancelOutputRead();
+                    process.CancelErrorRead();
+                    process.Kill();
+                    Stop();
+                    if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
+                }
             }
             else
             {

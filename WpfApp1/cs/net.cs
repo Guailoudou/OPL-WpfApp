@@ -204,7 +204,8 @@ namespace userdata
 
         public async Task Getisp(string ip)
         {
-            string url = "https://uapis.cn/api/ipinfo?ip=" + ip;
+            string url = "https://cn.apihz.cn/api/ip/chaapi.php?id=10001875&key=dddd7577f7f5ea74a29854ab11bbea0a&ip=" + ip;
+            //string url = "https://uapis.cn/api/ipinfo?ip=" + ip;
             string isp="";
             HttpClient httpClient = new HttpClient();
             set set = new set();
@@ -223,7 +224,7 @@ namespace userdata
                     if(ipinfo.code == 200)
                     {
                         isp = ipinfo.isp;
-                        Logger.Log($"[提示]经检测你的网络运营商为：{isp} --数据由Uapi提供");
+                        Logger.Log($"[提示]经检测你的网络运营商为：{isp} --数据由apihz提供");
                         if (isp != "电信" && isp != "联通" && isp != "移动")
                         {
                             if(set.settings.ispwarning)
@@ -232,7 +233,7 @@ namespace userdata
                     }
                     else
                     {
-                        Logger.Log($"[错误]获取{ip}的运营商信息失败");
+                        Logger.Log($"[错误]获取{ip}的运营商信息失败 {ipinfo.code}");
                     }
                     
 
