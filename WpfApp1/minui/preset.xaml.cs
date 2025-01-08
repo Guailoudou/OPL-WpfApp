@@ -63,13 +63,13 @@ namespace OPL_WpfApp
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ComboBox box = (ComboBox)this.FindName("type");
-            //TextBox SuuidText = (TextBox)this.FindName("Suuid");
+            //TextBox SUIDText = (TextBox)this.FindName("SUID");
             string game = box.Text;
             json json = new json();
             Logger.Log(net.presetss.presets[Map[game]].Note);
             foreach (PrTunnel key in net.presetss.presets[Map[game]].tunnel)
             {
-                if(!json.newapp(Suuid.Text.Replace(" ", ""), key.Sport, key.type, key.CPort,game))return;
+                if(!json.newapp(SUID.Text.Replace(" ", ""), key.Sport, key.type, key.CPort,game))return;
                 
             }
             Logger.Log("已自动添加预设" + game);

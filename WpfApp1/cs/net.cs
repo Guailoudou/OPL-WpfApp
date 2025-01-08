@@ -21,7 +21,7 @@ namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 48;//协议版本号
+        private static readonly int pvn = 49;//协议版本号
         public static int Getpvn()
         {
             return pvn;
@@ -51,7 +51,7 @@ namespace userdata
                 {
                     // 获取响应内容的字符串形式
                     string contentString = await response.Content.ReadAsStringAsync();
-                    wejson(contentString);
+                    Save(contentString);
                     getjosn();
                     int v = presetss.version;
                     string ophash = presetss.ophash;
@@ -133,7 +133,7 @@ namespace userdata
                 Logger.Log($"[错误]请求{fileurl}过程中发生错误：{ex.Message} "  );
             }
         }
-        public void wejson(string ujson) //写入josn
+        public void Save(string ujson) //写入josn
         {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "preset.json");
 

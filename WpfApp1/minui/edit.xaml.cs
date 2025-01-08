@@ -33,7 +33,7 @@ namespace OPL_WpfApp
             this.Top = (screenHeight - windowHeight) / 2;
             this.index = index;
             userdata.json json = new userdata.json();
-            TextBox SuuidText = (TextBox)this.FindName("Suuid");
+            TextBox SUIDText = (TextBox)this.FindName("SUID");
             TextBox SportText = (TextBox)this.FindName("Sport");
             TextBox CportText = (TextBox)this.FindName("Cport");
             TextBox names = (TextBox)this.FindName("names");
@@ -41,7 +41,7 @@ namespace OPL_WpfApp
             SportText.Text = json.config.Apps[index].DstPort.ToString();
             CportText.Text = json.config.Apps[index].SrcPort.ToString();
             names.Text = json.config.Apps[index].AppName;
-            SuuidText.Text = json.config.Apps[index].PeerNode;
+            SUIDText.Text = json.config.Apps[index].PeerNode;
             TypeText.Text = json.config.Apps[index].Protocol;
         }
 
@@ -52,13 +52,13 @@ namespace OPL_WpfApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            TextBox SuuidText = (TextBox)this.FindName("Suuid");
+            TextBox SUIDText = (TextBox)this.FindName("SUID");
             TextBox SportText = (TextBox)this.FindName("Sport");
             TextBox CportText = (TextBox)this.FindName("Cport");
             TextBox names = (TextBox)this.FindName("names");
             ComboBox TypeText = (ComboBox)this.FindName("type");
             json json = new json();
-            json.config.Apps[index].PeerNode = SuuidText.Text.Replace(" ", "");
+            json.config.Apps[index].PeerNode = SUIDText.Text.Replace(" ", "");
             json.config.Apps[index].Protocol = TypeText.Text.Replace(" ", "");
             json.config.Apps[index].AppName = names.Text.Replace(" ", "");
             try
@@ -82,7 +82,7 @@ namespace OPL_WpfApp
                 iNKORE.UI.WPF.Modern.Controls.MessageBox.Show("错误，异常的输入:" + ex, "警告");
                 return;
             }
-            json.wejson();
+            json.Save();
             this.Close();
         }
     }

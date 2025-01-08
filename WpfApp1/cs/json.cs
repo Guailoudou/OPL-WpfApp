@@ -25,7 +25,7 @@ namespace userdata
             if (!File.Exists(absolutePath))
             {
                 UserData userData = new UserData();
-                userData.ResetUUID();
+                userData.ResetUID();
                 newjson(userData);
             }
             else
@@ -35,13 +35,13 @@ namespace userdata
         }
         public void newjson(UserData userData) //创建无app配置
         {
-            Logger.Log("[执行]创建新的配置-UID:" + userData.UUID);
+            Logger.Log("[执行]创建新的配置-UID:" + userData.UID);
             config = new Config
             {
                 Network = new Network
                 {
                     Token = 11602319472897248650UL,
-                    Node = userData.UUID,
+                    Node = userData.UID,
                     User = "gldoffice",
                     ShareBandwidth = 10,
                     ServerHost = "api.openp2p.cn",
@@ -55,7 +55,7 @@ namespace userdata
                 LogLevel = Ologv
 
             };
-            wejson();
+            Save();
             
         }
         public void Alloff()
@@ -66,7 +66,7 @@ namespace userdata
                 {
                     app.Enabled = 0;
                 }
-                wejson();
+                Save();
             }
                 
         }
@@ -80,7 +80,7 @@ namespace userdata
                 if(cport!=0)config.Apps[index].SrcPort = cport;
                 config.Apps[index].Enabled = 1;
                 oindex.Add(index);
-                wejson();
+                Save();
             }
             else
             {
@@ -109,18 +109,18 @@ namespace userdata
         public void Setshare(int n)
         {
             config.Network.ShareBandwidth = n;
-            wejson();
+            Save();
         }
-        public bool newapp(string suuid,int sport, string type,int cport=0,string appname="自定义")
+        public bool newapp(string sUID,int sport, string type,int cport=0,string appname="自定义")
         {
-            if (suuid == config.Network.Node)
+            if (sUID == config.Network.Node)
             {
                 Logger.Log("[错误]自己连自己？");
                 MessageBox.Show("不能自己连自己啊！！这无异于试图左脚踩右脚升天！！", "错误");
                 return false;
             }
             if (cport == 0) cport = sport;
-            Logger.Log("[执行]创建新的隧道"+suuid+":"+sport+"--"+type+">>"+cport);
+            Logger.Log("[执行]创建新的隧道"+sUID+":"+sport+"--"+type+">>"+cport);
             int enabled = 1;
 
             if (config.Apps != null)
@@ -135,7 +135,7 @@ namespace userdata
             App app = new App
             {
                 AppName = appname,
-                PeerNode = suuid,
+                PeerNode = sUID,
                 Whitelist = "",
                 Protocol = type,
                 SrcPort = cport,
@@ -156,7 +156,7 @@ namespace userdata
                 };
             }
             config.LogLevel = Ologv;
-            wejson();
+            Save();
             return true;
         }
         public void ReSetToken()
@@ -165,9 +165,9 @@ namespace userdata
             config.Network.Token = 11602319472897248650UL;
             config.LogLevel = Ologv;
             config.Network.User = "gldoffice";
-            wejson();
+            Save();
         }
-        public void wejson() //写入josn
+        public void Save() //写入josn
         {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
             string ujson =  JsonConvert.SerializeObject(config, Formatting.Indented);
@@ -185,7 +185,7 @@ namespace userdata
             Logger.Log($"[执行]删除隧道 序号:{index} - {config.Apps[index].ToString()}");
             config.Apps.RemoveAt(index);
             config.LogLevel = Ologv;
-            wejson();
+            Save();
         }
         public void onapp(int index) //开启app
         {
@@ -202,14 +202,14 @@ namespace userdata
             }
             config.Apps[index].Enabled = 1;
             config.LogLevel = Ologv;
-            wejson();
+            Save();
         }
         public void offapp(int index) //关闭app
         {
             getjosn();
             config.Apps[index].Enabled = 0;
             config.LogLevel = Ologv;
-            wejson();
+            Save();
         }
         public void getjosn() //读取配置
         {
@@ -220,12 +220,12 @@ namespace userdata
                 config = JsonConvert.DeserializeObject<Config>(jsonCont);
                 if (config.Network.ShareBandwidth == 100) { 
                     config.Network.ShareBandwidth = 10;
-                    wejson();
+                    Save();
                 }
                 if(config.LogLevel != Ologv) 
                 {
                     config.LogLevel = Ologv;
-                    wejson();
+                    Save();
                 }
 
             }
@@ -315,7 +315,7 @@ namespace userdata
         public string Protocol { get; set; } //隧道类型
         public string Whitelist { get; set; }
         public int SrcPort { get; set; } //本地端口
-        public string PeerNode { get; set; } //被连uuid
+        public string PeerNode { get; set; } //被连UID
         public int DstPort { get; set; } //远程端口
         public string DstHost { get; set; } //远程ip
         public string PeerUser { get; set; }

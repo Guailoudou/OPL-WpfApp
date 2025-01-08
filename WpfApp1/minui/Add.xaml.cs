@@ -38,12 +38,12 @@ namespace OPL_WpfApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            TextBox SuuidText = (TextBox)this.FindName("Suuid");
+            TextBox SUIDText = (TextBox)this.FindName("SUID");
             TextBox SportText = (TextBox)this.FindName("Sport");
             TextBox CportText = (TextBox)this.FindName("Cport");
             TextBox Names = (TextBox)this.FindName("names");
             ComboBox TypeText = (ComboBox)this.FindName("type");
-            string Suuid = SuuidText.Text.Replace(" ", "");
+            string SUID = SUIDText.Text.Replace(" ", "");
             string Type = TypeText.Text;
             string names = Names.Text.Replace(" ", "");
             int Sport, Cport;
@@ -52,8 +52,8 @@ namespace OPL_WpfApp
             {
                 Sport = int.Parse(SportText.Text.Replace(" ", ""));
                 Cport = int.Parse(CportText.Text.Replace(" ", ""));
-                if (Suuid != "" && Type != "" && Sport > 0 && Sport <= 65535)
-                    if (!json.newapp(Suuid, Sport, Type, Cport, names)) return; 
+                if (SUID != "" && Type != "" && Sport > 0 && Sport <= 65535)
+                    if (!json.newapp(SUID, Sport, Type, Cport, names)) return; 
                     else 
                     {
                         this.Close();

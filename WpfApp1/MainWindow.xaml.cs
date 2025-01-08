@@ -79,7 +79,7 @@ namespace OPL_WpfApp
             _ = net.Getthank(thank);
             _ = GetsayText();
             Relist();
-            UUID.Text = sjson.config.Network.Node;
+            UID.Text = sjson.config.Network.Node;
             share.Text = sjson.config.Network.ShareBandwidth.ToString();
             ver.Content = Getversion() + " - "+ Net.Getpvn();
             string bgColor = ExtractBackgroundColor(args);
@@ -108,9 +108,9 @@ namespace OPL_WpfApp
             return null; 
         }
 
-        private void CopyUUID_Button_Click(object sender, RoutedEventArgs e)
+        private void CopyUID_Button_Click(object sender, RoutedEventArgs e)
         {
-            if(Copy_text(UUID.Text))
+            if(Copy_text(UID.Text))
                 MessageBox.Show("复制成功", "提示");
 
         }
@@ -124,7 +124,7 @@ namespace OPL_WpfApp
             }
             
         }
-        private void ResetUUID_Button_Click(object sender, RoutedEventArgs e)
+        private void ResetUID_Button_Click(object sender, RoutedEventArgs e)
         {
             // 显示确认对话框
             if (on)
@@ -139,11 +139,11 @@ namespace OPL_WpfApp
                 MessageBoxImage.Question);
             if (result == MessageBoxResult.OK)
             {
-                userData.ResetUUID();
-                TextBox uuidTextBox = (TextBox)this.FindName("UUID");
-                uuidTextBox.Text = userData.UUID;
+                userData.ResetUID();
+                TextBox UIDTextBox = (TextBox)this.FindName("UID");
+                UIDTextBox.Text = userData.UID;
                 sjson.newjson(userData);
-                MessageBox.Show("已重置UID,新的UID为：" + userData.UUID, "提示");
+                MessageBox.Show("已重置UID,新的UID为：" + userData.UID, "提示");
                 Relist();
             }
             else if (result == MessageBoxResult.Cancel)
@@ -499,6 +499,7 @@ namespace OPL_WpfApp
         {
             openbutton.Content = "启动";
             Logger.Log("[提示]----------------------------------程序已停止运行----------------------------------");
+            process = null;
             fstert.Fill = Brushes.Gray;
             Multicast.Stop();
             state.Clear();
@@ -540,27 +541,27 @@ namespace OPL_WpfApp
                     process.Kill();
                     Stop();
                     if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
-                }
-            }
-            else
-            {
-                string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
-                if (!File.Exists(absolutePath))
-                {
-                    MessageBox.Show("程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单", "警告");
-                    Logger.Log("[警告]程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单");
                     return;
-
                 }
-                else Open();
-
-                openbutton.Content = "关闭";
-                Logger.Log("-----------------------程序已开始运行请耐心等待隧道连接----------------------------","提示");
-                fstert.Fill = Brushes.Orange;
-                on = true;
-                Relist();
-                //StartMon();
             }
+            
+            string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
+            if (!File.Exists(absolutePath))
+            {
+                MessageBox.Show("程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单", "警告");
+                Logger.Log("[警告]程序文件丢失，无法启动，请从压缩包重新解压bin/openp2p.exe 文件可能被杀毒删了，请为程序目录添加白名单");
+                return;
+
+            }
+            else Open();
+
+            openbutton.Content = "关闭";
+            Logger.Log("-----------------------程序已开始运行请耐心等待隧道连接----------------------------","提示");
+            fstert.Fill = Brushes.Orange;
+            on = true;
+            Relist();
+            //StartMon();
+            
         }
         public static List<UdpClientKeepAlive> udps = new List<UdpClientKeepAlive>();
         public static List<TcpClientWithKeepAlive> tcps = new List<TcpClientWithKeepAlive>();
@@ -1108,11 +1109,11 @@ namespace OPL_WpfApp
                 MessageBoxImage.Question);
                 if (result == MessageBoxResult.OK)
                 {
-                    userData.ResetUUID();
-                    TextBox uuidTextBox = (TextBox)this.FindName("UUID");
-                    uuidTextBox.Text = userData.UUID;
+                    userData.ResetUID();
+                    TextBox UIDTextBox = (TextBox)this.FindName("UID");
+                    UIDTextBox.Text = userData.UID;
                     sjson.newjson(userData);
-                    MessageBox.Show("已重置UID,新的UID为：" + userData.UUID, "提示");
+                    MessageBox.Show("已重置UID,新的UID为：" + userData.UID, "提示");
                     Relist();
                 }
                 set.settings.csproduct = newuuid;

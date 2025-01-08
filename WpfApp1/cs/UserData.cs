@@ -13,23 +13,29 @@ namespace userdata
 {
     internal class UserData
     {
-        public String UUID;
+        public String UID;
         json json;
         private static readonly Random _random = new Random();
         public UserData() {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
             if (!File.Exists(absolutePath))
             {
-                ResetUUID();
+                ResetUID();
             }
             else
             {
                 json = new json();
-                UUID = json.config.Network.Node;
+                UID = json.config.Network.Node;
+                if(UID == "auto")
+                {
+                    ResetUID();
+                    json.config.Network.Node = UID;
+                    json.Save();
+                }
             }
 
         }
-        public void ResetUUID()
+        public void ResetUID()
         {
             StringBuilder sb = new StringBuilder();
             const string validChars = "0123456789abcdef";
@@ -40,12 +46,12 @@ namespace userdata
                 char randomChar = validChars[_random.Next(validChars.Length)];
                 sb.Append(randomChar);
             }
-            UUID = sb.ToString();
-            //OnPropertyChanged(nameof(UUID));
+            UID = sb.ToString();
+            //OnPropertyChanged(nameof(UID));
         }
-        public string uuid
+        public string uid
         {
-            get { return UUID; }
+            get { return UID; }
         }
         
 

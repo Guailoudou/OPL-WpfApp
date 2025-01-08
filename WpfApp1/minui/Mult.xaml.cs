@@ -97,8 +97,8 @@ namespace OPL_WpfApp.minui
                 return;
             }
             UserData userData = new UserData();
-            string uuid = userData.UUID;
-            string output = $"{uuid}:{port}";
+            string UID = userData.UID;
+            string output = $"{UID}:{port}";
             if (Copy_text(output))
                 MessageBox.Show("已经复制快捷联机码，请粘贴给需要连接的好友", "提示");
             this.Close();

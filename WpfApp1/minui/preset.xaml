@@ -12,7 +12,7 @@
         Title="预设" Height="183" Width="250" WindowStyle="ToolWindow">
     <Grid>
         <Label Content="UID:" HorizontalAlignment="Left" Margin="24,28,0,0" VerticalAlignment="Top" Height="25" ToolTip="房主的UID"/>
-        <TextBox HorizontalAlignment="Left" Name="Suuid" Margin="71,21,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169" Height="25" VerticalContentAlignment="Center"/>
+        <TextBox HorizontalAlignment="Left" Name="SUID" Margin="71,21,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="169" Height="25" VerticalContentAlignment="Center"/>
         <Label Content="游戏：" HorizontalAlignment="Left" Margin="24,65,0,0" VerticalAlignment="Top" Height="25"/>
         <ComboBox Name="type" Margin="71,58,0,0" Width="169" VerticalContentAlignment="Center" SelectionChanged="ComboBox_SelectionChanged"/>
         <Button Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Content="添加" Margin="45,104,0,0" VerticalAlignment="Top" Height="35" Width="167" Click="Button_Click"/>

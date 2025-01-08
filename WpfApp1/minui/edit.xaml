@@ -14,7 +14,7 @@
         <Label Content="名称" HorizontalAlignment="Left" Margin="29,29,0,0" VerticalAlignment="Top" Height="25"/>
         <TextBox HorizontalAlignment="Left" x:Name="names" Margin="85,22,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center" Background="#3FFFFFFF"/>
         <Label Content="UID*" HorizontalAlignment="Left" Margin="29,64,0,0" VerticalAlignment="Top"/>
-        <TextBox Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Suuid" Margin="85,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center"/>
+        <TextBox Background="#3FFFFFFF" HorizontalAlignment="Left" Name="SUID" Margin="85,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center"/>
         <Label Content="远程端口*" HorizontalAlignment="Left" Margin="20,98,0,0" VerticalAlignment="Top"/>
         <TextBox Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Sport" Margin="85,91,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center"/>
         <Label Content="本地端口" HorizontalAlignment="Left" Margin="20,133,0,0" VerticalAlignment="Top" d:LayoutOverrides="Height"/>

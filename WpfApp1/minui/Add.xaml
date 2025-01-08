@@ -12,7 +12,7 @@
         Title="添加隧道" Height="300" Width="250" WindowStyle="ToolWindow">
     <Grid Margin="0,0,0,-6">
         <Label Content="UID*" HorizontalAlignment="Left" Margin="26,64,0,0" VerticalAlignment="Top" Height="25" ToolTip="输入房主的UID"/>
-        <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Suuid" Margin="82,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158" Height="25"/>
+        <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="SUID" Margin="82,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158" Height="25"/>
         <Label Content="远程端口*" HorizontalAlignment="Left" Margin="17,96,0,0" VerticalAlignment="Top" Height="24" ToolTip="输入房主游戏对外开放的端口"/>
         <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Sport" Margin="82,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158" TextChanged="Sport_TextChanged" Height="25"/>
         <Label Content="本地端口" HorizontalAlignment="Left" Margin="17,131,0,0" VerticalAlignment="Top" Height="25"/>
