@@ -33,6 +33,7 @@ using ColorConverter = System.Windows.Media.ColorConverter;
 using FontFamily = System.Windows.Media.FontFamily;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 using System.Threading;
+using OPL_WpfApp.cs;
 
 namespace OPL_WpfApp
 {
@@ -641,7 +642,7 @@ namespace OPL_WpfApp
             {
 
                 Logger.Log("[错误]启动失败，看来被安全中心拦截" + ex.ToString());
-                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin") + "\r"+AppDomain.CurrentDomain.BaseDirectory + "\n\n如果还是不行请进行如下尝试\r\nWindows安全中心->应用和浏览器控制->智能应用控制设置->关闭", "警告");
+                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r可以点击本软件设置页面右上角自动添加排除按钮后重试\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin") + "\r"+AppDomain.CurrentDomain.BaseDirectory + "\n\n如果还是不行请进行如下尝试\r\nWindows安全中心->应用和浏览器控制->智能应用控制设置->关闭", "警告");
                 if (process != null) 
                     if(!process.HasExited)
                         process.Kill();
@@ -1213,6 +1214,13 @@ namespace OPL_WpfApp
             mult.Owner = this;
             mult.Topmost = true;
             mult.ShowDialog();
+        }
+
+        private void AddMpBotton(object sender, RoutedEventArgs e)
+        {
+            string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin");
+            AddMpPreference addMpPreference = new AddMpPreference();
+            addMpPreference.AddMp(absolutePath);
         }
     }
 

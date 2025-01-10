@@ -240,6 +240,7 @@
                     <CheckBox Content="开机自动运行主程序" Margin="50,88,0,0"  Name="Autoup_bootn"  VerticalAlignment="Top"/>
                     <CheckBox Content="主程序运行后自动启动" Margin="50,118,0,0" Name="Autoup_openn"  VerticalAlignment="Top"/>
                     <CheckBox Content="运营商检测警告" Margin="50,148,0,0" Name="Ispwarning"  VerticalAlignment="Top"/>
+                    <Button Content="自动添加安全中心排除" Margin="461,30,0,0" VerticalAlignment="Top" Width="201" Click="AddMpBotton"/>
                 </Grid>
             </TabItem>
             <TabItem Header="关于" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
