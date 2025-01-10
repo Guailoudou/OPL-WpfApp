@@ -82,7 +82,12 @@ namespace userdata
         public bool Auto_up { get; set; } = true;  // 自动更新
         public bool Auto_open { get; set; } = false; //运行后自动启动
         public bool ispwarning { get; set; } = true; // 获取isp
+        public List<ispinfo> ispinfos { get; set; } = new List<ispinfo>();
     }
     
-
+    public class ispinfo
+    {
+        public string ip { get; set; }
+        public string isp { get; set; }
+    }
 }

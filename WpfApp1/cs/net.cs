@@ -207,10 +207,18 @@ namespace userdata
         {
             string url = "https://cn.apihz.cn/api/ip/chaapi.php?id=10001875&key=dddd7577f7f5ea74a29854ab11bbea0a&ip=" + ip;
             //string url = "https://uapis.cn/api/ipinfo?ip=" + ip;
-            string isp="";
-            HttpClient httpClient = new HttpClient();
+            string isp = "";
             set set = new set();
-            
+            foreach(ispinfo item in set.settings.ispinfos)
+            {
+                if(item.ip == ip)
+                {
+                    isp = item.isp;
+                    ispinfomassage(isp, set.settings.ispwarning,"缓存");
+                    return;
+                }
+            }
+            HttpClient httpClient = new HttpClient();
             try
             {
                 // 发起GET请求
@@ -225,12 +233,9 @@ namespace userdata
                     if(ipinfo.code == 200)
                     {
                         isp = ipinfo.isp;
-                        Logger.Log($"[提示]经检测你的网络运营商为：{isp} --数据由apihz提供");
-                        if (!isp.Contains("电信") && !isp.Contains("联通") && !isp.Contains("移动"))
-                        {
-                            if(set.settings.ispwarning)
-                                MessageBox.Show($"检测到你的网络运营商为非电信、联通、移动，你的运营商为{isp}，可能为二级运营商，二级运营商连接或被连接可能受阻，或长时间无法成功连接。如果你不在国内或为其他一级运营商（国内仅这3家为一级运营商），你可以在设置关闭运营商检测提醒。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        }
+                        set.settings.ispinfos.Add(new ispinfo() { ip = ip, isp = isp });
+                        set.Write();
+                        ispinfomassage(isp, set.settings.ispwarning, "apihz");
                     }
                     else
                     {
@@ -270,6 +275,15 @@ namespace userdata
                 return null;
             }
         }
+        private void ispinfomassage(string isp,bool ispwarning,string msg)
+        {
+            Logger.Log($"[提示]经检测你的网络运营商为：{isp} --数据来源：{msg}");
+            if (!isp.Contains("电信") && !isp.Contains("联通") && !isp.Contains("移动"))
+            {
+                if (ispwarning)
+                    MessageBox.Show($"检测到你的网络运营商为非电信、联通、移动，你的运营商为{isp}，可能为二级运营商，二级运营商连接或被连接可能受阻，或长时间无法成功连接。如果你不在国内或为其他一级运营商（国内仅这3家为一级运营商），你可以在设置关闭运营商检测提醒。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
         public static string Getmirror(string originalUrl)
         {
             string originalPrefix = "https://file.gldhn.top/";
@@ -302,13 +316,6 @@ namespace userdata
     {
         public int code { get; set; }
         public string ip { get; set; }
-        public string beginip { get; set; }
-        public string endip { get; set; }
-        public string region { get; set; }
-        public string asn { get; set; }
         public string isp { get; set; }
-        public string latitude { get; set; }
-        public string longitude { get; set; }
-        public string LLC { get; set; }
     }
 }
