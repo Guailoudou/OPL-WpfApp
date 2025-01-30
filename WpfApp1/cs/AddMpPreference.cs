@@ -53,7 +53,7 @@ namespace OPL_WpfApp.cs
                 else
                 {
                     Logger.Log("File/Folder has been successfully excluded from Windows Defender.");
-                    MessageBox.Show("自动添加成功，请重启程序后再尝试启动\n如果依然无法启动，请自行查看 Windows安全中心->应用和浏览器控制->智能应用控制设置->关闭 ");
+                    MessageBox.Show("自动添加成功，请重启程序后再尝试启动(该自动添加排除功能为测试功能)\n如果依然无法启动，请自行查看 Windows安全中心->应用和浏览器控制->智能应用控制设置->关闭 ");
                 }
             }
         }

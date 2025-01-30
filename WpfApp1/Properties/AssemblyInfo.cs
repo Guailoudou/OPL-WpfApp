@@ -52,5 +52,5 @@ using System.Windows;
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.2")]
-[assembly: AssemblyFileVersion("1.0.1.24")]
+[assembly: AssemblyFileVersion("1.0.1.25")]
 [assembly: NeutralResourcesLanguage("zh-CN")]

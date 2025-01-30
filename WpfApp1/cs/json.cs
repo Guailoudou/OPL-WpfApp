@@ -58,6 +58,13 @@ namespace userdata
             Save();
             
         }
+        public void SetServier(string host,ulong token)
+        {
+            config.Network.ServerHost = host;
+            config.Network.Token = token;
+            config.Network.User = "gldoffice";
+            Save();
+        }
         public void Alloff()
         {
             if(config.Apps!=null && config.Apps.Count > 0)
@@ -159,14 +166,14 @@ namespace userdata
             Save();
             return true;
         }
-        public void ReSetToken()
-        {
-            getjosn();
-            config.Network.Token = 11602319472897248650UL;
-            config.LogLevel = Ologv;
-            config.Network.User = "gldoffice";
-            Save();
-        }
+        //public void ReSetToken()
+        //{
+        //    getjosn();
+        //    config.Network.Token = 11602319472897248650UL;
+        //    config.LogLevel = Ologv;
+        //    config.Network.User = "gldoffice";
+        //    Save();
+        //}
         public void Save() //写入josn
         {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
@@ -370,8 +377,14 @@ namespace userdata
         public string uphash { get; set; }
         public string opurl { get; set; }
         public string ophash { get; set; }
+        public List<servers> servers { get; set; }
     }
-
+    public class servers
+    {
+        public string ServerHost { get; set; }
+        public string ServerName { get; set; }
+        public ulong Token { get; set; }
+    }
     public class ConnectionInfo
     {
         public string Protocol { get; set; }

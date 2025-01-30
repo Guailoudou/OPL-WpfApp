@@ -1,12 +1,13 @@
-﻿<Window x:Class="OPL_WpfApp.MainWindow_opl"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OPL_WpfApp"
-        mc:Ignorable="d"
         xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern" 
         xmlns:test="clr-namespace:test"
+        xmlns:ikw="http://schemas.inkore.net/lib/ui/wpf" x:Class="OPL_WpfApp.MainWindow_opl"
+        mc:Ignorable="d"
         ui:ThemeManager.IsThemeAware="True"
         ui:WindowHelper.SystemBackdropType="Mica"
         ui:WindowHelper.UseModernWindowStyle="True"
@@ -19,8 +20,8 @@
             <ColumnDefinition Width="719*"/>
         </Grid.ColumnDefinitions>
 
-        <Ellipse Stroke="Black" Fill="Gray" Margin="14,0,0,13" Name="fstert" HorizontalAlignment="Left" Width="10" Panel.ZIndex="1" Height="10" VerticalAlignment="Bottom"/>
-        <Label Content="v1.0.1.9" HorizontalAlignment="Left" Name="ver" Margin="30,0,0,10" Panel.ZIndex="1" Width="104" Height="18" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
+        <Ellipse Stroke="Black" Fill="Gray" Margin="14,0,0,13" x:Name="fstert" HorizontalAlignment="Left" Width="10" Panel.ZIndex="1" Height="10" VerticalAlignment="Bottom"/>
+        <Label Content="v1.0.1.9" HorizontalAlignment="Left" x:Name="ver" Margin="30,0,0,10" Panel.ZIndex="1" Width="104" Height="18" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
         <TabControl Grid.ColumnSpan="2" BorderBrush="{x:Null}" IsSynchronizedWithCurrentItem="False" OverridesDefaultStyle="True" Focusable="True" TabStripPlacement="Left" Margin="0,0,0,55" ScrollViewer.CanContentScroll="True" ui:TabControlHelper.IsAddTabButtonVisible="False">
             <TabControl.FocusVisualStyle>
                 <Style/>
@@ -50,10 +51,7 @@
                     <Button Style="{StaticResource svg-button}" HorizontalAlignment="Left" Margin="108,12,0,0" VerticalAlignment="Top" Click="CopyUID_Button_Click" Height="24" BorderBrush="#CC707070" Background="#3FDDDDDD" Width="26" Grid.Column="1">
                         <Path Fill="{DynamicResource svg-icon}" Data="M15.0132009,4.5 C16.5733587,4.5 17.1391096,4.66244482 17.70948,4.96748223 C18.2798504,5.27251964 18.7274804,5.72014965 19.0325178,6.29052002 L19.1342249,6.49326214 C19.3735291,7.00777167 19.5,7.61018928 19.5,8.9867991 L19.5,17.5132009 C19.5,19.0733587 19.3375552,19.6391096 19.0325178,20.20948 C18.7274804,20.7798504 18.2798504,21.2274804 17.70948,21.5325178 L17.5067379,21.6342249 C16.9922283,21.8735291 16.3898107,22 15.0132009,22 L6.4867991,22 C4.92664131,22 4.36089039,21.8375552 3.79052002,21.5325178 C3.22014965,21.2274804 2.77251964,20.7798504 2.46748223,20.20948 L2.36577509,20.0067379 C2.12647088,19.4922283 2,18.8898107 2,17.5132009 L2,8.9867991 C2,7.42664131 2.16244482,6.86089039 2.46748223,6.29052002 C2.77251964,5.72014965 3.22014965,5.27251964 3.79052002,4.96748223 L3.99326214,4.86577509 C4.47347103,4.64242449 5.03025764,4.51736427 6.22159636,4.50168224 L15.0132009,4.5 Z M6.4867991,6 C5.29081707,6 4.8991107,6.07564199 4.49791831,6.29020203 C4.18895065,6.45543974 3.95543974,6.68895065 3.79020203,6.99791831 L3.71163699,7.15981826 C3.56872488,7.49032199 3.50932077,7.88419566 3.50102731,8.75808525 L3.5,17.5132009 C3.5,18.7091829 3.57564199,19.1008893 3.79020203,19.5020817 C3.95543974,19.8110494 4.18895065,20.0445603 4.49791831,20.209798 L4.65981826,20.288363 C4.99032199,20.4312751 5.38419566,20.4906792 6.25808525,20.4989727 L6.4867991,20.5 L15.0132009,20.5 L15.4506279,20.4958158 C16.3138066,20.4773591 16.6543816,20.39575 17.0020817,20.209798 C17.3110494,20.0445603 17.5445603,19.8110494 17.709798,19.5020817 L17.788363,19.3401817 C17.9312751,19.009678 17.9906792,18.6158043 17.9989727,17.7419147 L18,17.5132009 L18,8.9867991 L17.9958158,8.54937207 C17.9773591,7.6861934 17.89575,7.34561838 17.709798,6.99791831 C17.5445603,6.68895065 17.3110494,6.45543974 17.0020817,6.29020203 L16.8401817,6.21163699 C16.509678,6.06872488 16.1158043,6.00932077 15.2419147,6.00102731 L6.4867991,6 Z M15.590287,2 C17.8190838,2 18.6272994,2.23206403 19.4421143,2.66783176 C20.2569291,3.10359949 20.8964005,3.74307093 21.3321682,4.55788574 C21.767936,5.37270056 22,6.18091615 22,8.409713 L22,14.3722296 C22,16.1552671 21.8143488,16.8018396 21.4657346,17.4536914 C21.2202776,17.9126561 20.8940321,18.3020799 20.4949174,18.6140435 C20.4981214,18.4695118 20.5,18.316606 20.5,18.1541722 L20.5,8.3458278 C20.5,6.97563815 20.3663256,6.28341544 19.9811141,5.56313259 C19.6264537,4.89997522 19.1000248,4.3735463 18.4368674,4.01888586 C17.7646034,3.65935514 17.1167829,3.51894119 15.9193798,3.50181725 L5.8458278,3.5 C5.68310622,3.5 5.5299464,3.50188529 5.38516578,3.50585327 C5.69792007,3.10596794 6.0873439,2.77972241 6.54630859,2.53426541 C7.19816044,2.18565122 7.84473292,2 9.6277704,2 L15.590287,2 Z M10.75,8.25 C11.1642136,8.25 11.5,8.58578644 11.5,9 L11.5,17.5 C11.5,17.9142136 11.1642136,18.25 10.75,18.25 C10.3357864,18.25 10,17.9142136 10,17.5 L10,14 L6.5,14 C6.08578644,14 5.75,13.6642136 5.75,13.25 C5.75,12.8357864 6.08578644,12.5 6.5,12.5 L10,12.5 L10,9 C10,8.58578644 10.3357864,8.25 10.75,8.25 Z M15,12.5 C15.4142136,12.5 15.75,12.8357864 15.75,13.25 C15.75,13.6642136 15.4142136,14 15,14 L12.5,14 L12.5,12.5 L15,12.5 Z"/>
                     </Button>
-                    <ListBox ScrollViewer.CanContentScroll="False"  Margin="10,41,10,10" SelectionChanged="ListBox_SelectionChanged" x:Name="sdlist" BorderBrush="{x:Null}" Grid.ColumnSpan="2">
-                        <ListBox.Background>
-                            <SolidColorBrush Color="Transparent" />
-                        </ListBox.Background>
+                    <ListBox ScrollViewer.CanContentScroll="False"  Margin="10,41,10,10" SelectionChanged="ListBox_SelectionChanged" x:Name="sdlist" BorderBrush="{x:Null}" Grid.ColumnSpan="2" Background="Transparent">
 
                         <Border BorderThickness="1" CornerRadius="5">
                             <Border.Background>
@@ -235,12 +233,19 @@
                     <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Settings_20_Regular}"/>
                 </ui:TabItemHelper.Icon>
                 <Grid>
-                    <CheckBox Content="openp2p文件校验" Margin="50,28,0,0"  Name="Autoup_opn" VerticalAlignment="Top"/>
-                    <CheckBox Content="主程序自动更新" Margin="50,58,0,0" Name="Autoupn" VerticalAlignment="Top"/>
-                    <CheckBox Content="开机自动运行主程序" Margin="50,88,0,0"  Name="Autoup_bootn"  VerticalAlignment="Top"/>
-                    <CheckBox Content="主程序运行后自动启动" Margin="50,118,0,0" Name="Autoup_openn"  VerticalAlignment="Top"/>
-                    <CheckBox Content="运营商检测警告" Margin="50,148,0,0" Name="Ispwarning"  VerticalAlignment="Top"/>
-                    <Button Content="自动添加安全中心排除" Margin="461,30,0,0" VerticalAlignment="Top" Width="201" Click="AddMpBotton"/>
+                    <CheckBox Content="openp2p文件校验" Margin="50,28,0,0"  x:Name="Autoup_opn" VerticalAlignment="Top"/>
+                    <CheckBox Content="主程序自动更新" Margin="50,58,0,0" x:Name="Autoupn" VerticalAlignment="Top"/>
+                    <CheckBox Content="开机自动运行主程序" Margin="50,88,0,0"  x:Name="Autoup_bootn"  VerticalAlignment="Top"/>
+                    <CheckBox Content="主程序运行后自动启动" Margin="50,118,0,0" x:Name="Autoup_openn"  VerticalAlignment="Top"/>
+                    <CheckBox Content="运营商检测警告" Margin="50,148,0,0" x:Name="Ispwarning"  VerticalAlignment="Top"/>
+
+                    <Button Content="自动添加安全中心排除" Margin="480,29,0,0" VerticalAlignment="Top" Width="201" Click="AddMpBotton"/>
+                    <ComboBox Margin="122,205,0,0" Width="183" x:Name="ServersCombo">
+                        <ComboBoxItem Content="获取ing" IsSelected="True"/>
+                        <ComboBoxItem Content="获节点信息中"/>
+                    </ComboBox>
+                    <Label Content="节点选择" HorizontalAlignment="Left" Margin="50,212,0,0" VerticalAlignment="Top"/>
+                    <Label Content="（测试性功能，备用节点负载能力较差，仅供主节点失效时临时使用，所有连接用户需要使用相同节点才可以互相连接）" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="430" FontSize="8" Height="16" Foreground="#FFF30000"/>
                 </Grid>
             </TabItem>
             <TabItem Header="关于" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">

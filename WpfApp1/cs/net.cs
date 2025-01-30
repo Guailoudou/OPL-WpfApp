@@ -21,13 +21,14 @@ namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 49;//协议版本号
+        private static readonly int pvn = 50;//协议版本号
         public static int Getpvn()
         {
             return pvn;
         }
         public static bool ismirror = true;
-        public async Task GetPreset(Button button =null)
+        public List<servers> servers = new List<servers>();
+        public async Task GetPreset(ComboBox comboBox=null)
         {
             string isgitee = ismirror ? "gitee镜像" : "";
             Logger.Log($"[执行]网络请求文件preset.json-{isgitee}");
@@ -90,6 +91,7 @@ namespace userdata
                         
                     }
                     Uplog.Log(presetss.uplog);
+                    addServer(comboBox);
                 }
                 else
                 {
@@ -153,6 +155,7 @@ namespace userdata
             {
                 string jsonCont = File.ReadAllText(absolutePath);
                 presetss = JsonConvert.DeserializeObject<Presets>(jsonCont);
+                servers = presetss.servers;
 
             }
             catch (JsonException je)
@@ -202,7 +205,22 @@ namespace userdata
                 //}
             }
         }
-
+        public void addServer(ComboBox serversCombo)
+        {
+            Net net = new Net();
+            serversCombo.Items.Clear();
+            net.getjosn();
+            foreach (var item in net.servers)
+            {
+                ComboBoxItem item1 = new ComboBoxItem();
+                item1.Content = item.ServerName;
+                if (item.ServerName == "主节点")
+                {
+                    item1.IsSelected = true;
+                }
+                serversCombo.Items.Add(item1);
+            }
+        }
         public async Task Getisp(string ip)
         {
             string url = "https://cn.apihz.cn/api/ip/chaapi.php?id=10001875&key=dddd7577f7f5ea74a29854ab11bbea0a&ip=" + ip;

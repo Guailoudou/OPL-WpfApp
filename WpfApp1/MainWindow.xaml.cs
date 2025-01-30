@@ -47,6 +47,7 @@ namespace OPL_WpfApp
         bool on = false;
         public static bool over = true;
         int tcpnum = 0;
+        
         public MainWindow_opl(string[] args)
         {
             InitializeComponent();
@@ -76,7 +77,7 @@ namespace OPL_WpfApp
             }else GetTheme();
             
             Net net = new Net();
-            _ = net.GetPreset();
+            _ = net.GetPreset(ServersCombo);
             _ = net.Getthank(thank);
             _ = GetsayText();
             Relist();
@@ -92,6 +93,7 @@ namespace OPL_WpfApp
             //    Strapp();
             //}
             Initialization();
+            
         }
         private static string ExtractBackgroundColor(string[] args)
         {
@@ -102,13 +104,14 @@ namespace OPL_WpfApp
                     string[] parts = arg.Split(new[] { '=' }, 2);
                     if (parts.Length == 2)
                     {
-                        return parts[1]; 
+                        return parts[1];  
+                       
                     }
                 }
             }
             return null; 
         }
-
+       
         private void CopyUID_Button_Click(object sender, RoutedEventArgs e)
         {
             if(Copy_text(UID.Text))
@@ -545,6 +548,25 @@ namespace OPL_WpfApp
                     return;
                 }
             }
+            string server = ServersCombo.Text;
+            Net net = new Net();
+            net.getjosn();
+            try
+            {
+                foreach (var item in net.servers)
+                    {
+                        if (item.ServerName == server)
+                        {
+                            json json = new json();
+                            json.SetServier(item.ServerHost, item.Token);
+                            break;
+                        }
+                    }
+            }catch (Exception ex)
+            {
+                Logger.Log("[警告]未获取到节点列表" + ex.Message);
+            }
+            
             
             string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "openp2p.exe");
             if (!File.Exists(absolutePath))
@@ -642,7 +664,7 @@ namespace OPL_WpfApp
             {
 
                 Logger.Log("[错误]启动失败，看来被安全中心拦截" + ex.ToString());
-                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r可以点击本软件设置页面右上角自动添加排除按钮后重试\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin") + "\r"+AppDomain.CurrentDomain.BaseDirectory + "\n\n如果还是不行请进行如下尝试\r\nWindows安全中心->应用和浏览器控制->智能应用控制设置->关闭", "警告");
+                MessageBox.Show("启动失败，可能被安全中心拦截了，请尝试添加排除后重新启动\r可以点击本软件设置页面右上角自动添加排除按钮后重试\r内网穿透程序常被黑客用来用来入侵企业内网，故非常容易报毒，请信任程序的安全性\r\r请进行如下操作：Windows安全中心->病毒和威胁防护->“病毒和威胁防护”设置->管理设置->排除项->添加或删除排除项->添加排除项->文件夹  添加以下路径\r"+ System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin") + "\r"+AppDomain.CurrentDomain.BaseDirectory + "\n\n如果还是不行请进行如下尝试\r\nWindows安全中心->应用和浏览器控制->智能应用控制设置->关闭", "警告");
                 if (process != null) 
                     if(!process.HasExited)
                         process.Kill();
@@ -1222,6 +1244,7 @@ namespace OPL_WpfApp
             AddMpPreference addMpPreference = new AddMpPreference();
             addMpPreference.AddMp(absolutePath);
         }
+        
     }
 
 }

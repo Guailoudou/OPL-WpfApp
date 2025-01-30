@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using static OPL_WpfApp.MainWindow_opl;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Controls;
 using userdata;
 using System.Net;
 using static System.Net.Mime.MediaTypeNames;
@@ -17,6 +18,7 @@ using System.Security.Principal;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace OPL_WpfApp
 {
@@ -161,20 +163,20 @@ namespace OPL_WpfApp
                     string id = match.Groups[1].Value;
                     Logger.Log("[提示]你的实际UID为" + id);
                 }
-                if (umatch.Success)
-                {
-                    string user = umatch.Groups[1].Value;
-                    if (user != "gldoffice")
-                    {
+                //if (umatch.Success)
+                //{
+                //    string user = umatch.Groups[1].Value;
+                //    if (user != "gldoffice")
+                //    {
 
-                        Logger.Log("[错误]：疑似token丢失，开始自动尝试修复");
-                        //MessageBox.Show("疑似token丢失，已自动尝试修复", "严重错误");
-                        Strapp();
-                        sjson.ReSetToken(); //修复token
-                        Logger.Log("[提示]：尝试修复完毕");
-                        Strapp();
-                    }
-                }
+                //        Logger.Log("[错误]：疑似token丢失，开始自动尝试修复");
+                //        //MessageBox.Show("疑似token丢失，已自动尝试修复", "严重错误");
+                //        Strapp();
+                //        sjson.ReSetToken(); //修复token
+                //        Logger.Log("[提示]：尝试修复完毕");
+                //        Strapp();
+                //    }
+                //}
             }
         }
         //从https://uapis.cn/api/say获取文本 异步
@@ -200,7 +202,7 @@ namespace OPL_WpfApp
                 Logger.Log("[错误]获取每日一句失败：" + ex.Message);
             }
         }
-
+       
         public static string GetSmBIOSUUID()
         {
             var cmd = "wmic csproduct get UUID";
