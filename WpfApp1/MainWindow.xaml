@@ -245,7 +245,7 @@
                         <ComboBoxItem Content="获节点信息中"/>
                     </ComboBox>
                     <Label Content="节点选择" HorizontalAlignment="Left" Margin="50,212,0,0" VerticalAlignment="Top"/>
-                    <Label Content="（测试性功能，备用节点负载能力较差，仅供主节点失效时临时使用，所有连接用户需要使用相同节点才可以互相连接）" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="430" FontSize="8" Height="16" Foreground="#FFF30000"/>
+                    <Label Content="（测试性功能，备用节点负载能力较差，仅供主节点失效时临时使用，主节点恢复后请换回主节点&#xD;&#xA;所有连接用户需要使用相同节点才可以互相连接）" HorizontalAlignment="Left" Margin="50,180,0,0" VerticalAlignment="Top" Width="447" FontSize="10" Height="25" Foreground="#FFF30000"/>
                 </Grid>
             </TabItem>
             <TabItem Header="关于" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">

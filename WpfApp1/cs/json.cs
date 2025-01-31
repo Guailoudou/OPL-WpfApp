@@ -225,10 +225,7 @@ namespace userdata
             {
                 string jsonCont = File.ReadAllText(absolutePath);
                 config = JsonConvert.DeserializeObject<Config>(jsonCont);
-                if (config.Network.ShareBandwidth == 100) { 
-                    config.Network.ShareBandwidth = 10;
-                    Save();
-                }
+                
                 if(config.LogLevel != Ologv) 
                 {
                     config.LogLevel = Ologv;
@@ -315,7 +312,32 @@ namespace userdata
             return connections;
         }
     }
+    public class StringToUlongConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(ulong);
+        }
 
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            //if (reader.TokenType == JsonToken.String)
+            //{
+            //    return ulong.Parse((string)reader.Value);
+            //}
+            //else if (reader.TokenType == JsonToken.Integer)
+            //{
+            return ulong.Parse(reader.Value.ToString());
+            //}
+            
+            //throw new JsonSerializationException("Unexpected token type");
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            writer.WriteValue(value.ToString());
+        }
+    }
     public class App
     {
         public string AppName { get; set; } //隧道名
@@ -383,6 +405,7 @@ namespace userdata
     {
         public string ServerHost { get; set; }
         public string ServerName { get; set; }
+        [JsonConverter(typeof(StringToUlongConverter))]
         public ulong Token { get; set; }
     }
     public class ConnectionInfo
