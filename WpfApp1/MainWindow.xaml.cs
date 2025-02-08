@@ -536,18 +536,29 @@ namespace OPL_WpfApp
                 return;
             }
             OpenDate = DateTime.Now;
-            if (process != null)
+            try
             {
-                if (!process.HasExited)
+                if (process != null)
                 {
-                    process.CancelOutputRead();
-                    process.CancelErrorRead();
-                    process.Kill();
-                    Stop();
-                    if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
-                    return;
+                    if (!process.HasExited)
+                    {
+                        process.CancelOutputRead();
+                        process.CancelErrorRead();
+                        process.Kill();
+                        Stop();
+                        if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
+                        return;
+                    }
                 }
+            }catch (Exception ex)
+            {
+
+                Logger.Log("[警告]错误信息：" + ex.Message);
+                Logger.Log("[警告]详细错误信息：" + ex.StackTrace);
+                MessageBox.Show("启动报错，请查看是否启动成功，如果失败请尝试点击设置->自动添加安全中心白名单 然后重启软件\n" + ex.StackTrace, "错误");
+                
             }
+            
             string server = ServersCombo.Text;
             Net net = new Net();
             net.getjosn();
