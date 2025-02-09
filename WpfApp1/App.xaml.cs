@@ -232,17 +232,32 @@ namespace OPL_WpfApp
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool SetForegroundWindow(IntPtr hWnd);
 
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool IsIconic(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        private const int SW_RESTORE = 9;
+        private const uint WM_SYSCOMMAND = 0x0112;
+        private const uint SC_RESTORE = 0xF120;
+
         private static void ActivateExistingInstance()
         {
             string windowTitle = "Openp2p Launcher - 联机工具";
             IntPtr hWnd = FindWindow(null, windowTitle);
             if (hWnd != IntPtr.Zero)
             {
+                if (IsIconic(hWnd))
+                {
+                    ShowWindow(hWnd, SW_RESTORE);
+                    SendMessage(hWnd, WM_SYSCOMMAND, (IntPtr)SC_RESTORE, IntPtr.Zero);
+                }
                 SetForegroundWindow(hWnd);
-            }
-            else
-            {
-                Console.WriteLine("Could not find the existing window.");
             }
         }
 
