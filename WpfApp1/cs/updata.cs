@@ -48,7 +48,7 @@ namespace userdata
                     File.WriteAllBytes(savePath, fileBytes);
 
                     Logger.Log($"[提示]ZIP更新文件已成功下载到：{savePath}");
-                    if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "updata.exe")))
+                    if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "updata.exe")) && name != "openp2p.zip")
                         MessageBox.Show("已完成更新文件下载，建议重启以完成最后更新！", "提示");
                     if(name== "openp2p.zip")
                     {

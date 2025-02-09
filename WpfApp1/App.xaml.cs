@@ -36,15 +36,15 @@ namespace OPL_WpfApp
             // 检查互斥量是否已被其他实例占用
             if (!mutex.WaitOne(0, false))
             {
-                // 如果无法获取互斥量，说明已经有实例在运行
-                MessageBox.Show("程序正在运行，你无法重复开启.");
-                //ActivateExistingWindow();
-                Current.Shutdown();
+
+                ActivateExistingInstance();
+                //Current.Shutdown();
+                Environment.Exit(0); 
                 return;
             }
             else
             {
-                // 如果获得了互斥量，那么继续执行
+                // 继续
                 base.OnStartup(e);
                 
             }
@@ -224,66 +224,26 @@ namespace OPL_WpfApp
                 Logger.Log("Error: " + e.Message);
             }
         }
-        private void ActivateExistingWindow()
-        {
-            IntPtr hwnd = FindWindowByClassName("{OPL_WpfApp.MainWindow_opl}");
 
-            if (hwnd != IntPtr.Zero)
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        private static void ActivateExistingInstance()
+        {
+            string windowTitle = "Openp2p Launcher - 联机工具";
+            IntPtr hWnd = FindWindow(null, windowTitle);
+            if (hWnd != IntPtr.Zero)
             {
-                // 激活并置顶找到的窗口
-                MessageBox.Show("窗口已存在，正在激活并置顶。");
-                SetForegroundWindow(hwnd);
-                ShowWindow(hwnd, SW_RESTORE); // 使用 SW_RESTORE 常量
-                SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-                SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+                SetForegroundWindow(hWnd);
             }
-        }
-
-        [DllImport("user32.dll")]
-        private static extern bool EnumWindows(WndEnumProc enumProc, IntPtr lParam);
-
-        [DllImport("user32.dll")]
-        private static extern bool GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [DllImport("user32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        [DllImport("user32.dll")]
-        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-
-        private delegate bool WndEnumProc(IntPtr hWnd, IntPtr lParam);
-
-        private IntPtr HWND_NOTOPMOST = new IntPtr(-1);
-        private IntPtr HWND_TOPMOST = new IntPtr(-2);
-
-        private const int SWP_NOMOVE = 0x0002;
-        private const int SWP_NOSIZE = 0x0001;
-        private const int SW_SHOW = 5;
-        private const int SW_RESTORE = 9;
-
-        private IntPtr FindWindowByClassName(string className)
-        {
-            IntPtr hwnd = IntPtr.Zero;
-
-            EnumWindows((hWnd, lParam) =>
+            else
             {
-                StringBuilder sb = new StringBuilder(256);
-                GetClassName(hWnd, sb, sb.Capacity);
-                if (sb.ToString() == className)
-                {
-                    hwnd = hWnd;
-                    return false;
-                }
-                return true;
-            }, IntPtr.Zero);
-
-            return hwnd;
+                Console.WriteLine("Could not find the existing window.");
+            }
         }
 
         void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -294,5 +254,7 @@ namespace OPL_WpfApp
             Logger.Log($"Stack Trace: {e.Exception.StackTrace}", "错误");
             e.Handled = true;
         }
+
+       
     }
 }
