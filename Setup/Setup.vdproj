@@ -15,14 +15,14 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_00C4E97D999B45F89EF1CAD6014AA099"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_0104CECDDE11B0AE63AFCECAEDF8E186"
+        "OwnerKey" = "8:_D0EF183D9D1243678DCDDFF92A19FFFD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0104CECDDE11B0AE63AFCECAEDF8E186"
-        "OwnerKey" = "8:_D0EF183D9D1243678DCDDFF92A19FFFD"
+        "MsmKey" = "8:_036583D120044C81884779A8573938E3"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -663,12 +663,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_BD578A8100D04347BC82A8A31E275152"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_BD66AE57E6A69B920AC45988552BAA14"
         "OwnerKey" = "8:_D0EF183D9D1243678DCDDFF92A19FFFD"
         "MsmSig" = "8:_UNDEFINED"
@@ -741,13 +735,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_CE258FA109464C29BFDE0049A373471D"
+        "MsmKey" = "8:_D0EF183D9D1243678DCDDFF92A19FFFD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D0EF183D9D1243678DCDDFF92A19FFFD"
+        "MsmKey" = "8:_D104DD654D0741559C98883AEFF36199"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -881,6 +875,12 @@
         {
         "MsmKey" = "8:_F1039D767B5D942FF42EFB09F558E75D"
         "OwnerKey" = "8:_3E4511CAC3836B0AB58F1DE772A3CC31"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F26C4653A2944E2A85C259C562A1AED1"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1752,26 +1752,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_00C4E97D999B45F89EF1CAD6014AA099"
-            {
-            "SourcePath" = "8:..\\WpfApp1\\openp2p.exe"
-            "TargetName" = "8:openp2p.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_2AC3BC6E63D0451082FE91FED5F3B9AA"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0104CECDDE11B0AE63AFCECAEDF8E186"
             {
             "AssemblyRegister" = "3:1"
@@ -1801,6 +1781,26 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_036583D120044C81884779A8573938E3"
+            {
+            "SourcePath" = "8:..\\preset.json"
+            "TargetName" = "8:preset.json"
+            "Tag" = "8:"
+            "Folder" = "8:_2AC3BC6E63D0451082FE91FED5F3B9AA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_05E0E1433439790316BF62DC8F98A591"
@@ -4686,26 +4686,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BD578A8100D04347BC82A8A31E275152"
-            {
-            "SourcePath" = "8:..\\preset.json"
-            "TargetName" = "8:preset.json"
-            "Tag" = "8:"
-            "Folder" = "8:_2AC3BC6E63D0451082FE91FED5F3B9AA"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BD66AE57E6A69B920AC45988552BAA14"
             {
             "AssemblyRegister" = "3:1"
@@ -5078,9 +5058,9 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CE258FA109464C29BFDE0049A373471D"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D104DD654D0741559C98883AEFF36199"
             {
-            "SourcePath" = "8:..\\WpfApp1\\opl_icon.ico"
+            "SourcePath" = "8:..\\opl_icon.ico"
             "TargetName" = "8:opl_icon.ico"
             "Tag" = "8:"
             "Folder" = "8:_7390FBAA5B424941967B1405ACD7CBB4"
@@ -5687,6 +5667,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F26C4653A2944E2A85C259C562A1AED1"
+            {
+            "SourcePath" = "8:..\\openp2p.exe"
+            "TargetName" = "8:openp2p.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_2AC3BC6E63D0451082FE91FED5F3B9AA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F31F2396990932862876228CD1685A53"
             {
             "AssemblyRegister" = "3:1"
@@ -5848,7 +5848,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:OPL"
         "ProductCode" = "8:{81306D30-0119-4949-AC60-6DEC1A6D0D22}"
-        "PackageCode" = "8:{4A3A7BE4-E5E9-4098-9AC6-20CB879D07D2}"
+        "PackageCode" = "8:{16F087BA-7527-4BF1-988A-3DDEA3963299}"
         "UpgradeCode" = "8:{5FB7A33F-1906-4DC4-880F-87E389E7994C}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -5979,7 +5979,7 @@
             "Target" = "8:_D0EF183D9D1243678DCDDFF92A19FFFD"
             "Folder" = "8:_EBB90C0DC6BE46EEA1864A9071CDEF31"
             "WorkingFolder" = "8:_7390FBAA5B424941967B1405ACD7CBB4"
-            "Icon" = "8:_CE258FA109464C29BFDE0049A373471D"
+            "Icon" = "8:_D104DD654D0741559C98883AEFF36199"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_B6FBBB379A7841D0AE45E207EF75CB3F"
@@ -5993,7 +5993,7 @@
             "Target" = "8:_D0EF183D9D1243678DCDDFF92A19FFFD"
             "Folder" = "8:_9916C730290B44DEA93F7C95D3E95C38"
             "WorkingFolder" = "8:_7390FBAA5B424941967B1405ACD7CBB4"
-            "Icon" = "8:_CE258FA109464C29BFDE0049A373471D"
+            "Icon" = "8:_D104DD654D0741559C98883AEFF36199"
             "Feature" = "8:"
             }
         }
@@ -6367,7 +6367,7 @@
                     }
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_FCC16C689B514600AD38485B63642F8B"
                     {
-                    "Sequence" = "3:300"
+                    "Sequence" = "3:400"
                     "DisplayName" = "8:确认安装"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
