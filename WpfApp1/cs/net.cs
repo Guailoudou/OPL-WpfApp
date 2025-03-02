@@ -21,7 +21,7 @@ namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 53;//协议版本号
+        private static readonly int pvn = 54;//协议版本号
         public static int Getpvn()
         {
             return pvn;
@@ -53,7 +53,7 @@ namespace userdata
                     // 获取响应内容的字符串形式
                     string contentString = await response.Content.ReadAsStringAsync();
                     Save(contentString);
-                    getjosn();
+                    getjson();
                     int v = presetss.version;
                     string ophash = presetss.ophash;
                     string opurl = presetss.opurl;
@@ -66,7 +66,7 @@ namespace userdata
                         }
                         else
                         {
-                            new Updata(Getmirror(presetss.upurl));
+                            new Updata(Getmirror(presetss.upurl), "nvb.zip");
                             Logger.Log($"[提示]获取预设完成,你的程序不是最新版本哦~ 开始后台下载更新包-{isgitee}");
                         }
                     }
@@ -83,7 +83,7 @@ namespace userdata
                         }
                         else
                         {
-                            new Updata(Getmirror(presetss.opurl), false);
+                            new Updata(Getmirror(presetss.opurl), "openp2p.zip");
                             Logger.Log("[提示]你的openp2p不是最新版本哦~ 开始后台下载更新包");
                             over = false;
                             //MessageBox.Show("将开始关键文件下载~ 开始后台下载更新包", "提示");
@@ -148,7 +148,7 @@ namespace userdata
             }
         }
         public Presets presetss;
-        public void getjosn()
+        public void getjson()
         {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "preset.json");
             try
@@ -209,7 +209,7 @@ namespace userdata
         {
             Net net = new Net();
             serversCombo.Items.Clear();
-            net.getjosn();
+            net.getjson();
             foreach (var item in net.servers)
             {
                 ComboBoxItem item1 = new ComboBoxItem();

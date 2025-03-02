@@ -30,7 +30,7 @@ namespace userdata
             }
             else
             {
-                getjosn();
+                getjson();
             }
         }
         public void newjson(UserData userData) //创建无app配置
@@ -48,7 +48,7 @@ namespace userdata
                     ServerPort = 27183,
                     UDPPort1 = 27182,
                     UDPPort2 = 27183,
-                    TCPPort = 50448
+                    TCPPort = 0
                 },
                 Apps = new List<App> { },
 
@@ -162,13 +162,12 @@ namespace userdata
                     app
                 };
             }
-            config.LogLevel = Ologv;
             Save();
             return true;
         }
         //public void ReSetToken()
         //{
-        //    getjosn();
+        //    getjson();
         //    config.Network.Token = 11602319472897248650UL;
         //    config.LogLevel = Ologv;
         //    config.Network.User = "gldoffice";
@@ -188,15 +187,14 @@ namespace userdata
         }
         public void del(int index)
         {
-            getjosn();
+            getjson();
             Logger.Log($"[执行]删除隧道 序号:{index} - {config.Apps[index].ToString()}");
             config.Apps.RemoveAt(index);
-            config.LogLevel = Ologv;
             Save();
         }
         public void onapp(int index) //开启app
         {
-            getjosn();
+            getjson();
             
             foreach (App app in config.Apps)
             {
@@ -208,29 +206,27 @@ namespace userdata
                 }
             }
             config.Apps[index].Enabled = 1;
-            config.LogLevel = Ologv;
             Save();
         }
         public void offapp(int index) //关闭app
         {
-            getjosn();
+            getjson();
             config.Apps[index].Enabled = 0;
-            config.LogLevel = Ologv;
             Save();
         }
-        public void getjosn() //读取配置
+        public void getjson() //读取配置
         {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "config.json");
             try
             {
                 string jsonCont = File.ReadAllText(absolutePath);
                 config = JsonConvert.DeserializeObject<Config>(jsonCont);
-                
-                if(config.LogLevel != Ologv) 
-                {
-                    config.LogLevel = Ologv;
-                    Save();
-                }
+
+                //if (config.LogLevel != Ologv)
+                //{
+                //    config.LogLevel = Ologv;
+                //    Save();
+                //}
 
             }
             catch (JsonException je)
@@ -342,6 +338,8 @@ namespace userdata
     {
         public string AppName { get; set; } //隧道名
         public string Protocol { get; set; } //隧道类型
+        public string UnderlayProtocol { get; set; }
+        public int PunchPriority { get; set; } = 0;
         public string Whitelist { get; set; }
         public int SrcPort { get; set; } //本地端口
         public string PeerNode { get; set; } //被连UID
@@ -349,6 +347,7 @@ namespace userdata
         public string DstHost { get; set; } //远程ip
         public string PeerUser { get; set; }
         public string RelayNode { get; set; }
+        public int ForceRelay { get; set; } = 0;
         public int Enabled { get; set; } //开启？
         public override string ToString() 
         {
@@ -366,7 +365,7 @@ namespace userdata
         public int ServerPort { get; set; }
         public int UDPPort1 { get; set; }
         public int UDPPort2 { get; set; }
-        public int TCPPort { get; set; }
+        public int TCPPort { get; set; } = 0;
     }
 
     public class Config

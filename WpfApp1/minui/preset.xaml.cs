@@ -39,7 +39,7 @@ namespace OPL_WpfApp
             }
             else
             {
-                net.getjosn();
+                net.getjson();
                 addp();
             }
         }

@@ -47,7 +47,7 @@ namespace OPL_WpfApp
         bool on = false;
         public static bool over = true;
         int tcpnum = 0;
-        
+        string opname = "openp2p.exe";
         public MainWindow_opl(string[] args)
         {
             InitializeComponent();
@@ -261,13 +261,13 @@ namespace OPL_WpfApp
             tcpnum = 0;
             // 获取ListBox控件
             ListBox listBox = this.FindName("sdlist") as ListBox;
-            userdata.json json = new userdata.json();
+            sjson.getjson();
             listBox.Items.Clear();
             iplink.Clear();
             int index = 0;
-            if (json.config.Apps != null)
+            if (sjson.config.Apps != null)
             {
-                foreach (userdata.App app in json.config.Apps)
+                foreach (userdata.App app in sjson.config.Apps)
                 {
                     if(app.Enabled == 1 ? true : false)
                         if(app.Protocol=="tcp") tcpnum++;
@@ -561,15 +561,15 @@ namespace OPL_WpfApp
             
             string server = ServersCombo.Text;
             Net net = new Net();
-            net.getjosn();
+            net.getjson();
             try
             {
                 foreach (var item in net.servers)
                     {
                         if (item.ServerName == server)
                         {
-                            json json = new json();
-                            json.SetServier(item.ServerHost, item.Token);
+                            sjson.getjson();
+                            sjson.SetServier(item.ServerHost, item.Token);
                             break;
                         }
                     }
@@ -605,7 +605,7 @@ namespace OPL_WpfApp
 
             // 创建进程对象
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","openp2p.exe"); // 控制台应用路径
+            startInfo.FileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", opname); // 控制台应用路径
             startInfo.RedirectStandardOutput = true;
             startInfo.StandardOutputEncoding = Encoding.UTF8;
             startInfo.StandardErrorEncoding = Encoding.UTF8;
@@ -911,8 +911,8 @@ namespace OPL_WpfApp
             {
                 if(pastedText=="") throw new ArgumentException("无效码");
                 var connections = ConnectionParser.ParseConnections(pastedText);
-                json json = new json();
-                json.Alloff();
+                sjson.getjson();
+                sjson.Alloff();
                 foreach (var conn in connections)
                 {
                     string type = conn.Protocol;
@@ -921,7 +921,7 @@ namespace OPL_WpfApp
                     string uid = conn.UID;
                     int port = conn.Port;
                     int cport = conn.CPort;
-                    json.Add1link(type,uid,port,cport);
+                    sjson.Add1link(type,uid,port,cport);
                 }
                 Relist();
                 MessageBox.Show("已将列表状态同步连接码", "提示");
@@ -1104,6 +1104,16 @@ namespace OPL_WpfApp
             {
                 Ispwarning.IsChecked = true;
             }
+            if (set.settings.beta)
+            {
+                beta.IsChecked = true;
+                opname = "openp2p23.exe";
+                if(sjson.config.LogLevel == 2)
+                {
+                    sjson.config.LogLevel = 1;
+                    sjson.Save();
+                }
+            }
             Autoup_bootn.Checked += Auto_boot;
             Autoup_bootn.Unchecked += UnAuto_boot;
 
@@ -1118,6 +1128,9 @@ namespace OPL_WpfApp
 
             Ispwarning.Checked += Ispwarn;
             Ispwarning.Unchecked += UnIspwarn;
+
+            beta.Checked += Isbeta;
+            beta.Unchecked += UnIsbeta;
 
             string newuuid;
             try
@@ -1192,8 +1205,7 @@ namespace OPL_WpfApp
 
         private void CloseAll(object sender, RoutedEventArgs e)
         {
-            json json = new json();
-            json.Alloff();
+            sjson.Alloff();
             Relist();
         }
 
@@ -1210,14 +1222,38 @@ namespace OPL_WpfApp
             set.settings.ispwarning = false;
             set.Write();
         }
+        private void Isbeta(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("注意，这是测试，理论上大大提高了连接的稳定性，启用该功能的只能和同样启用的互联，过一段时间根据反馈稳定后，会直接全部启用，删除该按钮");
+            set set = new set();
+            set.settings.beta = true;
+            set.Write();
+            sjson.config.LogLevel = 1;
+            opname = "openp2p23.exe";
+            sjson.Save();
+            string filename = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin" , opname);
+            if (!File.Exists(filename))
+            {
+                new Updata(Net.Getmirror("https://file.gldhn.top/file/openp2p3.23.windows-386.zip"), "openp2p23.zip");
+            }
+        }
+
+        private void UnIsbeta(object sender, RoutedEventArgs e)
+        {
+            set set = new set();
+            set.settings.beta = false;
+            set.Write();
+            sjson.config.LogLevel = 2;
+            opname = "openp2p.exe";
+            sjson.Save();
+        }
 
         private void Outlist(object sender, RoutedEventArgs e)
         {
             string output = "";
-            json json = new json();
-            if (json.config.Apps != null)
+            if (sjson.config.Apps != null)
             {
-                foreach (userdata.App app in json.config.Apps)
+                foreach (userdata.App app in sjson.config.Apps)
                 {
                     if (app.Enabled == 1)
                     {

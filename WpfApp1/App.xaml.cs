@@ -96,7 +96,7 @@ namespace OPL_WpfApp
             if (File.Exists(savePath))
             {
                 Net net = new Net();
-                net.getjosn();
+                net.getjson();
                 string pathToExe = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "updata.exe");
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = pathToExe;
