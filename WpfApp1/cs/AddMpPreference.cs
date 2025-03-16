@@ -31,14 +31,14 @@ namespace OPL_WpfApp.cs
             };
 
             // 启动PowerShell进程
-            using (Process process = Process.Start(processStartInfo))
+            using (Process process =  Process.Start(processStartInfo))
             {
                 // 读取标准输出和错误输出
                 string output = process.StandardOutput.ReadToEnd();
                 string error = process.StandardError.ReadToEnd();
 
                 // 等待进程退出
-                process.WaitForExit();
+                // rocess.WaitForExit();
 
                 // 打印输出结果
                 Logger.Log("Output: " + output);

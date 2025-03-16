@@ -33,11 +33,21 @@ namespace OPL_WpfApp
         private static Mutex mutex = new Mutex(true, "{OPL_Guailoudou}");
         protected override void OnStartup(StartupEventArgs e)
         {
+            bool isFirstInstance = true;
             // 检查互斥量是否已被其他实例占用
-            if (!mutex.WaitOne(0, false))
+            try
+            {
+                isFirstInstance = mutex.WaitOne(0, false);
+            }catch (AbandonedMutexException)
+            {
+                mutex.ReleaseMutex();
+            }
+            
+            if (!isFirstInstance)
             {
 
                 ActivateExistingInstance();
+                //mutex.ReleaseMutex();
                 //Current.Shutdown();
                 Environment.Exit(0); 
                 return;
@@ -46,7 +56,7 @@ namespace OPL_WpfApp
             {
                 // 继续
                 base.OnStartup(e);
-                
+                mutex.ReleaseMutex();
             }
             string OPPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","openp2p.exe");
             if (!IsProcessElevated())
