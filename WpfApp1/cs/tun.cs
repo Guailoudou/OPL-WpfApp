@@ -7,155 +7,151 @@
 //using System.Threading;
 //using System.Linq;
 //using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+using Path = System.IO.Path;
+using Tunnel;
+using userdata;
+using System;
+using System.Runtime.Remoting.Messaging;
+using static OPL_WpfApp.MainWindow_opl;
+using System.Diagnostics;
+using System.Security.AccessControl;
+using System.Threading;
+using System.Windows.Controls;
+//using System.Windows.Forms;
+using System.Windows.Shapes;
 
-//public class VirtualTun
-//{
-//    [DllImport("wintun.dll", SetLastError = true)]
-//    private static extern uint WintunCreateAdapter(out IntPtr adapter, string name, IntPtr guid, uint mtu);
+public class tunnel
+{
+    private static readonly string userDirectory = Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName), "Config");
+    private Thread logPrintingThread, transferUpdateThread;
+    private readonly string configFile = Path.Combine(userDirectory, "demobox.conf");
+    private Tunnel.Ringlogger log;
+    private readonly string logFile = Path.Combine(userDirectory, "log.bin");
+    private readonly string config = "[Interface]\r\nPrivateKey = eNOlN1FvS/uvB+oT+wRLolxYEpiFnjlMkgKia4SDkFI=\r\nListenPort = 50814\r\nAddress = 10.0.8.1/24\r\n\r\n[Peer]\r\nPublicKey = bZCHopp+A//TakQhj/e7QULfzWJiQSonUjQNgGODdHI=\r\nAllowedIPs = 10.0.8.0/24, 224.0.0.0/8\r\nPersistentKeepalive = 1\r\n\r\n[Peer]\r\nPublicKey = cMZDRP/dx+03ssNiEcIvqebzWXvS6XWMHPXN0DCQZBU=\r\nAllowedIPs = 10.0.8.0/24, 224.0.0.0/8\r\nPersistentKeepalive = 1\r\n";
+    private volatile bool threadsRunning;
+    private volatile bool isRunning = false;
+    private TextBox logBox;
+    private Label tunspeed;
+    public void csh(TextBox logBox,Label tunspeed)
+    {
+        this.logBox = logBox;
+        this.tunspeed = tunspeed;
+        Directory.CreateDirectory(userDirectory);
+        log = new Tunnel.Ringlogger(logFile, "GUI");
+        logPrintingThread = new Thread(new ThreadStart(tailLog));
+        transferUpdateThread = new Thread(new ThreadStart(tailTransfer));
 
-//    [DllImport("wintun.dll", SetLastError = true)]
-//    private static extern uint WintunStartReceiving(IntPtr adapter);
+    }
+    public void OpenTunnel()
+    {
+        
+        try
+        {
+            threadsRunning = true;
+            logPrintingThread.Start();
+            transferUpdateThread.Start();
+            using (FileStream stream = new FileStream(configFile, FileMode.Create, FileAccess.Write))
+            using (StreamWriter writer = new StreamWriter(stream))
+            {
+                writer.Write(config);
+            }
+            //Tunnel.Service.Remove(configFile, false);
+            Service.Add(configFile, true);
+            //await Task.Run(() => Tunnel.Service.Add(configFile, true));
+        }
+        catch (Exception ex)
+        {
+            Logger.Log(ex.Message);
+            //try { File.Delete(configFile); } catch { }
+        }
+    }
+    public async void CloseTunnel()
+    {
+        try
+        {
+            threadsRunning = false;
+            logPrintingThread.Interrupt();
+            transferUpdateThread.Interrupt();
+            try { logPrintingThread.Join(); } catch { }
+            try { transferUpdateThread.Join(); } catch { }
+            await Task.Run(() => Tunnel.Service.Remove(configFile, true));
+            try { File.Delete(configFile); } catch { }
+        }
+        catch (Exception ex)
+        {
+            Logger.Log(ex.Message);
+            try { File.Delete(configFile); } catch { }
+        }
+    }
 
-//    [DllImport("wintun.dll", SetLastError = true)]
-//    private static extern uint WintunReceivePacket(IntPtr adapter, out byte[] packet, out uint bytesRead);
+    private void tailLog()
+    {
+        var cursor = Tunnel.Ringlogger.CursorAll;
+        while (threadsRunning)
+        {
+            var lines = log.FollowFromCursor(ref cursor);
+            foreach (var line in lines)
+                //Logger.Log(line);
+                logBox.Dispatcher.Invoke(new Action<string>(logBox.AppendText), new object[] { line + "\r\n" });
+                //new Action<string>(Logger.Log);
+            try
+            {
+                Thread.Sleep(300);
+            }
+            catch
+            {
+                break;
+            }
+        }
+    }
 
-//    [DllImport("wintun.dll", SetLastError = true)]
-//    private static extern uint WintunSendPacket(IntPtr adapter, byte[] packet, uint length, uint flags);
-
-//    [DllImport("wintun.dll", SetLastError = true)]
-//    private static extern uint WintunStopReceiving(IntPtr adapter);
-
-//    [DllImport("wintun.dll", SetLastError = true)]
-//    private static extern uint WintunDestroyAdapter(IntPtr adapter);
-
-//    private const string TunIfaceName = "optun-beta";
-
-//    public static void main()
-//    {
-//        IntPtr adapter = IntPtr.Zero;
-
-//        try
-//        {
-//            // 创建 TUN 接口
-//            CreateTunDevice(TunIfaceName, out adapter);
-
-//            // 设置 IP 地址
-//            SetTunAddress(TunIfaceName, "10.26.35.1/24");
-
-//            // 开始接收数据包
-//            StartReceiving(adapter);
-
-//            // 循环接收数据包
-//            ReceivePackets(adapter);
-//        }
-//        catch (Exception ex)
-//        {
-//            Console.WriteLine($"Error: {ex.Message}");
-//        }
-//        finally
-//        {
-//            // 清理资源
-//            StopReceiving(adapter);
-//            DestroyAdapter(adapter);
-//        }
-//    }
-
-//    private static void CreateTunDevice(string tunName, out IntPtr adapter)
-//    {
-//        uint status = WintunCreateAdapter(out adapter, tunName, IntPtr.Zero, 1420);
-//        if (status != 0)
-//        {
-//            throw new Exception($"Failed to create adapter: {status}");
-//        }
-//    }
-
-//    private static void SetTunAddress(string ifname, string localAddr)
-//    {
-//        var parts = localAddr.Split('/');
-//        var ipAddress = parts[0];
-//        var subnetMask = parts[1];
-
-//        // 使用 netsh 命令来设置 IP 地址
-//        var setIpCommand = $"netsh interface ip set address name={ifname} source=static addr={ipAddress} mask={subnetMask}";
-
-//        ProcessStartInfo psi = new ProcessStartInfo("cmd", $"/C {setIpCommand}")
-//        {
-//            RedirectStandardOutput = true,
-//            UseShellExecute = false,
-//            CreateNoWindow = true
-//        };
-
-//        using (Process process = new Process())
-//        {
-//            process.StartInfo = psi;
-//            process.Start();
-
-//            string output = process.StandardOutput.ReadToEnd();
-//            process.WaitForExit();
-
-//            if (process.ExitCode != 0)
-//            {
-//                throw new Exception($"Failed to set IP address: {output}");
-//            }
-//        }
-
-//        Console.WriteLine($"Set IP address: {localAddr} on interface: {ifname}");
-//    }
-
-//    private static void StartReceiving(IntPtr adapter)
-//    {
-//        uint status = WintunStartReceiving(adapter);
-//        if (status != 0)
-//        {
-//            throw new Exception($"Failed to start receiving: {status}");
-//        }
-//    }
-
-//    private static void ReceivePackets(IntPtr adapter)
-//    {
-//        byte[] packet;
-//        uint bytesRead;
-
-//        while (true)
-//        {
-//            uint status = WintunReceivePacket(adapter, out packet, out bytesRead);
-//            if (status != 0)
-//            {
-//                throw new Exception($"Failed to receive packet: {status}");
-//            }
-
-//            // 处理接收到的数据包
-//            Console.WriteLine($"Received packet size: {bytesRead}");
-
-//            // 发送数据包回接口
-//            SendPacket(adapter, packet, (uint)bytesRead);
-//        }
-//    }
-
-//    private static void SendPacket(IntPtr adapter, byte[] packet, uint length)
-//    {
-//        uint status = WintunSendPacket(adapter, packet, length, 0);
-//        if (status != 0)
-//        {
-//            throw new Exception($"Failed to send packet: {status}");
-//        }
-//    }
-
-//    private static void StopReceiving(IntPtr adapter)
-//    {
-//        uint status = WintunStopReceiving(adapter);
-//        if (status != 0)
-//        {
-//            throw new Exception($"Failed to stop receiving: {status}");
-//        }
-//    }
-
-//    private static void DestroyAdapter(IntPtr adapter)
-//    {
-//        uint status = WintunDestroyAdapter(adapter);
-//        if (status != 0)
-//        {
-//            throw new Exception($"Failed to destroy adapter: {status}");
-//        }
-//    }
-//}
+    private void tailTransfer()
+    {
+        Tunnel.Driver.Adapter adapter = null;
+        while (threadsRunning)
+        {
+            if (adapter == null)
+            {
+                while (threadsRunning)
+                {
+                    try
+                    {
+                        adapter = Tunnel.Service.GetAdapter(configFile);
+                        break;
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            Thread.Sleep(1000);
+                        }
+                        catch { }
+                    }
+                }
+            }
+            if (adapter == null)
+                continue;
+            try
+            {
+                ulong rx = 0, tx = 0;
+                var config = adapter.GetConfiguration();
+                foreach (var peer in config.Peers)
+                {
+                    rx += peer.RxBytes;
+                    tx += peer.TxBytes;
+                }
+                //Logger.Log(String.Format("{0} RX, {1} TX", rx, tx));
+                tunspeed.Dispatcher.Invoke(() =>
+                {
+                    tunspeed.Content = String.Format("{0} RX, {1} TX", rx, tx);
+                });
+                //(new Action<string>(tunspeed.SetContent), new object[] { String.Format("{0} RX, {1} TX", rx, tx) });
+                Thread.Sleep(1000);
+            }
+            catch { adapter = null; }
+        }
+    }
+}

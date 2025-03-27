@@ -105,6 +105,21 @@
                 </Grid>
 
             </TabItem>
+            <TabItem Header="网络" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
+                <ui:TabItemHelper.Icon>
+                    <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Link_20_Regular}"/>
+                </ui:TabItemHelper.Icon>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="开启tun" Click="Opentun" Margin="41,39,0,0" VerticalAlignment="Top" Height="35" Width="121"/>
+                    <Button Content="关闭tun" Click="Closetun" Margin="41,89,0,0" VerticalAlignment="Top" Height="35" Width="121"/>
+                    <TextBox HorizontalAlignment="Center" Margin="0,188,0,0" TextWrapping="Wrap" Text="TextBox" x:Name="tunlog" VerticalAlignment="Top" Width="346" Height="205"/>
+                    <Label Content="Label" HorizontalAlignment="Left" Margin="66,155,0,0" x:Name="tunspeed" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
             <TabItem Header="日志" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
                 <ui:TabItemHelper.Icon>
                     <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.WindowConsole_20_Regular}"/>

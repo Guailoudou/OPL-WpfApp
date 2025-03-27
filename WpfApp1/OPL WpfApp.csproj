@@ -62,6 +62,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <DebugSymbols>true</DebugSymbols>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>opl_icon.ico</ApplicationIcon>
@@ -352,6 +353,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TunnelDll\Driver.cs" />
+    <Compile Include="TunnelDll\Keypair.cs" />
+    <Compile Include="TunnelDll\Ringlogger.cs" />
+    <Compile Include="TunnelDll\Service.cs" />
+    <Compile Include="TunnelDll\Win32.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

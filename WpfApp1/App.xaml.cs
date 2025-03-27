@@ -30,9 +30,32 @@ namespace OPL_WpfApp
     /// </summary>
     public partial class App : Application
     {
+
         private static Mutex mutex = new Mutex(true, "{OPL_Guailoudou}");
         protected override void OnStartup(StartupEventArgs e)
         {
+            string[] args = e.Args;
+            if (args.Length == 3 && args[0] == "/service")
+            {
+                var t = new Thread(() =>
+                {
+                    try
+                    {
+                        var currentProcess = Process.GetCurrentProcess();
+                        var uiProcess = Process.GetProcessById(int.Parse(args[2]));
+                        if (uiProcess.MainModule.FileName != currentProcess.MainModule.FileName)
+                            return;
+                        uiProcess.WaitForExit();
+                        Tunnel.Service.Remove(args[1], false);
+                    }
+                    catch { }
+                });
+                t.Start();
+                Tunnel.Service.Run(args[1]);
+                t.Interrupt();
+                Environment.Exit(0);
+                return;
+            }
             bool isFirstInstance = true;
             // 检查互斥量是否已被其他实例占用
             try
@@ -66,7 +89,7 @@ namespace OPL_WpfApp
                 return;
             }
             AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
-            string[] args = e.Args;
+            
             set set = new set();
             if (set.settings.Color != null && set.settings.Color != "")
             {
@@ -234,7 +257,7 @@ namespace OPL_WpfApp
                 Logger.Log("Error: " + e.Message);
             }
         }
-
+        // 窗口操作相关
         [DllImport("user32.dll", SetLastError = true)]
         static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 

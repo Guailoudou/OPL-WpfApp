@@ -44,6 +44,8 @@ namespace OPL_WpfApp
     {
         UserData userData ;
         json sjson;
+        tunnel tunnel = new tunnel();
+
         bool on = false;
         public static bool over = true;
         int tcpnum = 0;
@@ -695,6 +697,10 @@ namespace OPL_WpfApp
             await Task.Delay(3000);
             Strapp();
         }
+        public TextBox Gettunlog()
+        {
+            return tunlog;
+        }
         protected override void OnClosed(EventArgs e)
         {
             
@@ -1096,10 +1102,17 @@ namespace OPL_WpfApp
                 Autoup_openn.IsChecked = true;
                 if(!temp)Strapp();
             }
-            if (AutoStartWith.IsInStartup())
+            try
             {
-                Autoup_bootn.IsChecked = true;
+                if (AutoStartWith.IsInStartup())
+                {
+                    Autoup_bootn.IsChecked = true;
+                }
+            }catch (Exception ex)
+            {
+                Logger.Log($"{ex.Message}","错误");
             }
+            
             if (set.settings.ispwarning)
             {
                 Ispwarning.IsChecked = true;
@@ -1165,7 +1178,7 @@ namespace OPL_WpfApp
                 set.settings.csproduct = newuuid;
             }
             set.Write();
-
+            tunnel.csh(Gettunlog(), tunspeed);
         }
 
         private void Auto_boot(object sender, RoutedEventArgs e)
@@ -1291,7 +1304,17 @@ namespace OPL_WpfApp
             AddMpPreference addMpPreference = new AddMpPreference();
             addMpPreference.AddMp(absolutePath);
         }
-        
+
+        private void Opentun(object sender, RoutedEventArgs e)
+        {
+            
+            tunnel.OpenTunnel();
+        }
+
+        private void Closetun(object sender, RoutedEventArgs e)
+        {
+            tunnel.CloseTunnel();
+        }
     }
 
 }
