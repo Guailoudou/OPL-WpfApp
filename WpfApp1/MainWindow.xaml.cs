@@ -697,10 +697,10 @@ namespace OPL_WpfApp
             await Task.Delay(3000);
             Strapp();
         }
-        public TextBox Gettunlog()
-        {
-            return tunlog;
-        }
+        //public TextBox Gettunlog()
+        //{
+        //    return tunlog;
+        //}
         protected override void OnClosed(EventArgs e)
         {
             
@@ -1178,7 +1178,7 @@ namespace OPL_WpfApp
                 set.settings.csproduct = newuuid;
             }
             set.Write();
-            tunnel.csh(Gettunlog(), tunspeed);
+            tunnel.csh(tunspeed);
         }
 
         private void Auto_boot(object sender, RoutedEventArgs e)

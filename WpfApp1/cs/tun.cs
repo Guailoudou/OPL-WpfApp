@@ -33,12 +33,12 @@ public class tunnel
     private string config = "";
     private volatile bool threadsRunning;
     private volatile bool isRunning = false;
-    private TextBox logBox;
+    //private TextBox logBox;
     private Label tunspeed;
     tunconfig tunconfig = new tunconfig();
-    public void csh(TextBox logBox,Label tunspeed)
+    public void csh(Label tunspeed)
     {
-        this.logBox = logBox;
+        //this.logBox = logBox;
         this.tunspeed = tunspeed;
         Directory.CreateDirectory(userDirectory);
         log = new Tunnel.Ringlogger(logFile, "GUI");
@@ -57,7 +57,7 @@ public class tunnel
                 
                 threadsRunning = true;
                 isRunning = true;
-                logBox.Text = "";
+                //logBox.Text = "";
                 button.Content = "关闭tun";
                 //logPrintingThread = new Thread(new ThreadStart(tailLog));
                 transferUpdateThread = new Thread(new ThreadStart(tailTransfer));
