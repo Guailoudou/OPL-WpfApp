@@ -105,7 +105,7 @@
                 </Grid>
 
             </TabItem>
-            <TabItem Header="网络" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
+            <TabItem Header="组网" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
                 <ui:TabItemHelper.Icon>
                     <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Link_20_Regular}"/>
                 </ui:TabItemHelper.Icon>
@@ -114,10 +114,12 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="开启tun" Click="Opentun" Margin="41,39,0,0" VerticalAlignment="Top" Height="35" Width="121"/>
-                    <Button Content="关闭tun" Click="Closetun" Margin="41,89,0,0" VerticalAlignment="Top" Height="35" Width="121"/>
-                    <TextBox HorizontalAlignment="Center" Margin="0,188,0,0" TextWrapping="Wrap" Text="TextBox" x:Name="tunlog" VerticalAlignment="Top" Width="346" Height="205"/>
-                    <Label Content="Label" HorizontalAlignment="Left" Margin="66,155,0,0" x:Name="tunspeed" VerticalAlignment="Top"/>
+                    <Button Content="开启tun" Click="Opentun" Margin="132,179,0,0" VerticalAlignment="Top" Height="35" Width="121" Name="tunbutton" Grid.Column="1"/>
+                    <Label Content="Label" HorizontalAlignment="Left" Margin="100,42,0,0" x:Name="tunspeed" VerticalAlignment="Top"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="183,56,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="32" x:Name="tunip"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="165,109,0,0" TextWrapping="Wrap" Text="25674" VerticalAlignment="Top" Width="100" x:Name="tunport"/>
+                    <Label Grid.Column="1" Content="10.0.23." HorizontalAlignment="Left" Margin="132,63,0,0" VerticalAlignment="Top" />
+                    <Label Grid.Column="1" Content="通讯端口" HorizontalAlignment="Left" Margin="104,117,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="日志" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >

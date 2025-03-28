@@ -1307,14 +1307,19 @@ namespace OPL_WpfApp
 
         private void Opentun(object sender, RoutedEventArgs e)
         {
-            
-            tunnel.OpenTunnel();
+            int id = int.Parse(tunip.Text.Replace(" ",""));
+            int port = int.Parse(tunport.Text.Replace(" ",""));
+            tunnel.OpenTunnel(tunbutton,id,port);
+            string linkcode = $"2:{userData.UID}:{port}";
+            if (id == 1) { 
+                Copy_text(linkcode);
+                MessageBox.Show($"复制成功：连接码 {linkcode} \n请将该内容粘贴给要进行组网的人添加", "提示");
+            }
+            //if (Copy_text(linkcode)&&id!=1)
+            //    MessageBox.Show($"复制成功：连接码 {linkcode}", "提示");
         }
 
-        private void Closetun(object sender, RoutedEventArgs e)
-        {
-            tunnel.CloseTunnel();
-        }
+        
     }
 
 }

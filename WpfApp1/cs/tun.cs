@@ -22,91 +22,110 @@ using System.Threading;
 using System.Windows.Controls;
 //using System.Windows.Forms;
 using System.Windows.Shapes;
-
+using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 public class tunnel
 {
-    private static readonly string userDirectory = Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName), "Config");
+    private static readonly string userDirectory = Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName), "bin");
     private Thread logPrintingThread, transferUpdateThread;
-    private readonly string configFile = Path.Combine(userDirectory, "demobox.conf");
+    private readonly string configFile = Path.Combine(userDirectory, "opltun.conf");
     private Tunnel.Ringlogger log;
     private readonly string logFile = Path.Combine(userDirectory, "log.bin");
-    private readonly string config = "[Interface]\r\nPrivateKey = eNOlN1FvS/uvB+oT+wRLolxYEpiFnjlMkgKia4SDkFI=\r\nListenPort = 50814\r\nAddress = 10.0.8.1/24\r\n\r\n[Peer]\r\nPublicKey = bZCHopp+A//TakQhj/e7QULfzWJiQSonUjQNgGODdHI=\r\nAllowedIPs = 10.0.8.0/24, 224.0.0.0/8\r\nPersistentKeepalive = 1\r\n\r\n[Peer]\r\nPublicKey = cMZDRP/dx+03ssNiEcIvqebzWXvS6XWMHPXN0DCQZBU=\r\nAllowedIPs = 10.0.8.0/24, 224.0.0.0/8\r\nPersistentKeepalive = 1\r\n";
+    private string config = "";
     private volatile bool threadsRunning;
     private volatile bool isRunning = false;
     private TextBox logBox;
     private Label tunspeed;
+    tunconfig tunconfig = new tunconfig();
     public void csh(TextBox logBox,Label tunspeed)
     {
         this.logBox = logBox;
         this.tunspeed = tunspeed;
         Directory.CreateDirectory(userDirectory);
         log = new Tunnel.Ringlogger(logFile, "GUI");
-        logPrintingThread = new Thread(new ThreadStart(tailLog));
-        transferUpdateThread = new Thread(new ThreadStart(tailTransfer));
-
-    }
-    public void OpenTunnel()
-    {
         
+        new Updata(Net.Getmirror("https://file.gldhn.top/file/json/wireguard_keys.json"), "wgkey.json");
+        new Updata(Net.Getmirror("https://file.gldhn.top/file/dll/tunnel.dll"), "tunnel.dll", AppDomain.CurrentDomain.BaseDirectory);
+        new Updata(Net.Getmirror("https://file.gldhn.top/file/dll/wireguard.dll"), "wireguard.dll", AppDomain.CurrentDomain.BaseDirectory);
+    }
+    public void OpenTunnel(Button button,int id,int port)
+    {
+        if (!isRunning) { 
+            config = tunconfig.buildconfig(id == 1 ? true : false, port,id);
+        if(config=="err") return;
         try
-        {
-            threadsRunning = true;
-            logPrintingThread.Start();
-            transferUpdateThread.Start();
-            using (FileStream stream = new FileStream(configFile, FileMode.Create, FileAccess.Write))
-            using (StreamWriter writer = new StreamWriter(stream))
             {
-                writer.Write(config);
+                
+                threadsRunning = true;
+                isRunning = true;
+                logBox.Text = "";
+                button.Content = "关闭tun";
+                //logPrintingThread = new Thread(new ThreadStart(tailLog));
+                transferUpdateThread = new Thread(new ThreadStart(tailTransfer));
+                //logPrintingThread.Start();
+                transferUpdateThread.Start();
+                using (FileStream stream = new FileStream(configFile, FileMode.Create, FileAccess.Write))
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.Write(config);
+                }
+                //Tunnel.Service.Remove(configFile, false);
+                Service.Add(configFile, true);
+                //await Task.Run(() => Tunnel.Service.Add(configFile, true));
             }
-            //Tunnel.Service.Remove(configFile, false);
-            Service.Add(configFile, true);
-            //await Task.Run(() => Tunnel.Service.Add(configFile, true));
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message);
+                isRunning = false;
+                //try { File.Delete(configFile); } catch { }
+            }
         }
-        catch (Exception ex)
-        {
-            Logger.Log(ex.Message);
-            //try { File.Delete(configFile); } catch { }
-        }
-    }
-    public async void CloseTunnel()
-    {
-        try
-        {
-            threadsRunning = false;
-            logPrintingThread.Interrupt();
-            transferUpdateThread.Interrupt();
-            try { logPrintingThread.Join(); } catch { }
-            try { transferUpdateThread.Join(); } catch { }
-            await Task.Run(() => Tunnel.Service.Remove(configFile, true));
-            try { File.Delete(configFile); } catch { }
-        }
-        catch (Exception ex)
-        {
-            Logger.Log(ex.Message);
-            try { File.Delete(configFile); } catch { }
-        }
-    }
-
-    private void tailLog()
-    {
-        var cursor = Tunnel.Ringlogger.CursorAll;
-        while (threadsRunning)
-        {
-            var lines = log.FollowFromCursor(ref cursor);
-            foreach (var line in lines)
-                //Logger.Log(line);
-                logBox.Dispatcher.Invoke(new Action<string>(logBox.AppendText), new object[] { line + "\r\n" });
-                //new Action<string>(Logger.Log);
+        else { 
             try
             {
-                Thread.Sleep(300);
+                threadsRunning = false;
+                isRunning = false;
+                button.Content = "开启tun";
+                //logPrintingThread.Interrupt();
+                transferUpdateThread.Interrupt();
+                //try { logPrintingThread.Join(); } catch { }
+                try { transferUpdateThread.Join(); } catch { }
+                Tunnel.Service.Remove(configFile, true);
+                try { File.Delete(configFile); } catch { }
             }
-            catch
+            catch (Exception ex)
             {
-                break;
+                Logger.Log(ex.Message);
+                try { File.Delete(configFile); } catch { }
             }
         }
     }
+    public void SetConfig(string config)
+    {
+        this.config = config;
+    }
+
+    //private void tailLog()
+    //{
+    //    var cursor = Tunnel.Ringlogger.CursorAll;
+    //    while (threadsRunning)
+    //    {
+    //        var lines = log.FollowFromCursor(ref cursor);
+    //        foreach (var line in lines)
+    //            //Logger.Log(line);
+    //            logBox.Dispatcher.Invoke(()=> {
+    //                logBox.Text = line + "\r\n" + logBox.Text;
+    //            });
+    //            //new Action<string>(Logger.Log);
+    //        try
+    //        {
+    //            Thread.Sleep(300);
+    //        }
+    //        catch
+    //        {
+    //            break;
+    //        }
+    //    }
+    //}
 
     private void tailTransfer()
     {

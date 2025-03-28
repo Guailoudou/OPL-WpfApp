@@ -13,28 +13,37 @@ namespace userdata
 {
     internal class Updata
     {
-        public Updata(string url,string SaveName)
+        public Updata(string url,string SaveName, string absolutePath="")
         {
-            
-            string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", SaveName);
-            if (!File.Exists(absolutePath))
+            string absolutePathed;
+            if(absolutePath=="")
+                absolutePathed = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", SaveName);
+            else
+                absolutePathed = Path.Combine(absolutePath, SaveName);
+            if (!File.Exists(absolutePathed))
             {
-                _ = Dmfile(url, SaveName); //更新包 
+                _ = Dmfile(url, SaveName, absolutePath); //更新包 
                 if(SaveName== "nvb.zip")
-                    _ = Dmfile(Net.Getmirror("https://file.gldhn.top/file/updata.exe"), "updata.exe");
+                    _ = Dmfile(Net.Getmirror("https://file.gldhn.top/file/updata.exe"), "updata.exe", AppDomain.CurrentDomain.BaseDirectory);
+            }else
+            {
+                Logger.Log($"[提示]文件已存在，无需下载：{absolutePathed}");
             }
 
         }
-        public async Task Dmfile(string url,string name)
+        public async Task Dmfile(string url,string name,string savePath = "")
         {
             Logger.Log($"[提示]开始下载文件：{url} 保存名 ：{name}");
-            string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", name);
+            if (savePath == "")
+                savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", name);
+            else
+                savePath = Path.Combine(savePath, name);
             //Thread.Sleep(2000);
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    // 发送GET请求获取ZIP文件的字节流
+                    // 发送GET请求获取文件的字节流
                     byte[] fileBytes = await client.GetByteArrayAsync(url);
 
                     // 将字节流写入到本地文件
@@ -68,35 +77,5 @@ namespace userdata
                 }
             }
         }
-        //public async Task Dmfile(string url,string saveName)
-        //{
-        //    string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, saveName);
-        //    if (File.Exists(savePath))
-        //    {
-        //        File.Delete(savePath);
-        //    }
-        //    //Thread.Sleep(2000);
-        //    using (HttpClient client = new HttpClient())
-        //    {
-        //        try
-        //        {
-        //            // 发送GET请求获取ZIP文件的字节流
-        //            byte[] fileBytes = await client.GetByteArrayAsync(url);
-
-        //            // 将字节流写入到本地文件
-        //            File.WriteAllBytes(savePath, fileBytes);
-
-        //            Logger.Log($"[提示]已成功下载文件到：{savePath}");
-        //        }
-        //        catch (HttpRequestException ex)
-        //        {
-        //            Logger.Log($"下载失败: {ex.Message}");
-        //        }
-        //        catch (IOException ex)
-        //        {
-        //            Logger.Log($"文件操作失败: {ex.Message}");
-        //        }
-        //    }
-        //}
     }
 }

@@ -357,6 +357,7 @@
     <Compile Include="TunnelDll\Keypair.cs" />
     <Compile Include="TunnelDll\Ringlogger.cs" />
     <Compile Include="TunnelDll\Service.cs" />
+    <Compile Include="TunnelDll\tunconfig.cs" />
     <Compile Include="TunnelDll\Win32.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
