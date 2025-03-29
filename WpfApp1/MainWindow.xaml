@@ -126,6 +126,8 @@
                     <Label Content="可取值2-20，创建网络的为ip最后一位1&#xD;&#xA;所有连接的不可重复，请自行协商" HorizontalAlignment="Left" Margin="63,89,0,0" VerticalAlignment="Top" Foreground="#FFF41010" Grid.Column="1"/>
                     <Label Grid.Column="1" Content="联接码" HorizontalAlignment="Left" Margin="7,149,0,0" VerticalAlignment="Top"/>
                     <Label Grid.Column="1" Content="测试功能" HorizontalAlignment="Left" Margin="273,384,0,0" VerticalAlignment="Top" Foreground="#FF8B8686"/>
+                    <Ellipse Grid.Column="1" Stroke="Black" Fill="Black" Margin="90,190,259,0" x:Name="tunellipse" Height="15" VerticalAlignment="Top"/>
+
                 </Grid>
             </TabItem>
             <TabItem Header="日志" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >

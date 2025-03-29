@@ -101,6 +101,10 @@ public class tunnel
             }
         }
     }
+    public bool getruning()
+    {
+        return isRunning;
+    }
     public void SetConfig(string config)
     {
         this.config = config;

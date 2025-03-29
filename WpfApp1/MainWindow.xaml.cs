@@ -395,10 +395,12 @@ namespace OPL_WpfApp
                     checkBox.Unchecked += UnCheckBox_Checked;
                     grid.Children.Add(checkBox);
                     var clo = Brushes.Gray;
+                    tunellipse.Fill = clo;
                     if (on&&app.Enabled==1)
                     {
-                        if (state[app.Protocol + ":" + app.SrcPort] == 1) clo = Brushes.Orange;
+                        if (state[app.Protocol + ":" + app.SrcPort] == 1) clo = Brushes.Orange; 
                         if(state[app.Protocol + ":" + app.SrcPort] == 2) clo = Brushes.Green;
+                        if (tunnel.getruning()) tunellipse.Fill = clo;
                     }
                     Ellipse ellipse = new Ellipse
                     {
@@ -919,6 +921,7 @@ namespace OPL_WpfApp
                 var connections = ConnectionParser.ParseConnections(pastedText);
                 sjson.getjson();
                 sjson.Alloff();
+                sjson.clearoindex();
                 foreach (var conn in connections)
                 {
                     string type = conn.Protocol;
@@ -1307,18 +1310,26 @@ namespace OPL_WpfApp
 
         private void Opentun(object sender, RoutedEventArgs e)
         {
+            if (!on && OpenDate.AddSeconds(1) > DateTime.Now && OpenDate != null)
+            {
+                MessageBox.Show("操作太频繁，请稍后再试 (请至少间隔1s，防止出现BUG)", "警告");
+                return;
+            }
             int port = 25674;
             string linkcode = $"2:{userData.UID}:{port}:{port}";
             if (tunbutton.Content.ToString() == "创建/开启网络") {
+                tunjoinbutton.IsEnabled = false;
                 port = int.Parse(tunport.Text.Replace(" ", ""));
                 if(Copy_text(linkcode))
                     MessageBox.Show($"复制成功：连接码 {linkcode} \n请将该内容粘贴给要进行组网的人添加", "提示");
-                tunnel.OpenTunnel(tunbutton, 1, port);
             }
             else
             {
                 tunjoinbutton.IsEnabled = true;
             }
+            tunnel.OpenTunnel(tunbutton, 1, port);
+            sjson.getjson();
+            sjson.Alloff();
             if (over) Strapp();
             //if (Copy_text(linkcode)&&id!=1)
             //    MessageBox.Show($"复制成功：连接码 {linkcode}", "提示");
@@ -1326,6 +1337,11 @@ namespace OPL_WpfApp
 
         private void jointun(object sender, RoutedEventArgs e)
         {
+            if (!on && OpenDate.AddSeconds(1) > DateTime.Now && OpenDate != null)
+            {
+                MessageBox.Show("操作太频繁，请稍后再试 (请至少间隔1s，防止出现BUG)", "警告");
+                return;
+            }
             string linkcode = tunlink.Text.Replace(" ","");
             if (linkcode == "") { 
                 MessageBox.Show("请输入连接码", "提示");
@@ -1340,6 +1356,7 @@ namespace OPL_WpfApp
                 var connections = ConnectionParser.ParseConnections(linkcode);
                 sjson.getjson();
                 sjson.Alloff();
+                sjson.clearoindex();
                 foreach (var conn in connections)
                 {
                     string type = conn.Protocol;
@@ -1348,7 +1365,7 @@ namespace OPL_WpfApp
                     string uid = conn.UID;
                     int port = conn.Port;
                     cport = conn.CPort;
-                    sjson.Add1link(type, uid, port, cport);
+                    if(!sjson.Add1link(type, uid, port, cport))return;
                 }
                 Relist();
             }

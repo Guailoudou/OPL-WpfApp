@@ -77,7 +77,11 @@ namespace userdata
             }
                 
         }
-        public void Add1link(string type, string uid, int port,int cport)  
+        public void clearoindex()
+        {
+            oindex.Clear();
+        }
+        public bool Add1link(string type, string uid, int port,int cport)  
         {
             
             int index = Finduid(uid,type);
@@ -91,10 +95,16 @@ namespace userdata
             }
             else
             {
-                newapp(uid,port,type,cport);
-                index = config.Apps.Count-1 ;
-                oindex.Add(index);
+                if (newapp(uid, port, type, cport)) { 
+                    index = config.Apps.Count-1 ;
+                    oindex.Add(index);
+                }
+                else
+                {
+                    return false;
+                }
             }
+            return true;
         }
         public int Finduid(string uid,string type)
         {
@@ -124,6 +134,8 @@ namespace userdata
             {
                 Logger.Log("[错误]自己连自己？");
                 MessageBox.Show("不能自己连自己啊！！这无异于试图左脚踩右脚升天！！", "错误");
+                //抛出异常
+                //throw new ArgumentException("自己连自己？", "错误");
                 return false;
             }
             if (cport == 0) cport = sport;
