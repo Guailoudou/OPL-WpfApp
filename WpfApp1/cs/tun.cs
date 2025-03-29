@@ -51,40 +51,42 @@ public class tunnel
     {
         if (!isRunning) { 
             config = tunconfig.buildconfig(id == 1 ? true : false, port,id);
-        if(config=="err") return;
-        try
-            {
-                
-                threadsRunning = true;
-                isRunning = true;
-                //logBox.Text = "";
-                button.Content = "关闭tun";
-                //logPrintingThread = new Thread(new ThreadStart(tailLog));
-                transferUpdateThread = new Thread(new ThreadStart(tailTransfer));
-                //logPrintingThread.Start();
-                transferUpdateThread.Start();
-                using (FileStream stream = new FileStream(configFile, FileMode.Create, FileAccess.Write))
-                using (StreamWriter writer = new StreamWriter(stream))
+            if(config=="err") return;
+            try
                 {
-                    writer.Write(config);
+                
+                    threadsRunning = true;
+                    isRunning = true;
+                    //logBox.Text = "";
+                    if(button.Content.ToString() == "连接网络") button.Content = "断开连接";
+                    else button.Content = "关闭网络";
+                    //logPrintingThread = new Thread(new ThreadStart(tailLog));
+                    transferUpdateThread = new Thread(new ThreadStart(tailTransfer));
+                    //logPrintingThread.Start();
+                    transferUpdateThread.Start();
+                    using (FileStream stream = new FileStream(configFile, FileMode.Create, FileAccess.Write))
+                    using (StreamWriter writer = new StreamWriter(stream))
+                    {
+                        writer.Write(config);
+                    }
+                    //Tunnel.Service.Remove(configFile, false);
+                    Service.Add(configFile, true);
+                    //await Task.Run(() => Tunnel.Service.Add(configFile, true));
                 }
-                //Tunnel.Service.Remove(configFile, false);
-                Service.Add(configFile, true);
-                //await Task.Run(() => Tunnel.Service.Add(configFile, true));
+                catch (Exception ex)
+                {
+                    Logger.Log(ex.Message);
+                    isRunning = false;
+                    //try { File.Delete(configFile); } catch { }
+                }
             }
-            catch (Exception ex)
-            {
-                Logger.Log(ex.Message);
-                isRunning = false;
-                //try { File.Delete(configFile); } catch { }
-            }
-        }
         else { 
             try
             {
                 threadsRunning = false;
                 isRunning = false;
-                button.Content = "开启tun";
+                if (button.Content.ToString() == "断开连接") button.Content = "连接网络";
+                else button.Content = "创建/开启网络";
                 //logPrintingThread.Interrupt();
                 transferUpdateThread.Interrupt();
                 //try { logPrintingThread.Join(); } catch { }

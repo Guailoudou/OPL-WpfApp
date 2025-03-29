@@ -107,19 +107,24 @@
             </TabItem>
             <TabItem Header="组网" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
                 <ui:TabItemHelper.Icon>
-                    <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Link_20_Regular}"/>
+                    <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Globe_20_Regular}"/>
                 </ui:TabItemHelper.Icon>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="开启tun" Click="Opentun" Margin="132,179,0,0" VerticalAlignment="Top" Height="35" Width="121" Name="tunbutton" Grid.Column="1"/>
-                    <Label Content="Label" HorizontalAlignment="Left" Margin="100,42,0,0" x:Name="tunspeed" VerticalAlignment="Top"/>
-                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="183,56,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="32" x:Name="tunip"/>
-                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="165,109,0,0" TextWrapping="Wrap" Text="25674" VerticalAlignment="Top" Width="100" x:Name="tunport"/>
+                    <Button Content="创建/开启网络" Click="Opentun" Margin="0,179,0,0" VerticalAlignment="Top" Height="35" Width="121" Name="tunbutton" HorizontalAlignment="Center"/>
+                    <Label Content="流量信息" HorizontalAlignment="Left" Margin="337,351,0,0" x:Name="tunspeed" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="183,56,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="32" x:Name="tunip"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Center" Margin="0,142,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="256" x:Name="tunlink"/>
+                    <TextBox HorizontalAlignment="Left" Margin="161,114,0,0" TextWrapping="Wrap" Text="25674" VerticalAlignment="Top" Width="100" x:Name="tunport"/>
                     <Label Grid.Column="1" Content="10.0.23." HorizontalAlignment="Left" Margin="132,63,0,0" VerticalAlignment="Top" />
-                    <Label Grid.Column="1" Content="通讯端口" HorizontalAlignment="Left" Margin="104,117,0,0" VerticalAlignment="Top"/>
+                    <Label Content="通讯端口:" HorizontalAlignment="Left" Margin="97,121,0,0" VerticalAlignment="Top"/>
+                    <Button Content="连接网络" Click="jointun" Margin="0,179,0,0" VerticalAlignment="Top" Height="35" Width="121" Name="tunjoinbutton" HorizontalAlignment="Center" Grid.Column="1"/>
+                    <Label Grid.Column="1" Content="本机ip设置：" HorizontalAlignment="Left" Margin="49,63,0,0" VerticalAlignment="Top"/>
+                    <Label Content="可取值2-20，创建网络的为ip最后一位1&#xD;&#xA;所有连接的不可重复，请自行协商" HorizontalAlignment="Left" Margin="63,89,0,0" VerticalAlignment="Top" Foreground="#FFF41010" Grid.Column="1"/>
+                    <Label Grid.Column="1" Content="联接码" HorizontalAlignment="Left" Margin="7,149,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="日志" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >

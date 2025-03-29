@@ -1307,19 +1307,59 @@ namespace OPL_WpfApp
 
         private void Opentun(object sender, RoutedEventArgs e)
         {
-            int id = int.Parse(tunip.Text.Replace(" ",""));
-            int port = int.Parse(tunport.Text.Replace(" ",""));
-            tunnel.OpenTunnel(tunbutton,id,port);
-            string linkcode = $"2:{userData.UID}:{port}";
-            if (id == 1) { 
-                Copy_text(linkcode);
-                MessageBox.Show($"复制成功：连接码 {linkcode} \n请将该内容粘贴给要进行组网的人添加", "提示");
+            int port = 25674;
+            string linkcode = $"2:{userData.UID}:{port}:{port}";
+            if (tunbutton.Content.ToString() == "创建/开启网络") {
+                port = int.Parse(tunport.Text.Replace(" ", ""));
+                if(Copy_text(linkcode))
+                    MessageBox.Show($"复制成功：连接码 {linkcode} \n请将该内容粘贴给要进行组网的人添加", "提示");
+                tunnel.OpenTunnel(tunbutton, 1, port);
             }
+            else
+            {
+                tunjoinbutton.IsEnabled = true;
+            }
+            if (over) Strapp();
             //if (Copy_text(linkcode)&&id!=1)
             //    MessageBox.Show($"复制成功：连接码 {linkcode}", "提示");
         }
 
-        
+        private void jointun(object sender, RoutedEventArgs e)
+        {
+            string linkcode = tunlink.Text.Replace(" ","");
+            if (linkcode == "") { 
+                MessageBox.Show("请输入连接码", "提示");
+                return;
+            }
+            int id = 2;
+            int cport = 25674;
+            if (tunjoinbutton.Content.ToString() == "连接网络"){
+                tunbutton.IsEnabled = false;
+                id = int.Parse(tunip.Text.Replace(" ", ""));
+                cport = int.Parse(tunport.Text.Replace(" ", ""));
+                var connections = ConnectionParser.ParseConnections(linkcode);
+                sjson.getjson();
+                sjson.Alloff();
+                foreach (var conn in connections)
+                {
+                    string type = conn.Protocol;
+                    if (type == "1") type = "tcp";
+                    if (type == "2") type = "udp";
+                    string uid = conn.UID;
+                    int port = conn.Port;
+                    cport = conn.CPort;
+                    sjson.Add1link(type, uid, port, cport);
+                }
+                Relist();
+            }
+            else
+            {
+                tunbutton.IsEnabled = true;
+            }
+            tunnel.OpenTunnel(tunjoinbutton, id, cport);
+            
+            if (over) Strapp();
+        }
     }
 
 }
