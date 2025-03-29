@@ -1328,6 +1328,7 @@ namespace OPL_WpfApp
                 tunjoinbutton.IsEnabled = true;
             }
             tunnel.OpenTunnel(tunbutton, 1, port);
+            iptext.Text = "10.0.23.1";
             sjson.getjson();
             sjson.Alloff();
             if (over) Strapp();
@@ -1374,8 +1375,14 @@ namespace OPL_WpfApp
                 tunbutton.IsEnabled = true;
             }
             tunnel.OpenTunnel(tunjoinbutton, id, cport);
-            
+            iptext.Text = $"10.0.23.{id}";
             if (over) Strapp();
+        }
+
+        private void copytunip(object sender, RoutedEventArgs e)
+        {
+            if (Copy_text(iptext.Text))
+                MessageBox.Show($"复制成功： {iptext.Text} ", "提示");
         }
     }
 

@@ -127,6 +127,9 @@
                     <Label Grid.Column="1" Content="联接码" HorizontalAlignment="Left" Margin="7,149,0,0" VerticalAlignment="Top"/>
                     <Label Grid.Column="1" Content="测试功能" HorizontalAlignment="Left" Margin="273,384,0,0" VerticalAlignment="Top" Foreground="#FF8B8686"/>
                     <Ellipse Grid.Column="1" Stroke="Black" Fill="Black" Margin="90,190,259,0" x:Name="tunellipse" Height="15" VerticalAlignment="Top"/>
+                    <TextBox HorizontalAlignment="Left" Margin="260,271,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" IsReadOnly="True" Width="154" Grid.ColumnSpan="2" Name="iptext"/>
+                    <Label Content="你的ip:" HorizontalAlignment="Left" Margin="211,279,0,0" VerticalAlignment="Top"/>
+                    <Button Grid.Column="1" Content="复制" Margin="55,273,0,0" VerticalAlignment="Top" Click="copytunip"/>
 
                 </Grid>
             </TabItem>
