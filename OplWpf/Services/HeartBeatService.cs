@@ -7,43 +7,47 @@ namespace OplWpf.Services;
 
 public partial class HeartBeatService(HeartBeat heartBeat) : BackgroundService
 {
-    private const int KEEP_ALIVE_INTERVAL_SEC = 1;
+    private const int KeepAliveIntervalSec = 1;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(KEEP_ALIVE_INTERVAL_SEC));
-        while (await timer.WaitForNextTickAsync(stoppingToken))
+        const string keepAliveMessage = "\0";
+        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(KeepAliveIntervalSec));
+        try
         {
-            foreach (var tcpClient in heartBeat.Tcps)
+            while (await timer.WaitForNextTickAsync(stoppingToken))
             {
-                if (tcpClient.Connected)
+                foreach (var tcpClient in heartBeat.Tcps)
                 {
-                    const string keepAliveMessage = "\0";
+                    if (tcpClient.Connected)
+                    {
+                        var buffer = Encoding.ASCII.GetBytes(keepAliveMessage);
+                        try
+                        {
+                            tcpClient.GetStream().Write(buffer);
+                        }
+                        catch (SocketException)
+                        {
+                            //Logger.Log(se.Message);
+                            //break;
+                        }
+                    }
+                    else
+                    {
+                    }
+                }
+
+                foreach (var udpClient in heartBeat.Udps)
+                {
                     var buffer = Encoding.ASCII.GetBytes(keepAliveMessage);
-                    try
-                    {
-                        tcpClient.Send(buffer);
-                    }
-                    catch (SocketException)
-                    {
-                        //Logger.Log(se.Message);
-                        //break;
-                    }
-                }
-                else
-                {
 
+                    // 发送心跳包
+                    await udpClient.SendAsync(buffer, buffer.Length);
                 }
             }
-
-            foreach (var udpClient in heartBeat.Udps)
-            {
-                const string keepAliveMessage = "\0";
-                byte[] buffer = Encoding.ASCII.GetBytes(keepAliveMessage);
-
-                // 发送心跳包
-                udpClient.Send(buffer, buffer.Length);
-            }
+        }
+        catch (OperationCanceledException)
+        {
         }
     }
 }

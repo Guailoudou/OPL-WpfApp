@@ -9,28 +9,32 @@ public partial class UpdateService(Update update) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var url = "https://file.gldhn.top/file/json/preset.json";
+        const string url = "https://file.gldhn.top/file/json/preset.json";
         var httpClient = new HttpClient();
         using var timer = new PeriodicTimer(TimeSpan.FromMinutes(1));
-        do
+        try
         {
-            try
+            while (await timer.WaitForNextTickAsync(stoppingToken))
             {
-                var response = await httpClient.GetAsync(url, stoppingToken);
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    var info = await response.Content.ReadFromJsonAsync<LatestInfo>(stoppingToken);
-                    if (info?.UpLog != null)
+                    var response = await httpClient.GetAsync(url, stoppingToken);
+                    if (response.IsSuccessStatusCode)
                     {
-                        update.UpdateLog = info.UpLog;
+                        var info = await response.Content.ReadFromJsonAsync<LatestInfo>(stoppingToken);
+                        if (info?.UpLog != null)
+                        {
+                            update.UpdateLog = info.UpLog;
+                        }
                     }
                 }
-            }
-            catch
-            {
-
+                catch
+                {
+                }
             }
         }
-        while (await timer.WaitForNextTickAsync(stoppingToken));
+        catch (OperationCanceledException)
+        {
+        }
     }
 }

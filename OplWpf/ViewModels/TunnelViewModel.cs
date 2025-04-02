@@ -1,43 +1,63 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System.Windows;
-using OplWpf.Models;
-using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
-using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Text.RegularExpressions;
+using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using OplWpf.Models;
 using OplWpf.Services;
-using CommunityToolkit.Mvvm.Messaging;
+using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace OplWpf.ViewModels;
 
-[Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient)]
+[Injection(ServiceLifetime.Transient)]
 public partial class TunnelViewModel
 {
-    private readonly ILogger<TunnelViewModel> logger;
-    private readonly DialogService dialogService;
-    public Config Config { get; }
-    public StateManager StateManager { get; }
+    private readonly ILogger<TunnelViewModel> _logger;
+    private readonly StateProxy _stateProxy;
+    private readonly ConfigManager _configManager;
+    private readonly DialogService _dialogService;
+
+    public string Node => _configManager.Config.Network.Node;
+
+    public int ShareBandwidth
+    {
+        get => _configManager.Config.Network.ShareBandwidth;
+        set
+        {
+            _configManager.Config.Network.ShareBandwidth = value;
+            _configManager.Save();
+        }
+    }
+
     public ObservableCollection<AppViewModel> Apps { get; }
 
-    public TunnelViewModel(IOptions<Config> config, ILogger<TunnelViewModel> logger, DialogService dialogService,
-        StateManager stateManager)
+    public TunnelViewModel(ILogger<TunnelViewModel> logger, StateProxy stateProxy, ConfigManager configManager,
+        DialogService dialogService)
     {
-        this.logger = logger;
-        this.dialogService = dialogService;
-        Config = config.Value;
-        StateManager = stateManager;
-        Apps = new(config.Value.Apps.Select(app => new AppViewModel(app)
+        _logger = logger;
+        _stateProxy = stateProxy;
+        _configManager = configManager;
+        _dialogService = dialogService;
+        var appViewModels = new List<AppViewModel>();
+        foreach (var newApp in _configManager.Config.Apps.Select(
+                     app => new AppViewModel(app, stateProxy, configManager)
+                 ))
         {
-            DeleteApp = DeleteApp
-        }));
+            newApp.OnDeleteApp += DeleteApp;
+            appViewModels.Add(newApp);
+        }
+
+        Apps = [..appViewModels];
+        MainWindowViewModel.OnDisableAll += DisableAll;
     }
 
     [RelayCommand]
     private void CopyUid()
     {
-        Clipboard.SetText(Config.Network.Node);
+        Clipboard.SetText(Node);
         MessageBox.Show("复制成功", "提示");
     }
 
@@ -51,7 +71,7 @@ public partial class TunnelViewModel
             var match = ConnectString().Match(connectString);
             if (!match.Success)
             {
-                logger.LogWarning("无法识别的连接码: {connectString}", connectString);
+                _logger.LogWarning("无法识别的连接码: {connectString}", connectString);
                 MessageBox.Show($"""
                                  无法识别的连接码: {connectString} 
                                  请复制连接码后点击
@@ -79,39 +99,49 @@ public partial class TunnelViewModel
             {
                 MessageBox.Show("端口正常范围为1-65535", "提示");
             }
+
             connectStrings.Add(new(protocol, uid, sPort, cPort));
         }
 
         foreach (var (protocol, uid, sPort, cPort) in connectStrings)
         {
             var newApp = new AppConfig("自定义", protocol, cPort, uid, sPort);
-            if (Config.AddNewApp(newApp))
-            {
-                Apps.Add(new AppViewModel(newApp));
-            }
+            AddApp(newApp);
         }
     }
 
     [RelayCommand]
-    private void AddApp()
+    private void Add()
     {
-        var newApp = new AppConfig("自定义", "tcp", 0, "", 0);
-        if (dialogService.Show(new AddViewModel(newApp)) == true)
-        {
-            Config.AddNewApp(newApp);
-            Apps.Add(new AppViewModel(newApp) { DeleteApp = DeleteApp });
-            logger.LogInformation(
-                "创建新的隧道{sUuid}:{sPort}--{type}>>{cPort}",
-                newApp.PeerNode, newApp.DstPort, newApp.Protocol, newApp.SrcPort
-            );
-        }
+        if (_dialogService.Show() is not { } app) return;
+        AddApp(app);
+    }
+
+    private void AddApp(AppConfig appConfig)
+    {
+        if (!_configManager.AddNewApp(appConfig)) return;
+        var newApp = new AppViewModel(appConfig, _stateProxy, _configManager);
+        newApp.OnDeleteApp += DeleteApp;
+        Apps.Add(newApp);
+        _logger.LogInformation(
+            "创建新的隧道{sUuid}:{sPort}--{type}>>{cPort}",
+            appConfig.PeerNode, appConfig.DstPort, appConfig.Protocol, appConfig.SrcPort
+        );
     }
 
     private void DeleteApp(AppViewModel vm)
     {
-        Config.RemoveApp(vm.AppConfig);
         Apps.Remove(vm);
-        logger.LogInformation("删除隧道 {appConfig}", vm.AppConfig);
+    }
+
+    private void DisableAll()
+    {
+        foreach (var appViewModel in Apps)
+        {
+            appViewModel.Enabled = 0;
+        }
+
+        _configManager.Save();
     }
 
     [GeneratedRegex(@"^(?:([12]):)?(\w+):(\d+)(?::(\d+))?$")]
@@ -120,48 +150,37 @@ public partial class TunnelViewModel
 
 public partial class AppViewModel : ObservableObject
 {
-    private readonly StateManager stateManager;
-    public AppConfig AppConfig { get; }
-    public string Name => AppConfig.AppName;
-    public string Uid => AppConfig.PeerNode;
-    public int DstPort => AppConfig.DstPort;
-    public int SrcPort => AppConfig.SrcPort;
-    public string Protocol => AppConfig.Protocol;
+    private readonly StateProxy _stateProxy;
+    private readonly ConfigManager _configManager;
+    private readonly AppConfig _appConfig;
+    public string Name => _appConfig.AppName;
+    public string Uid => _appConfig.PeerNode;
+    public int DstPort => _appConfig.DstPort;
+    public int SrcPort => _appConfig.SrcPort;
+    public string Protocol => _appConfig.Protocol;
     public string Address => "127.0.0.1:" + SrcPort;
 
-    public int Enabled
+    [ObservableProperty] public partial int Enabled { get; set; }
+
+    partial void OnEnabledChanged(int value)
     {
-        get => AppConfig.Enabled;
-        set
-        {
-            AppConfig.Enabled = value;
-            App.GetService<IOptions<Config>>().Value.Save();
-        }
+        _appConfig.Enabled = value;
     }
 
-    public AppViewModel(AppConfig appConfig)
-    {
-        stateManager = App.GetService<StateManager>();
-        stateManager.PropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == nameof(MainState))
-            {
-                OnPropertyChanged(nameof(MainState));
-            }
+    public event Action<AppViewModel>? OnDeleteApp;
 
-            if (e.PropertyName == nameof(stateManager.AppState))
-            {
-                OnPropertyChanged(nameof(State));
-            }
-        };
-        AppConfig = appConfig;
-        App.GetService<IMessenger>().Register<DisableAllMessage>(this, (_, _) => OnPropertyChanged(nameof(Enabled)));
+    public AppViewModel(AppConfig appConfig, StateProxy stateProxy, ConfigManager configManager)
+    {
+        _stateProxy = stateProxy;
+        _configManager = configManager;
+        _appConfig = appConfig;
+        Enabled = appConfig.Enabled;
+        _stateProxy.PropertyChanged += (_, e) => OnPropertyChanged(e);
+        // MainWindowViewModel.OnDisableAll += UpdateEnabled;
     }
 
-    public State State => stateManager[Protocol + ':' + SrcPort];
-    public State MainState => stateManager.MainState;
-
-    public Action<AppViewModel>? DeleteApp { get; set; }
+    public State AppState => _stateProxy[$"{Protocol}:{SrcPort}"];
+    public State MainState => _stateProxy.MainState;
 
     [RelayCommand]
     private void CopyAddress()
@@ -171,5 +190,11 @@ public partial class AppViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void Delete() => DeleteApp?.Invoke(this);
+    private void Delete()
+    {
+        _configManager.RemoveApp(_appConfig);
+        // logger.LogInformation("删除隧道 {appConfig}", _appConfig);
+        // MainWindowViewModel.OnDisableAll -= UpdateEnabled;
+        OnDeleteApp?.Invoke(this);
+    }
 }

@@ -11,13 +11,16 @@ namespace OplWpf.ViewModels;
 [Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient)]
 public partial class MainWindowViewModel : ObservableObject
 {
-    public StateManager StateManager { get; }
-    private readonly Openp2p openp2p;
+    private readonly ConfigManager _configManager;
+    private readonly Openp2p _openP2P;
+    public StateProxy StateProxy { get; }
 
-    public MainWindowViewModel(ILogger<MainWindowViewModel> logger, StateManager stateManager, Openp2p openp2p)
+    public MainWindowViewModel(ILogger<MainWindowViewModel> logger, ConfigManager configManager, Openp2p openP2P,
+        StateProxy stateProxy)
     {
-        StateManager = stateManager;
-        this.openp2p = openp2p;
+        _configManager = configManager;
+        _openP2P = openP2P;
+        StateProxy = stateProxy;
         var osVersion = Environment.OSVersion.Version;
         var fileName = Process.GetCurrentProcess().MainModule?.FileName;
         if (fileName != null)
@@ -25,6 +28,7 @@ public partial class MainWindowViewModel : ObservableObject
             var fileVersionInfo = FileVersionInfo.GetVersionInfo(fileName);
             Version = fileVersionInfo.FileVersion ?? "";
         }
+
         logger.LogInformation("----- OPENP2P Launcher by Guailoudou -----");
         logger.LogInformation("程序启动，当前版本：{Version}，更新包号：{Pvn}，系统版本：{Os}", Version, Net.Pvn, osVersion);
     }
@@ -34,35 +38,28 @@ public partial class MainWindowViewModel : ObservableObject
 
     public string DisplayVersion => Version + " - " + Net.Pvn;
 
-    [ObservableProperty]
-    public partial string ButtonText { get; set; } = "启动";
+    [ObservableProperty] public partial string ButtonText { get; set; } = "启动";
 
     [RelayCommand]
     private void DisableAll()
     {
-        var config = App.GetService<IOptions<Config>>().Value;
-        foreach (var app in config.Apps)
-        {
-            app.Enabled = 0;
-        }
-        config.Save();
-        App.GetService<IMessenger>().Send(DisableAllMessage.Default);
+        OnDisableAll?.Invoke();
     }
+
+    public static event Action? OnDisableAll;
 
     [RelayCommand]
     private async Task Start()
     {
-        if (StateManager.MainState == State.Stop)
+        if (StateProxy.MainState == State.Stop)
         {
-            await openp2p.Start();
+            await _openP2P.Start();
             ButtonText = "停止";
         }
         else
         {
-            openp2p.Stop();
+            _openP2P.Stop();
             ButtonText = "启动";
         }
     }
 }
-
-public class DisableAllMessage { public static DisableAllMessage Default { get; } = new(); };

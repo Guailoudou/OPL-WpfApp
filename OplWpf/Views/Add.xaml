@@ -12,7 +12,8 @@
         ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
         Title="添加隧道" Height="300" Width="250" WindowStyle="ToolWindow"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition/>

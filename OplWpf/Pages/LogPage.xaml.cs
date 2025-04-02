@@ -18,6 +18,6 @@ public partial class LogPage : Page
 
     private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
     {
-        LogTextBox.CaretIndex = LogTextBox.Text.Length;
+        LogTextBox.ScrollToEnd();
     }
 }

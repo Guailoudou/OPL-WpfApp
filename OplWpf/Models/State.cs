@@ -10,10 +10,9 @@ public enum State
 }
 
 [Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton)]
-public partial class StateManager : ObservableObject
+public partial class StateProxy : ObservableObject
 {
-    [ObservableProperty]
-    public partial State MainState { get; set; } = State.Stop;
+    [ObservableProperty] public partial State MainState { get; set; } = State.Stop;
 
     public Dictionary<string, State> AppState { get; } = [];
 

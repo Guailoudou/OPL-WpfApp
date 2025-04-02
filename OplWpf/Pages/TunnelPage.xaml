@@ -25,20 +25,20 @@
             <ikw:SimpleStackPanel Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
                 <Label Content="UID：" VerticalContentAlignment="Center" />
                 <TextBox IsReadOnly="True" x:Name="UUID" TextWrapping="Wrap"
-                         Text="{Binding Config.Network.Node, Mode=OneTime}" />
+                         Text="{Binding Node, Mode=OneTime}" />
                 <Button Command="{Binding CopyUidCommand}" ToolTip="复制到剪切板">
                     <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Copy}" />
                 </Button>
 
                 <Label Content="共享带宽:" Margin="100,0,0,0" VerticalContentAlignment="Center" />
-                <ui:NumberBox Text="{Binding Config.Network.ShareBandwidth}" />
+                <ui:NumberBox Text="{Binding ShareBandwidth}" />
                 <Label Content="Mbps" VerticalContentAlignment="Center" />
 
             </ikw:SimpleStackPanel>
             <ikw:SimpleStackPanel Orientation="Horizontal" Spacing="5"
                                   FlowDirection="RightToLeft" HorizontalAlignment="Right">
                 <Button Content="新建连接" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}"
-                        Command="{Binding AddAppCommand}"/>
+                        Command="{Binding AddCommand}"/>
                 <Button ToolTip="从剪切板导入" Command="{Binding ImportCommand}">
                     <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Import}" />
                 </Button>
@@ -89,7 +89,7 @@
                             <TextBlock Grid.Column="5" Text="{Binding Protocol,Mode=OneWay}"/>
                             <Label Grid.Column="6">状态：</Label>
                             <Ellipse Grid.Column="7" Stroke="Black" Height="14" Width="14"
-                                     Fill="{Binding State, Converter={conv:StateToColorConverter}}"
+                                     Fill="{Binding AppState, Converter={conv:StateToColorConverter}}"
                                      ToolTip="灰色：未启动/未启用 橙色：连接中 绿色：连接成功"/>
                             <ui:ToggleSwitch Grid.Column="8" Margin="20,0,0,0" MinWidth="0" IsOn="{Binding Enabled}"
                                       IsEnabled="{Binding MainState, Converter={conv:StateToEnableConverter}}"/>

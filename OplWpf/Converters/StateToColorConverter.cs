@@ -15,18 +15,13 @@ public class StateToColorConverter : MarkupExtension, IValueConverter
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is State state)
+        return (value as State?) switch
         {
-            return state switch
-            {
-                State.Stop => Brushes.Gray,
-                State.Loading => Brushes.Orange,
-                State.Running => Brushes.Green,
-                _ => Brushes.Gray
-            };
-        }
-
-        return Brushes.Gray;
+            State.Stop => Brushes.Gray,
+            State.Loading => Brushes.Orange,
+            State.Running => Brushes.Green,
+            _ => Brushes.Gray
+        };
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

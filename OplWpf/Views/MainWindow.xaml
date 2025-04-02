@@ -21,7 +21,7 @@
             <RowDefinition />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-        <ui:NavigationView x:Name="NavigationView_Root" PaneDisplayMode="Left"
+        <ui:NavigationView PaneDisplayMode="Left"
                            IsPaneToggleButtonVisible="False" IsBackButtonVisible="Collapsed"
                            SelectionChanged="NavigationView_SelectionChanged" OpenPaneLength="120">
             <!--<FrameworkElement.Resources>
@@ -30,25 +30,25 @@
                 <Thickness x:Key="NavigationViewContentGridBorderThickness">0,0,0,0</Thickness>
             </FrameworkElement.Resources>-->
             <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem x:Name="Navigation_Tunnel" Content="隧道">
+                <ui:NavigationViewItem Content="隧道" Tag="Tunnel" IsSelected="True">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Link_20_Regular}" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
 
-                <ui:NavigationViewItem x:Name="Navigation_Log" Content="日志">
+                <ui:NavigationViewItem Content="日志" Tag="Log">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.WindowConsole_20_Regular}" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
 
-                <ui:NavigationViewItem x:Name="Navigation_Color" Content="配色">
+                <ui:NavigationViewItem Content="配色" Tag="Customize">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Color_20_Regular}" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
 
-                <ui:NavigationViewItem x:Name="Navigation_About" Content="关于">
+                <ui:NavigationViewItem Content="关于" Tag="About">
                     <ui:NavigationViewItem.Icon>
                         <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.PersonSettings_20_Regular}" />
                     </ui:NavigationViewItem.Icon>
@@ -65,7 +65,7 @@
             </Grid.ColumnDefinitions>
             <ikw:SimpleStackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
                 <Ellipse Stroke="Black" Width="10" Height="10"
-                         Fill="{Binding StateManager.MainState,Converter={conv:StateToColorConverter}}" />
+                         Fill="{Binding StateProxy.MainState,Converter={conv:StateToColorConverter}}" />
                 <Label Content="{Binding DisplayVersion, Mode=OneTime}" Margin="10,0,0,0" />
             </ikw:SimpleStackPanel>
             <ikw:SimpleStackPanel Grid.Column="1" Spacing="15" Orientation="Horizontal">
@@ -75,10 +75,9 @@
             <ikw:SimpleStackPanel Grid.Column="2" Spacing="15" Orientation="Horizontal" FlowDirection="RightToLeft">
                 <Button Content="{Binding ButtonText}"
                         Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Width="102"
-                        Command="{Binding StartCommand}"
-                        IsEnabled="{Binding StartCommand.IsRunning, Converter={conv:ReverseBoolConverter}}" />
+                        Command="{Binding StartCommand}"/>
                 <Button Command="{Binding DisableAllCommand}"
-                        IsEnabled="{Binding StateManager.MainState, Converter={conv:StateToEnableConverter}}" >
+                        IsEnabled="{Binding StateProxy.MainState, Converter={conv:StateToEnableConverter}}" >
                     关闭所有隧道
                 </Button>
             </ikw:SimpleStackPanel>

@@ -24,8 +24,8 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="iNKORE.UI.WPF" Version="1.2.7.1" />
-    <PackageReference Include="iNKORE.UI.WPF.Modern" Version="0.9.30" />
+    <PackageReference Include="iNKORE.UI.WPF" Version="1.2.8" />
+    <PackageReference Include="iNKORE.UI.WPF.Modern" Version="0.10.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
     <PackageReference Include="Serilog" Version="4.2.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />

@@ -7,22 +7,22 @@ namespace OplWpf.Models;
 [Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton)]
 public class HeartBeat(ILogger<HeartBeat> logger)
 {
-    private readonly List<Socket> tcps = [];
-    private readonly List<UdpClient> udps = [];
+    private readonly List<TcpClient> _tcps = [];
+    private readonly List<UdpClient> _udps = [];
 
-    public IReadOnlyList<Socket> Tcps => tcps;
-    public IReadOnlyList<UdpClient> Udps => udps;
+    public IReadOnlyList<TcpClient> Tcps => _tcps;
+    public IReadOnlyList<UdpClient> Udps => _udps;
 
     public void AddTcp(string ipAddress, int port)
     {
-        var client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        var client = new TcpClient(AddressFamily.InterNetwork);
         try
         {
             var endPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
             client.Connect(endPoint);
             logger.LogInformation("TCP Connected to {ipAddress}:{port}开启隧道保活", ipAddress, port);
             // 启动心跳线程
-            tcps.Add(client);
+            _tcps.Add(client);
         }
         catch (SocketException se)
         {
@@ -32,33 +32,23 @@ public class HeartBeat(ILogger<HeartBeat> logger)
 
     public void ClearTcp()
     {
-        foreach (var tcpClient in tcps)
+        foreach (var tcpClient in _tcps)
         {
-            try
-            {
-                tcpClient.Shutdown(SocketShutdown.Both); // 先关闭发送和接收
-            }
-            catch (Exception ex)
-            {
-                // 处理可能的异常情况
-            }
-            finally
-            {
-                tcpClient.Close(); // 然后关闭 Socket
-            }
+            tcpClient.Close(); // 然后关闭 Socket
         }
-        tcps.Clear();
+
+        _tcps.Clear();
     }
 
     public void AddUdp(string ipAddress, int port)
     {
         try
         {
-            var remoteEP = new IPEndPoint(IPAddress.Parse(ipAddress), port);
-            var udpClient = new UdpClient(remoteEP);
+            var remoteEp = new IPEndPoint(IPAddress.Parse(ipAddress), port);
+            var udpClient = new UdpClient(remoteEp);
             logger.LogInformation("UDP Connected to {ipAddress}:{port}开启隧道保活", ipAddress, port);
             // 开始发送心跳包
-            udps.Add(udpClient);
+            _udps.Add(udpClient);
         }
         catch (Exception ex)
         {
@@ -68,10 +58,11 @@ public class HeartBeat(ILogger<HeartBeat> logger)
 
     public void ClearUdp()
     {
-        foreach (var udpClient in udps)
+        foreach (var udpClient in _udps)
         {
             udpClient.Close();
         }
-        udps.Clear();
+
+        _udps.Clear();
     }
 }

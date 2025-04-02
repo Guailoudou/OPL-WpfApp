@@ -1,52 +1,44 @@
-﻿using iNKORE.UI.WPF.Modern.Controls;
+﻿using System.Windows;
+using iNKORE.UI.WPF.Modern.Controls;
+using Microsoft.Extensions.DependencyInjection;
 using OplWpf.Pages;
-using System.Windows;
-using Page = iNKORE.UI.WPF.Modern.Controls.Page;
 using OplWpf.ViewModels;
-using OplWpf.Models;
+using Page = iNKORE.UI.WPF.Modern.Controls.Page;
 
 namespace OplWpf.Views;
 
-[Injection(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton)]
+[Injection(ServiceLifetime.Singleton)]
 public partial class MainWindow : Window
 {
-    private readonly TunnelPage tunnelPage;
-    public readonly LogPage logPage;
-    public readonly AboutPage aboutPage;
+    private readonly TunnelPage _tunnelPage;
+    private readonly LogPage _logPage;
+    private readonly CustomizePage _customizePage;
+    private readonly AboutPage _aboutPage;
 
-    public MainWindow(MainWindowViewModel viewModel, TunnelPage tunnelPage, LogPage logPage, AboutPage aboutPage, Openp2p openp2p)
+    public MainWindow(MainWindowViewModel viewModel, TunnelPage tunnelPage, LogPage logPage,
+        CustomizePage customizePage, AboutPage aboutPage)
     {
         InitializeComponent();
         DataContext = viewModel;
-        this.tunnelPage = tunnelPage;
-        this.logPage = logPage;
-        this.aboutPage = aboutPage;
-        NavigationView_Root.SelectedItem = Navigation_Tunnel;
-        Closing += (_, _) => openp2p.Stop();
+        _tunnelPage = tunnelPage;
+        _logPage = logPage;
+        _customizePage = customizePage;
+        _aboutPage = aboutPage;
     }
 
     private void NavigationView_SelectionChanged(NavigationView sender,
         NavigationViewSelectionChangedEventArgs args)
     {
-        var item = sender.SelectedItem;
-        Page? page = null;
+        var tag = (sender.SelectedItem as NavigationViewItem)?.Tag;
 
-        if (Equals(item, Navigation_Tunnel))
+        Page? page = tag switch
         {
-            page = tunnelPage;
-        }
-        else if (Equals(item, Navigation_Log))
-        {
-            page = logPage;
-        }
-        //else if (item == NavigationViewItem_Apps)
-        //{
-        //    page = Page_Apps;
-        //}
-        else if (Equals(item, Navigation_About))
-        {
-            page = aboutPage;
-        }
+            "Tunnel" => _tunnelPage,
+            "Log" => _logPage,
+            "Customize" => _customizePage,
+            "About" => _aboutPage,
+            _ => null
+        };
 
         if (page != null)
         {
