@@ -30,7 +30,7 @@ namespace OPL_WpfApp
     /// </summary>
     public partial class App : Application
     {
-
+        
         private static Mutex mutex = new Mutex(true, "{OPL_Guailoudou}");
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -302,7 +302,7 @@ namespace OPL_WpfApp
             Logger.Log($"Stack Trace: {e.Exception.StackTrace}", "错误");
             e.Handled = true;
         }
+        
 
-       
     }
 }

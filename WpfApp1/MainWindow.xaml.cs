@@ -32,8 +32,13 @@ using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
 using FontFamily = System.Windows.Media.FontFamily;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+using MenuItem = System.Windows.Forms.MenuItem;
+using MouseButtons = System.Windows.Forms.MouseButtons;
+using ContextMenu = System.Windows.Forms.ContextMenu;
 using System.Threading;
 using OPL_WpfApp.cs;
+using NotifyIcon = System.Windows.Forms.NotifyIcon;
+
 
 namespace OPL_WpfApp
 {
@@ -50,6 +55,7 @@ namespace OPL_WpfApp
         public static bool over = true;
         int tcpnum = 0;
         string opname = "openp2p.exe";
+        NotifyIcon notifyIcon;
         public MainWindow_opl(string[] args)
         {
             InitializeComponent();
@@ -95,7 +101,64 @@ namespace OPL_WpfApp
             //    Strapp();
             //}
             Initialization();
-            
+            this.notifyIcon = new NotifyIcon();
+            this.notifyIcon.Text = "xxx系统";//鼠标移入图标后显示的名称
+            this.notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
+            this.notifyIcon.Visible = true;
+            //打开菜单项
+            MenuItem show = new MenuItem("显示窗口");
+            show.Click += Show;
+            //退出菜单项
+            MenuItem exit = new MenuItem ("退出");
+            exit.Click += Close;
+            //关联托盘控件
+            MenuItem[] mis = new MenuItem[] { show, exit };
+            notifyIcon.ContextMenu = new ContextMenu(mis);
+
+            this.notifyIcon.MouseDoubleClick += (o, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    this.Show(o, e);
+                }
+            };
+
+        }
+        /// <summary>
+        /// 显示窗体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Show(object sender, EventArgs e)
+        {
+            this.ShowInTaskbar = true;
+            this.WindowState = WindowState.Normal;
+            this.Activate();
+        }
+        /// <summary>
+        /// 关闭窗体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Close(object sender, EventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+        /// <summary>
+        /// 窗体状态改变
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            //判断是否选择的是最小化按钮
+            if (this.WindowState == WindowState.Minimized)
+            {
+                //隐藏任务栏区图标
+                this.ShowInTaskbar = false;
+                //图标显示在托盘区
+                this.notifyIcon.Visible = true;
+            }
         }
         private static string ExtractBackgroundColor(string[] args)
         {
