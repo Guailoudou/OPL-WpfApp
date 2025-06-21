@@ -1,3 +1,20 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--大背景-->
+    <LinearGradientBrush x:Key="all-Background" EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
+        <GradientStop Color="#FFD0F3FF" Offset="0"/>
+        <GradientStop Color="White" Offset="0.993"/>
+    </LinearGradientBrush>
+    <!--按钮/tab标签选中-->
+    <SolidColorBrush x:Key="button" Color="#3FDDDDDD"/>
+    <!--按下按钮颜色-->
+    <SolidColorBrush x:Key="button_on" Color="#CC707070"/>
+    <!--svg图标按钮-->
+    <SolidColorBrush x:Key="svg-icon" Color="#FF4B728D"/>
+    <!--隧道底色-->
+    <SolidColorBrush x:Key="list-Background" Color="#3F0023B0"/>
+    <!--tab标签底色-->
+    <SolidColorBrush x:Key="tabF-Background"/>
+    <!--边框选中-->
+    <SolidColorBrush x:Key="mo-BorderBrush" Color="#FF797979"/>
 </ResourceDictionary>
