@@ -12,14 +12,14 @@
         Title="编辑隧道" Height="304" Width="250" WindowStyle="ToolWindow">
     <Grid Margin="0,0,0,-1">
         <Label Content="名称" HorizontalAlignment="Left" Margin="29,29,0,0" VerticalAlignment="Top" Height="25"/>
-        <TextBox HorizontalAlignment="Left" x:Name="names" Margin="85,22,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center" Background="#3FFFFFFF"/>
+        <TextBox HorizontalAlignment="Left" x:Name="names" Margin="85,22,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center" />
         <Label Content="UID*" HorizontalAlignment="Left" Margin="29,64,0,0" VerticalAlignment="Top"/>
-        <TextBox Background="#3FFFFFFF" HorizontalAlignment="Left" Name="SUID" Margin="85,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center"/>
+        <TextBox  HorizontalAlignment="Left" Name="SUID" Margin="85,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center"/>
         <Label Content="远程端口*" HorizontalAlignment="Left" Margin="20,98,0,0" VerticalAlignment="Top"/>
-        <TextBox Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Sport" Margin="85,91,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center"/>
+        <TextBox  HorizontalAlignment="Left" Name="Sport" Margin="85,91,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center"/>
         <Label Content="本地端口" HorizontalAlignment="Left" Margin="20,133,0,0" VerticalAlignment="Top" d:LayoutOverrides="Height"/>
-        <TextBox Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Cport" Margin="85,126,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center"/>
-        <ComboBox Background="#3FFFFFFF" Name="type" Margin="85,161,0,0" Width="155" Height="32" VerticalContentAlignment="Center" SelectionChanged="ComboBox_SelectionChanged">
+        <TextBox  HorizontalAlignment="Left" Name="Cport" Margin="85,126,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" Height="25" VerticalContentAlignment="Center"/>
+        <ComboBox  Name="type" Margin="85,161,0,0" Width="155" Height="32" VerticalContentAlignment="Center" SelectionChanged="ComboBox_SelectionChanged">
             <ComboBoxItem Content="tcp"/>
             <ComboBoxItem Content="udp"/>
         </ComboBox>

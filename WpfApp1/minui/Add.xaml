@@ -9,44 +9,37 @@
         ui:WindowHelper.SystemBackdropType="Mica"
         ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
-        Title="添加隧道" Height="300" Width="250" WindowStyle="ToolWindow">
-    <Grid Margin="0,0,0,-6">
-        <Label Content="UID*" HorizontalAlignment="Left" Margin="26,64,0,0" VerticalAlignment="Top" Height="25" ToolTip="输入房主的UID"/>
-        <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="SUID" Margin="82,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158" Height="25"/>
-        <Label Content="远程端口*" HorizontalAlignment="Left" Margin="17,96,0,0" VerticalAlignment="Top" Height="24" ToolTip="输入房主游戏对外开放的端口"/>
-        <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Sport" Margin="82,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158" TextChanged="Sport_TextChanged" Height="25"/>
-        <Label Content="本地端口" HorizontalAlignment="Left" Margin="17,131,0,0" VerticalAlignment="Top" Height="25"/>
-        <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" Name="Cport" Margin="82,127,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158" Height="25"/>
-        <ComboBox VerticalContentAlignment="Center" Name="type" Margin="82,162,0,0" Width="158" SelectionChanged="ComboBox_SelectionChanged" Height="34" BorderBrush="#B2EFECEC" Background="#3FEDE9E9">
-
-            <ComboBoxItem Content="tcp" IsSelected="True"/>
-            <ComboBoxItem Content="udp"/>
-        </ComboBox>
-        <Label Content="协议*" HorizontalAlignment="Left" Margin="26,170,0,0" VerticalAlignment="Top" Height="25" ToolTip="MC选择TCP"/>
-        <Button Content="添加"  Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Margin="17,208,0,0" VerticalAlignment="Top" Width="151" Height="35" Click="Button_Click" >
-            <!--<Button.Template>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
-                        <Border.Background>#3FDDDDDD</Border.Background>
-                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>-->
-        </Button>
-        <Button Content="预设" Margin="173,208,0,0" VerticalAlignment="Top" Height="35" Width="67" Click="Preset" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}">
-            <!--<Button.Template>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
-                        <Border.Background>#3FDDDDDD</Border.Background>
-                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>-->
-        </Button>
-        <Label Content="名称" HorizontalAlignment="Left" Margin="26,26,0,0" VerticalAlignment="Top" Height="24"/>
-        <TextBox VerticalContentAlignment="Center" Background="#3FFFFFFF" HorizontalAlignment="Left" x:Name="names" Margin="82,22,0,0" TextWrapping="Wrap" Text="自定义" VerticalAlignment="Top" Width="158" Height="25"/>
-
-    </Grid>
-
-
+        MinHeight="300" MinWidth="250"
+        Title="添加隧道" Height="300" Width="250">
+        <Grid>
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <DockPanel LastChildFill="True" Margin="10,5">
+                    <Label Content="名称" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBox VerticalContentAlignment="Center"  HorizontalAlignment="Right" x:Name="names"  TextWrapping="Wrap" Text="自定义" VerticalAlignment="Top" Width="158" Height="25"/>
+                </DockPanel>
+                <DockPanel LastChildFill="True" Margin="10,5">
+                    <Label Content="UID*" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="输入房主的UID"/>
+                    <TextBox VerticalContentAlignment="Center"  HorizontalAlignment="Right" Name="SUID" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158" Height="25"/>
+                </DockPanel>
+                <DockPanel LastChildFill="True" Margin="10,5">
+                    <Label Content="远程端口*" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="输入房主游戏对外开放的端口"/>
+                    <TextBox HorizontalContentAlignment="Left" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Name="Sport" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158" TextChanged="Sport_TextChanged" Height="25"/>
+                </DockPanel>
+                <DockPanel LastChildFill="True" Margin="10,5">
+                    <Label Content="本地端口" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBox HorizontalContentAlignment="Left" VerticalContentAlignment="Center"  HorizontalAlignment="Right" Name="Cport" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158" Height="25"/>
+                </DockPanel>
+                <DockPanel LastChildFill="True" Margin="10,5" >
+                    <Label Content="协议*" HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="MC选择TCP"/>
+                    <ComboBox HorizontalContentAlignment="Left"  HorizontalAlignment="Right" VerticalContentAlignment="Center" Name="type" Width="158" SelectionChanged="ComboBox_SelectionChanged">
+                        <ComboBoxItem Content="tcp" IsSelected="True"/>
+                        <ComboBoxItem Content="udp"/>
+                    </ComboBox>
+                </DockPanel>
+            </StackPanel>
+            <DockPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5" >
+                <Button Content="添加" Margin="5" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Width="150" Height="35" Click="Button_Click" ></Button>
+                <Button Content="预设" Margin="5"  Height="35" Width="50" Click="Preset" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}"></Button>
+            </DockPanel>
+        </Grid>
 </Window>
