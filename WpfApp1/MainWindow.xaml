@@ -31,10 +31,13 @@
                     <ui:IconAndText Icon="{x:Static ui:FluentSystemIcons.Lightbulb_20_Regular}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Theme" Content="Help"/>
                 </Button>
             </ui:TabControlHelper.TabStripFooter>
-            <TabItem Header="隧道" BorderBrush="{x:Null}" Width="80" Height="50">
-                <ui:TabItemHelper.Icon>
-                    <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Link_20_Regular}" />
-                </ui:TabItemHelper.Icon>
+            <TabItem BorderBrush="{x:Null}" Width="80" Height="50">
+                <TabItem.Header>
+                    <DockPanel Height="60" VerticalAlignment="Center">
+                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Link_20_Regular}"/>
+                        <Label HorizontalAlignment="Center" Content="隧道" Height="60" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Width="80"></Label>
+                    </DockPanel>
+                </TabItem.Header>
                 <TabItem.FocusVisualStyle>
                     <Style/>
                 </TabItem.FocusVisualStyle>
@@ -77,38 +80,25 @@
                                 <Label Content="状态：" HorizontalAlignment="Left" Margin="384,2,0,0" VerticalAlignment="Top" Width="38"/>
                             </Grid>
                         </Border>
-
-
-
                     </ListBox>
                     <Button Style="{StaticResource svg-button}" HorizontalAlignment="Left" Margin="391,13,0,0" VerticalAlignment="Top" Click="Quick_Add" Height="24" BorderBrush="#CC707070" Background="#3FDDDDDD" Width="26" Grid.Column="1" ToolTip="复制房主发放的联机码，随后点击此按钮即可自动添加！">
                         <Path Fill="{DynamicResource svg-icon}" Data="M12,1 C18.0751322,1 23,5.92486775 23,12 C23,18.0751322 18.0751322,23 12,23 C5.92486775,23 1,18.0751322 1,12 C1,5.92486775 5.92486775,1 12,1 Z M12,2.5 C6.75329488,2.5 2.5,6.75329488 2.5,12 C2.5,17.2467051 6.75329488,21.5 12,21.5 C17.2467051,21.5 21.5,17.2467051 21.5,12 C21.5,6.75329488 17.2467051,2.5 12,2.5 Z M12.75,17.25 C12.75,17.6642136 12.4142136,18 12,18 C11.5857864,18 11.25,17.6642136 11.25,17.25 L11.25,12.749 L6.75,12.75 C6.33578644,12.75 6,12.4142136 6,12 C6,11.5857864 6.33578644,11.25 6.75,11.25 L11.25,11.249 L11.25,6.75 C11.25,6.33578644 11.5857864,6 12,6 C12.4142136,6 12.75,6.33578644 12.75,6.75 L12.75,17.25 Z M17.25,11.25 C17.6642136,11.25 18,11.5857864 18,12 C18,12.4142136 17.6642136,12.75 17.25,12.75 L13.75,12.75 L13.75,11.25 L17.25,11.25 Z"/>
                     </Button>
                     <Button Content="新建连接" Margin="422,8,0,0" VerticalAlignment="Top" Click="Button_Click" Width="86" Height="32" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Grid.Column="1"/>
 
-                    <!--<Button Content="一键添加" HorizontalAlignment="Left" Margin="510,10,0,0" VerticalAlignment="Top" Click="Button_Click" Width="68" Height="24" Background="#3FDDDDDD" BorderBrush="#CC707070"/>-->
-
-
                     <Label Content="共享带宽:" HorizontalAlignment="Left" Margin="177,15,0,0" VerticalAlignment="Top" Width="62" Grid.Column="1"/>
                     <TextBox HorizontalAlignment="Left" x:Name="share" Margin="244,9,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="38" Height="22" VerticalContentAlignment="Center" TextChanged="share_TextChanged" Panel.ZIndex="1" Grid.Column="1" />
                     <Label Content="Mbps" HorizontalAlignment="Left" Margin="313,18,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-                    <!--<Button Content="刷新列表" HorizontalAlignment="Left" Margin="424,10,0,0" VerticalAlignment="Top" Height="24" Width="60" Click="Button_Click_1" BorderBrush="#CC707070" Background="#3FDDDDDD">
-            <Button.Template>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="1" CornerRadius="5">
-                        <Border.Background>#3FDDDDDD</Border.Background>
-                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>-->
                 </Grid>
 
             </TabItem>
-            <TabItem Header="组网" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
-                <ui:TabItemHelper.Icon>
-                    <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Globe_20_Regular}"/>
-                </ui:TabItemHelper.Icon>
+            <TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
+                <TabItem.Header>
+                    <DockPanel Height="60" VerticalAlignment="Center">
+                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Globe_20_Regular}"/>
+                        <Label HorizontalAlignment="Center" Content="组网" Height="60" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Width="80"></Label>
+                    </DockPanel>
+                </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -133,50 +123,29 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="日志" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
-                <ui:TabItemHelper.Icon>
-                    <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.WindowConsole_20_Regular}"/>
-                </ui:TabItemHelper.Icon>
+            <TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
+                <TabItem.Header>
+                    <DockPanel Height="60" VerticalAlignment="Center">
+                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.WindowConsole_20_Regular}"/>
+                        <Label HorizontalAlignment="Center" Content="日志" Height="60" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Width="80"></Label>
+                    </DockPanel>
+                </TabItem.Header>
                 <TabItem.FocusVisualStyle>
                     <Style/>
                 </TabItem.FocusVisualStyle>
 
                 <Grid>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-
-                    </Grid.ColumnDefinitions>
-                    <!--<RichTextBox x:Name="richOutput" IsReadOnly="True" BorderBrush="{x:Null}"  SelectionBrush="Black" CaretBrush="Black" >
-                        <RichTextBox.Background>
-                            <SolidColorBrush Color="Transparent" Opacity="0"/>
-                        </RichTextBox.Background>
-                        <FlowDocument/>
-                    </RichTextBox>-->
                     <TextBox x:Name="richOutput" IsReadOnly="True" Margin="10,10,10,10" TextWrapping="Wrap" Text="" d:LayoutOverrides="HorizontalAlignment, VerticalAlignment"/>
                 </Grid>
             </TabItem>
-            <!--<TabItem Header="装扮" Margin="61,-2,-91,0" Background="{x:Null}" BorderBrush="{x:Null}">
-                <Grid>
-                    <Grid.Background>
-                        <LinearGradientBrush EndPoint="0.8,0.8" StartPoint="0,0" Opacity="1" MappingMode="RelativeToBoundingBox">
-                            <GradientStop Color="#FFD0F3FF" Offset="0"/>
-                            <GradientStop Color="White" Offset="0.993"/>
-                        </LinearGradientBrush>
-                    </Grid.Background>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="53*"/>
-                        <ColumnDefinition Width="741*"/>
 
-                    </Grid.ColumnDefinitions>
-
-                </Grid>
-            </TabItem>-->
-
-            <TabItem Header="个性化" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
-                <ui:TabItemHelper.Icon>
-                    <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Color_20_Regular}"/>
-                </ui:TabItemHelper.Icon>
+            <TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
+                <TabItem.Header>
+                    <DockPanel Height="60" VerticalAlignment="Center">
+                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Color_20_Regular}"/>
+                        <Label HorizontalAlignment="Center" Content="个性化" Height="60" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Width="80"></Label>
+                    </DockPanel>
+                </TabItem.Header>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="45"/>
@@ -190,13 +159,13 @@
                     <Label Content="预设颜色" HorizontalAlignment="Left" Margin="24,16,0,0" VerticalAlignment="Top" Width="60" />
 
                     <ComboBox x:Name="ThemeComboBox"
-          VerticalContentAlignment="Center"
-          Margin="383,10,0,0"
-          Width="107"
-          Height="32"
-          BorderBrush="#B2EFECEC"
-          Background="#7FFFFFFF"
-          SelectionChanged="ThemeComboBox_SelectionChanged">
+                      VerticalContentAlignment="Center"
+                      Margin="383,10,0,0"
+                      Width="107"
+                      Height="32"
+                      BorderBrush="#B2EFECEC"
+                      Background="#7FFFFFFF"
+                      SelectionChanged="ThemeComboBox_SelectionChanged">
                         <ComboBoxItem Content="跟随系统" x:Name="Theme_auto"/>
                         <ComboBoxItem Content="浅色" x:Name="Theme_Light"/>
                         <ComboBoxItem Content="深色" x:Name="Theme_Dark"/>
@@ -247,19 +216,15 @@
 
                     <Button Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Content="重置为系统配色" Width="170" Click="ColorPicker_ReSet" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="0,162,0,0" VerticalAlignment="Top" Height="34"/>
                     <Label Content="外观设置：" HorizontalAlignment="Left" Margin="308,16,0,0" VerticalAlignment="Top"  />
-
-
-
-
-
-
                 </Grid>
-
             </TabItem>
-            <TabItem Header="设置" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
-                <ui:TabItemHelper.Icon>
-                    <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Settings_20_Regular}"/>
-                </ui:TabItemHelper.Icon>
+            <TabItem  Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
+                <TabItem.Header>
+                    <DockPanel Height="60" VerticalAlignment="Center">
+                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Settings_20_Regular}"/>
+                        <Label HorizontalAlignment="Center" Content="设置" Height="60" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Width="80"></Label>
+                    </DockPanel>
+                </TabItem.Header>
                 <Grid>
                     <CheckBox Content="openp2p文件校验" Margin="50,28,0,0"  x:Name="Autoup_opn" VerticalAlignment="Top"/>
                     <CheckBox Content="主程序自动更新" Margin="50,58,0,0" x:Name="Autoupn" VerticalAlignment="Top"/>
@@ -276,10 +241,13 @@
                     <Label Content="（测试性功能，备用节点负载能力较差，仅供主节点失效时临时使用，主节点恢复后请换回主节点&#xD;&#xA;所有连接用户需要使用相同节点才可以互相连接）" HorizontalAlignment="Left" Margin="50,180,0,0" VerticalAlignment="Top" Width="447" FontSize="10" Height="25" Foreground="#FFF30000"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="关于" Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
-                <ui:TabItemHelper.Icon>
-                    <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.PersonSettings_20_Regular}"/>
-                </ui:TabItemHelper.Icon>
+            <TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
+                <TabItem.Header>
+                    <DockPanel Height="60" VerticalAlignment="Center">
+                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.PersonSettings_20_Regular}"/>
+                        <Label HorizontalAlignment="Center" Content="关于" Height="60" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Width="80"></Label>
+                    </DockPanel>
+                </TabItem.Header>
                 <TabItem.FocusVisualStyle>
                     <Style/>
                 </TabItem.FocusVisualStyle>
@@ -295,7 +263,7 @@
                     <Label Content="开源：" HorizontalAlignment="Left" Margin="3,93,0,0" VerticalAlignment="Top" Grid.Column="1"/>-->
                     <Canvas Grid.ColumnSpan="3">
                         <Label Content="*基于OPENP2P" Canvas.Left="114" Canvas.Bottom="10" Grid.Column="1" FontSize="8" HorizontalAlignment="Left" Canvas.Top="26" VerticalAlignment="Top"/>
-                        <TextBox Background="#7FFFFFFF" TextWrapping="Wrap" Text="联网获取中"  MaxHeight="64" x:Name="daysay" IsReadOnly="True" PreviewMouseLeftButtonDown="Redaysay" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="57" VerticalAlignment="Top" SelectionBrush="{x:Null}" MaxWidth="455"/>
+                        <TextBox TextWrapping="Wrap" Text="联网获取中"  MaxHeight="64" x:Name="daysay" IsReadOnly="True" PreviewMouseLeftButtonDown="Redaysay" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="57" VerticalAlignment="Top" SelectionBrush="{x:Null}" MaxWidth="455"/>
                         <Label Content="随机一言：" HorizontalAlignment="Center" Canvas.Left="10" Canvas.Top="40" VerticalAlignment="Top"/>
                         <Label Content="充电/发电鸣谢" HorizontalAlignment="Left" Canvas.Left="530" Canvas.Top="61" VerticalAlignment="Center" RenderTransformOrigin="0.493,0.155"/>
                         <Label Content="更新日志：" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Canvas.Left="13" Canvas.Top="167" VerticalAlignment="Top">
