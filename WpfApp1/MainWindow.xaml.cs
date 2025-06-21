@@ -102,7 +102,7 @@ namespace OPL_WpfApp
             //}
             Initialization();
             this.notifyIcon = new NotifyIcon();
-            this.notifyIcon.Text = "xxx系统";//鼠标移入图标后显示的名称
+            this.notifyIcon.Text = "OPL联机工具";//鼠标移入图标后显示的名称
             this.notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
             this.notifyIcon.Visible = true;
             //打开菜单项
