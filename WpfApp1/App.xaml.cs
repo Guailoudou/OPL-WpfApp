@@ -289,6 +289,7 @@ namespace OPL_WpfApp
                 {
                     ShowWindow(hWnd, SW_RESTORE);
                     SendMessage(hWnd, WM_SYSCOMMAND, (IntPtr)SC_RESTORE, IntPtr.Zero);
+                    
                 }
                 SetForegroundWindow(hWnd);
             }
