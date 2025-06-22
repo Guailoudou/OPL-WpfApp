@@ -133,6 +133,10 @@ namespace OPL_WpfApp
         {
             this.ShowInTaskbar = true;
             this.WindowState = WindowState.Normal;
+            //this.Activate();
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
             this.Activate();
         }
         /// <summary>

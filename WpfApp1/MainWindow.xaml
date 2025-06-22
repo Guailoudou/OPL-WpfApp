@@ -13,7 +13,7 @@
         ui:WindowHelper.UseModernWindowStyle="True"
         ui:TitleBar.Height="40"
         ui:TitleBar.IsIconVisible="True"
-        Title="Openp2p Launcher - 联机工具" Height="500" Width="850" MaxWidth="850" MinWidth="850" MinHeight="500" StateChanged="Window_StateChanged" Activated="Show">
+        Title="Openp2p Launcher - 联机工具" Height="500" Width="850" MaxWidth="850" MinWidth="850" MinHeight="500" StateChanged="Window_StateChanged" Activated="Show" Loaded="Window_Loaded">
     <Grid Margin="0,0,0,1" x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="131*"/>
