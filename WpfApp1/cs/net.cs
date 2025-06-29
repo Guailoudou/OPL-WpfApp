@@ -21,7 +21,7 @@ namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 61;//协议版本号
+        private static readonly int pvn = 62;//协议版本号
         public static int Getpvn()
         {
             return pvn;
@@ -30,6 +30,7 @@ namespace userdata
         public List<servers> servers = new List<servers>();
         public async Task GetPreset(ComboBox comboBox=null)
         {
+            Logger.Log($"[信息]开始获取配置文件...");
             string isgitee = ismirror ? "gitee镜像" : "";
             Logger.Log($"[执行]网络请求文件preset.json-{isgitee}");
             string fileurl = "https://file.gldhn.top/file/json/preset.json"; //http://127.0.0.1:85/file/json/preset.json https://file.gldhn.top/file/json/preset.json
@@ -168,6 +169,7 @@ namespace userdata
 
         public async Task Getthank(TextBox text)
         {
+            Logger.Log($"[信息]开始赞助列表...");
             string url = "https://file.gldhn.top/file/json/thank.json";
             //if(ismirror)url = Getmirror(url);
             HttpClient httpClient = new HttpClient();
@@ -203,6 +205,48 @@ namespace userdata
                 //    ismirror = false;
                 //    await Getthank(text);
                 //}
+            }
+        }
+        public async Task Getnotice(TextBox text)
+        {
+            Logger.Log($"[信息]开始获取公告...");
+            string url = "https://file.gldhn.top/file/json/notice.json";
+            if (ismirror)url = Getmirror(url);
+            HttpClient httpClient = new HttpClient();
+            try
+            {
+                // 发起GET请求
+
+                HttpResponseMessage response = await httpClient.GetAsync(url);
+
+                // 检查响应状态是否成功
+                if (response.IsSuccessStatusCode)
+                {
+                    // 获取响应内容的字符串形式
+                    //string isgitee = ismirror ? "gitee镜像" : "";
+                    Logger.Log($"[提示]获取公告成功");
+                    string contentString = await response.Content.ReadAsStringAsync();
+                    var notices = JsonConvert.DeserializeObject<noticejson>(contentString);
+                    //string info = "*********************************公告*********************************\n";
+                    string info = "";
+                    foreach (notice item in notices.notices)
+                    {
+                        info = $"{item.title}                         {item.time}\n{item.content}\n*************************************************************************\n" + info;
+                    }
+                    info = "********************************OPL公告*********************************\n" + info;
+                    text.Text = info;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"[错误]请求{url}过程中发生错误：{ex.Message}");
+                text.Text = "获取失败";
+                if (ismirror)
+                {
+                    ismirror = false;
+                    await Getnotice(text);
+                }
             }
         }
         public void addServer(ComboBox serversCombo)
@@ -335,5 +379,15 @@ namespace userdata
         public int code { get; set; }
         public string ip { get; set; }
         public string isp { get; set; }
+    }
+    public class noticejson
+    {
+        public List<notice> notices { get; set; }
+    }
+    public class notice
+    {
+        public string title { get; set; }
+        public string content { get; set; }
+        public string time { get; set; }
     }
 }

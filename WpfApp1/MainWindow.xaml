@@ -27,9 +27,12 @@
                 <Style/>
             </TabControl.FocusVisualStyle>
             <ui:TabControlHelper.TabStripFooter>
-                <Button x:Name="Button_ToggleTheme" Click="Button_help" HorizontalAlignment="Center" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}">
-                    <ui:IconAndText Icon="{x:Static ui:FluentSystemIcons.Lightbulb_20_Regular}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Theme" Content="Help"/>
-                </Button>
+                <Grid>
+                    <Button Click="Button_help" HorizontalAlignment="Center" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}">
+                        <ui:IconAndText Icon="{x:Static ui:FluentSystemIcons.Lightbulb_20_Regular}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Theme" Content="Help"/>
+                    </Button>
+                </Grid>
+
             </ui:TabControlHelper.TabStripFooter>
             <TabItem BorderBrush="{x:Null}" Width="80" Height="50">
                 <TabItem.Header>
@@ -138,8 +141,25 @@
                     <TextBox x:Name="richOutput" IsReadOnly="True" Margin="10,10,10,10" TextWrapping="Wrap" Text="" d:LayoutOverrides="HorizontalAlignment, VerticalAlignment"/>
                 </Grid>
             </TabItem>
-
-            <TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
+            <TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
+                <TabItem.Header>
+                    <DockPanel Height="60" VerticalAlignment="Center">
+                        <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Speaker2_20_Regular}"/>
+                        <Label HorizontalAlignment="Center" Content="公告" Height="60" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Width="80"></Label>
+                    </DockPanel>
+                </TabItem.Header>
+                <Grid>
+                    <!--<ListBox d:ItemsSource="{d:SampleData ItemCount=70}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Margin="5,5,5,5"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>-->
+                    <TextBox x:Name="notice" IsReadOnly="True" Margin="10,10,10,10" TextWrapping="Wrap" Text="" d:LayoutOverrides="HorizontalAlignment, VerticalAlignment"/>
+                </Grid>
+            </TabItem>
+            <!--<TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
                 <TabItem.Header>
                     <DockPanel Height="60" VerticalAlignment="Center">
                         <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Color_20_Regular}"/>
@@ -158,18 +178,7 @@
 
                     <Label Content="预设颜色" HorizontalAlignment="Left" Margin="24,16,0,0" VerticalAlignment="Top" Width="60" />
 
-                    <ComboBox x:Name="ThemeComboBox"
-                      VerticalContentAlignment="Center"
-                      Margin="383,10,0,0"
-                      Width="107"
-                      Height="32"
-                      BorderBrush="#B2EFECEC"
-                      Background="#7FFFFFFF"
-                      SelectionChanged="ThemeComboBox_SelectionChanged">
-                        <ComboBoxItem Content="跟随系统" x:Name="Theme_auto"/>
-                        <ComboBoxItem Content="浅色" x:Name="Theme_Light"/>
-                        <ComboBoxItem Content="深色" x:Name="Theme_Dark"/>
-                    </ComboBox>
+                    
 
                     <Border Margin="34,9,396,300" Height="48" CornerRadius="4" Background="#FFB900" Grid.Row="1" MouseLeftButtonDown="SetReColor"/>
                     <Border Margin="111,9,319,300" Height="48" CornerRadius="4" Background="#FF8C00" Grid.Row="1" MouseLeftButtonDown="SetReColor"/>
@@ -215,9 +224,9 @@
                     <test:ColorPicker Margin="30,52,30,0" SelectColor="Black" x:Name="ColorBlock" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Height="97"/>
 
                     <Button Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Content="重置为系统配色" Width="170" Click="ColorPicker_ReSet" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Margin="0,162,0,0" VerticalAlignment="Top" Height="34"/>
-                    <Label Content="外观设置：" HorizontalAlignment="Left" Margin="308,16,0,0" VerticalAlignment="Top"  />
+                    
                 </Grid>
-            </TabItem>
+            </TabItem>-->
             <TabItem  Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">
                 <TabItem.Header>
                     <DockPanel Height="60" VerticalAlignment="Center">
@@ -239,6 +248,26 @@
                     </ComboBox>
                     <Label Content="节点选择" HorizontalAlignment="Left" Margin="50,212,0,0" VerticalAlignment="Top"/>
                     <Label Content="（测试性功能，备用节点负载能力较差，仅供主节点失效时临时使用，主节点恢复后请换回主节点&#xD;&#xA;所有连接用户需要使用相同节点才可以互相连接）" HorizontalAlignment="Left" Margin="50,180,0,0" VerticalAlignment="Top" Width="447" FontSize="10" Height="25" Foreground="#FFF30000"/>
+                    <Label Content="外观设置：" HorizontalAlignment="Left" Margin="519,90,0,0" VerticalAlignment="Top"  />
+                    <ComboBox x:Name="ThemeComboBox"
+                      VerticalContentAlignment="Center"
+                      Margin="594,83,0,0"
+                      Width="107"
+                      Height="32"
+                      BorderBrush="#B2EFECEC"
+                      Background="#7FFFFFFF"
+                      SelectionChanged="ThemeComboBox_SelectionChanged">
+                        <ComboBoxItem Content="跟随系统" x:Name="Theme_auto"/>
+                        <ComboBoxItem Content="浅色" x:Name="Theme_Light"/>
+                        <ComboBoxItem Content="深色" x:Name="Theme_Dark"/>
+                    </ComboBox>
+                    <!--<Label Content="自定义" HorizontalAlignment="Left" Margin="24,16,0,0" VerticalAlignment="Top" Width="60" Grid.Column="1" />-->
+
+                    <Button Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Content="设置颜色" VerticalAlignment="Top" Width="170" Click="ColorPicker_Set" Height="34" Margin="522,134,0,0"/>
+
+                    <test:ColorPicker Margin="519,180,35,0" SelectColor="Black" x:Name="ColorBlock" VerticalAlignment="Top" Height="97"/>
+
+                    <Button Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Content="重置为系统配色" Width="184" Click="ColorPicker_ReSet" Margin="515,301,0,0" VerticalAlignment="Top" Height="34"/>
                 </Grid>
             </TabItem>
             <TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50">

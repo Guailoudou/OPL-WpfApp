@@ -87,6 +87,7 @@ namespace OPL_WpfApp
             Net net = new Net();
             _ = net.GetPreset(ServersCombo);
             _ = net.Getthank(thank);
+            _ = net.Getnotice(notice);
             _ = GetsayText();
             Relist();
             UID.Text = sjson.config.Network.Node;
