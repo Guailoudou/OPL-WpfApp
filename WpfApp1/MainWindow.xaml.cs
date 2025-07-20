@@ -808,7 +808,8 @@ namespace OPL_WpfApp
                 DateTime Date = DateTime.Now;
                 string outmessage = "[" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "]" + message + Environment.NewLine;
                 //_output.AppendText(outmessage);
-                _output.Text = outmessage + _output.Text ;
+                if(_output != null)
+                    _output.Text = outmessage + _output.Text ;
                 //_output.ScrollToEnd();
                 AppendTextToFile(absolutePath, outmessage);
 
@@ -820,7 +821,8 @@ namespace OPL_WpfApp
                 DateTime Date = DateTime.Now;
                 string outmessage = "[" + Date.ToString("yyyy-MM-dd HH:mm:ss.fff") + "][" + log + "]" + message + Environment.NewLine;
                 //_output.AppendText(outmessage);
-                _output.Text = outmessage + _output.Text;
+                if (_output != null)
+                    _output.Text = outmessage + _output.Text;
                 //_output.ScrollToEnd();
                 AppendTextToFile(absolutePath, outmessage);
 

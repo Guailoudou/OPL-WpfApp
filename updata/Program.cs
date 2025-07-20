@@ -32,7 +32,10 @@ namespace updata
                     {
                         if (arg != filehash)
                         {
-                            filepath += arg;
+                            if(filepath == "")
+                                filepath += arg;
+                            else
+                                filepath += " "+arg;
                         }
                     }
                     oldopl = Path.GetFileName(filepath);
