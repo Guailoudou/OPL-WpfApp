@@ -11,7 +11,7 @@ using System.IO;
 
 namespace userdata
 {
-    internal class UserData
+    public class UserData
     {
         public String UID;
         json json;

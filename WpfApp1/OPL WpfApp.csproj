@@ -287,6 +287,9 @@
     <Compile Include="cs\set.cs" />
     <Compile Include="cs\tun.cs" />
     <Compile Include="cs\updata.cs" />
+    <Compile Include="easyTier\etinfo.cs" />
+    <Compile Include="easyTier\etstart.cs" />
+    <Compile Include="easyTier\TableParser.cs" />
     <Compile Include="Media\HsbaColor.cs" />
     <Compile Include="Media\ResObj.cs" />
     <Compile Include="Media\RgbaColor.cs" />
@@ -403,6 +406,13 @@
   <ItemGroup>
     <Resource Include="opl_icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.5.5\build\Fody.targets" Condition="Exists('..\packages\Fody.6.5.5\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

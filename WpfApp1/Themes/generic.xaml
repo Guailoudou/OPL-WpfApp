@@ -1,0 +1,104 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:OPL_WpfApp.easyTier">
+
+	<!-- NetworkInfoControl 样式 -->
+	<Style TargetType="{x:Type local:etinfo}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:etinfo}">
+					<Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="8"
+                            CornerRadius="4">
+						<Grid>
+							<Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- IP 显示 -->
+								<ColumnDefinition Width="10"/>
+								<!-- 复制按钮 -->
+								<ColumnDefinition Width="10"/>
+								<!-- 间距 -->
+								<ColumnDefinition Width="Auto"/>
+								<!-- Rx -->
+								<ColumnDefinition Width="10"/>
+								<!-- 间距 -->
+								<ColumnDefinition Width="Auto"/>
+								<!-- Tx -->
+                                <ColumnDefinition Width="10"/>
+                                <!-- 间距 -->
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- ms -->
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                
+                                <RowDefinition Height="Auto"/>
+                                
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Hostname, RelativeSource={RelativeSource TemplatedParent}}"
+                                           Foreground="#2c3e50"/>
+                            </StackPanel>
+
+                            <!-- IP 地址（只读） -->
+							<TextBlock x:Name="IpTextBlock"
+                                       Grid.Column="0"
+                                       Grid.Row="1" 
+                                       Text="{TemplateBinding IpAddress}"
+                                       VerticalAlignment="Center"
+                                       FontFamily="Consolas, Courier New"
+                                       FontWeight="SemiBold"
+                                       Foreground="#2c3e50"
+                                       ToolTip="点击下方按钮复制 IP" />
+
+							<!-- 复制按钮 -->
+							<Button x:Name="PART_CopyButton"
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    Content="📋"
+                                    ToolTip="复制 IP 地址"
+                                    Width="30"
+                                    Height="30"
+                                    Padding="0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+									/>
+
+							<!-- Rx 数据 -->
+                            <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
+								<TextBlock Text="↓" Foreground="Blue" FontWeight="Bold" Margin="0,0,2,0"/>
+								<TextBlock Text="{Binding RxData, RelativeSource={RelativeSource TemplatedParent}}"
+                                           Foreground="#2c3e50"/>
+                                <!--<TextBlock Text=" B" Foreground="Gray" FontStyle="Italic" Margin="1,0,0,0"/>-->
+							</StackPanel>
+
+							<!-- Tx 数据 -->
+                            <StackPanel Grid.Column="5" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
+								<TextBlock Text="↑" Foreground="Green" FontWeight="Bold" Margin="0,0,2,0"/>
+								<TextBlock Text="{Binding TxData, RelativeSource={RelativeSource TemplatedParent}}"
+                                           Foreground="#2c3e50"/>
+                                <!--<TextBlock Text=" B" Foreground="Gray" FontStyle="Italic" Margin="1,0,0,0"/>-->
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="7" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding LatMs, RelativeSource={RelativeSource TemplatedParent}}"
+                                           Foreground="Green"/>
+                            </StackPanel>
+                        </Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+
+		<!-- 默认样式 -->
+		<Setter Property="Background" Value="#f8f9fa"/>
+		<Setter Property="BorderBrush" Value="#bdc3c7"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="FontSize" Value="12"/>
+	</Style>
+
+</ResourceDictionary>

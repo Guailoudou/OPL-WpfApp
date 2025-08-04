@@ -13,7 +13,7 @@ namespace userdata
 {
     internal class Updata
     {
-        public Updata(string url,string SaveName, string absolutePath="")
+        public Updata(string url,string SaveName, string absolutePath="",bool iszip=false)
         {
             string absolutePathed;
             if(absolutePath=="")
@@ -22,7 +22,7 @@ namespace userdata
                 absolutePathed = Path.Combine(absolutePath, SaveName);
             if (!File.Exists(absolutePathed))
             {
-                _ = Dmfile(url, SaveName, absolutePath); //更新包 
+                _ = Dmfile(url, SaveName, absolutePath,iszip); //更新包 
                 if(SaveName== "nvb.zip")
                     _ = Dmfile(Net.Getmirror("https://file.gldhn.top/file/updata.exe"), "updata.exe", AppDomain.CurrentDomain.BaseDirectory);
             }else
@@ -31,13 +31,14 @@ namespace userdata
             }
 
         }
-        public async Task Dmfile(string url,string name,string savePath = "")
+        public async Task Dmfile(string url,string name,string savePath = "", bool iszip = false)
         {
             Logger.Log($"[提示]开始下载文件：{url} 保存名 ：{name}");
+            string dsavePath = AppDomain.CurrentDomain.BaseDirectory;
             if (savePath == "")
-                savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", name);
+                dsavePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", name);
             else
-                savePath = Path.Combine(savePath, name);
+                dsavePath = Path.Combine(savePath, name);
             //Thread.Sleep(2000);
             using (HttpClient client = new HttpClient())
             {
@@ -47,9 +48,9 @@ namespace userdata
                     byte[] fileBytes = await client.GetByteArrayAsync(url);
 
                     // 将字节流写入到本地文件
-                    File.WriteAllBytes(savePath, fileBytes);
+                    File.WriteAllBytes(dsavePath, fileBytes);
 
-                    Logger.Log($"[提示]文件已成功下载到：{savePath}");
+                    Logger.Log($"[提示]文件已成功下载到：{dsavePath}");
                     if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "updata.exe")) && name == "nvb.zip")
                         MessageBox.Show("已完成更新文件下载，建议重启以完成最后更新！", "提示");
                     if(name== "openp2p.zip" || name == "openp2p23.zip")
@@ -61,6 +62,14 @@ namespace userdata
                         }
                         over = true;
                         Logger.Log($"[提示]已完成关键文件下载！可以启动程序了");
+                    }
+                    if (iszip)
+                    {
+                        if (File.Exists(dsavePath))
+                        {
+                            OPL_WpfApp.App.ExtractZipAndOverwrite(dsavePath, savePath);
+                            Logger.Log($"[提示]已解压文件：{dsavePath}");
+                        }
                     }
                 }
                 catch (HttpRequestException ex)
