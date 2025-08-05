@@ -105,15 +105,17 @@
                 </TabItem.Header>
                 <Grid>
                     <ListBox x:Name="NetworkList" Background="#FFF8F8F8" Margin="0,0,195,0"/>
-                    <Button Content="加入网络" Margin="602,214,0,0" VerticalAlignment="Top" Click="joinEtNet"/>
+                    <Button Content="加入网络" Margin="590,214,0,0" VerticalAlignment="Top" Click="joinEtNet"/>
                     <Button Content="退出网络" Margin="602,314,0,0" VerticalAlignment="Top" Click="leaveEtNet"/>
 
-                    <Button Content="创建网络" Margin="602,60,0,0" VerticalAlignment="Top" Click="crearEtNet"/>
+                    <Button Content="创建网络" Margin="590,126,0,0" VerticalAlignment="Top" Click="crearEtNet"/>
                     <TextBox HorizontalAlignment="Left" Margin="540,177,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="180" x:Name="etNetText"/>
                     <Label Content="测试功能&#xD;&#xA;EasyTier提供服务&#xD;&#xA;" HorizontalAlignment="Left" Margin="587,365,0,0" VerticalAlignment="Top" Foreground="#FF8B8686"/>
+                    <TextBox HorizontalAlignment="Left" Margin="540,48,0,0" TextWrapping="Wrap" Text="未连接" VerticalAlignment="Top" Width="180" IsReadOnly="True" x:Name="newetuid"/>
+                    <Label Content="当前所在网络：" HorizontalAlignment="Left" Margin="540,25,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
-            <!--<TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
+            <TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
                 <TabItem.Header>
                     <DockPanel Height="60" VerticalAlignment="Center">
                         <ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Globe_20_Regular}"/>
@@ -143,7 +145,7 @@
                     <Button Grid.Column="1" Content="复制" Margin="55,273,0,0" VerticalAlignment="Top" Click="copytunip"/>
 
                 </Grid>
-            </TabItem>-->
+            </TabItem>
             <TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
                 <TabItem.Header>
                     <DockPanel Height="60" VerticalAlignment="Center">

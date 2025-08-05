@@ -204,7 +204,7 @@ namespace OPL_WpfApp.easyTier
                         {
                             Logger.Log("[错误]获取失败" + ex.ToString());
                             Stop();
-                            MessageBox.Show("出现错误，请重试");
+                            //MessageBox.Show("出现错误，请重试");
                             return;
                         }
                         if (node != null)

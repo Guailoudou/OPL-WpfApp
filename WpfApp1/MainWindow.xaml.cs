@@ -39,6 +39,7 @@ using System.Threading;
 using OPL_WpfApp.cs;
 using NotifyIcon = System.Windows.Forms.NotifyIcon;
 using OPL_WpfApp.easyTier;
+using System.ComponentModel.Composition.Primitives;
 
 namespace OPL_WpfApp
 {
@@ -49,7 +50,7 @@ namespace OPL_WpfApp
     {
         public UserData userData ;
         json sjson;
-        //tunnel tunnel = new tunnel();
+        tunnel tunnel = new tunnel();
         private etstart ets;
 
         public bool on = false;
@@ -329,7 +330,7 @@ namespace OPL_WpfApp
 
         }
         private Dictionary<string, int> state = new Dictionary<string, int>();
-       // private Dictionary<string, int> statelist = new Dictionary<string, int>();
+        private Dictionary<string, int> statelist = new Dictionary<string, int>();
         private Dictionary<int, string> iplink = new Dictionary<int, string>();
         public void Relist() //刷新列表
         {
@@ -446,13 +447,13 @@ namespace OPL_WpfApp
                     });
 
                     //if(on&& state[app.Protocol + ":" + app.SrcPort] == 2) ///////////////////////
-                    //grid.Children.Add(new Label
-                    //{
-                    //    Content = "9999ms",
-                    //    VerticalAlignment = VerticalAlignment.Top,
-                    //    HorizontalAlignment = HorizontalAlignment.Left,
-                    //    Margin = new Thickness(532, 0, 0, 0)
-                    //});
+                    //    grid.Children.Add(new Label
+                    //    {
+                    //        Content = "9999ms",
+                    //        VerticalAlignment = VerticalAlignment.Top,
+                    //        HorizontalAlignment = HorizontalAlignment.Left,
+                    //        Margin = new Thickness(532, 0, 0, 0)
+                    //    });
 
                     CheckBox checkBox = new CheckBox
                     {
@@ -468,12 +469,12 @@ namespace OPL_WpfApp
                     checkBox.Unchecked += UnCheckBox_Checked;
                     grid.Children.Add(checkBox);
                     var clo = Brushes.Gray;
-                    //tunellipse.Fill = clo;
+                    tunellipse.Fill = clo;
                     if (on&&app.Enabled==1)
                     {
                         if (state[app.Protocol + ":" + app.SrcPort] == 1) clo = Brushes.Orange; 
                         if(state[app.Protocol + ":" + app.SrcPort] == 2) clo = Brushes.Green;
-                        //if (tunnel.getruning()) tunellipse.Fill = clo;
+                        if (tunnel.getruning()) tunellipse.Fill = clo;
                     }
                     Ellipse ellipse = new Ellipse
                     {
@@ -691,7 +692,7 @@ namespace OPL_WpfApp
             startInfo.RedirectStandardOutput = true;
             startInfo.StandardOutputEncoding = Encoding.UTF8;
             startInfo.StandardErrorEncoding = Encoding.UTF8;
-            //startInfo.Arguments = "-d --network-name " + linkname + "" ;
+            //startInfo.Arguments = "-d --network-name " + linkname + "";
             startInfo.RedirectStandardError = true;
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true; // 不显示新的命令行窗口
@@ -794,6 +795,11 @@ namespace OPL_WpfApp
             Stop();
             if (udps != null) foreach (UdpClientKeepAlive app in udps) app.StopSendingKeepAlive();
             if (tcps != null) foreach (TcpClientWithKeepAlive app in tcps) app.StopSendingKeepAlive();
+            if(tunbutton.Content.ToString() != "创建/开启网络" || tunjoinbutton.Content.ToString() != "连接网络")
+            {
+                tunnel.OpenTunnel(tunjoinbutton, 1, 1);
+            }
+
             ets?.Stop();
             base.OnClosed(e);
         }
@@ -1272,7 +1278,7 @@ namespace OPL_WpfApp
                 set.settings.csproduct = newuuid;
             }
             set.Write();
-            //tunnel.csh(tunspeed);
+            tunnel.csh(tunspeed);
         }
 
         private void Auto_boot(object sender, RoutedEventArgs e)
@@ -1399,109 +1405,120 @@ namespace OPL_WpfApp
             addMpPreference.AddMp(absolutePath);
         }
 
-        //private void Opentun(object sender, RoutedEventArgs e)
-        //{
-        //    if (on)
-        //    {
-        //        MessageBox.Show("程序在运行，禁止操作!", "警告");
-        //        return;
-        //    }
-        //    if (!on && OpenDate.AddSeconds(1) > DateTime.Now && OpenDate != null)
-        //    {
-        //        MessageBox.Show("操作太频繁，请稍后再试 (请至少间隔1s，防止出现BUG)", "警告");
-        //        return;
-        //    }
-        //    int port = 25674;
-        //    string linkcode = $"2:{userData.UID}:{port}:{port}";
-        //    if (tunbutton.Content.ToString() == "创建/开启网络") {
-        //        tunjoinbutton.IsEnabled = false;
-        //        port = int.Parse(tunport.Text.Replace(" ", ""));
-        //        if(Copy_text(linkcode))
-        //            MessageBox.Show($"复制成功：连接码 {linkcode} \n请将该内容粘贴给要进行组网的人添加", "提示");
-        //    }
-        //    else
-        //    {
-        //        tunjoinbutton.IsEnabled = true;
-        //    }
-        //    //tunnel.OpenTunnel(tunbutton, 1, port);
-        //    iptext.Text = "10.0.23.1";
-        //    sjson.getjson();
-        //    sjson.Alloff();
-        //    if (over) Strapp();
-        //    //if (Copy_text(linkcode)&&id!=1)
-        //    //    MessageBox.Show($"复制成功：连接码 {linkcode}", "提示");
-        //}
+        private void Opentun(object sender, RoutedEventArgs e)
+        {
+            if (tunbutton.Content.ToString() == "创建/开启网络" && on)
+            {
+                MessageBox.Show("程序在运行，禁止操作!", "警告");
+                return;
+            }
+            if (!on && OpenDate.AddSeconds(1) > DateTime.Now && OpenDate != null)
+            {
+                MessageBox.Show("操作太频繁，请稍后再试 (请至少间隔1s，防止出现BUG)", "警告");
+                return;
+            }
+            int port = 25674;
+            string linkcode = $"2:{userData.UID}:{port}:{port}";
+            if (tunbutton.Content.ToString() == "创建/开启网络")
+            {
+                //eton = true;
+                tunjoinbutton.IsEnabled = false;
+                port = int.Parse(tunport.Text.Replace(" ", ""));
+                if (Copy_text(linkcode))
+                    MessageBox.Show($"复制成功：连接码 {linkcode} \n请将该内容粘贴给要进行组网的人添加", "提示");
+            }
+            else
+            {
+                tunjoinbutton.IsEnabled = true;
+                //eton = false;
+            }
+            tunnel.OpenTunnel(tunbutton, 1, port);
+            iptext.Text = "10.0.23.1";
+            
+            sjson.getjson();
+            sjson.Alloff();
+            if (over) Strapp();
+            //if (Copy_text(linkcode)&&id!=1)
+            //    MessageBox.Show($"复制成功：连接码 {linkcode}", "提示");
+        }
 
-        //private void jointun(object sender, RoutedEventArgs e)
-        //{
-        //    if (on)
-        //    {
-        //        MessageBox.Show("程序在运行，禁止操作!", "警告");
-        //        return;
-        //    }
-        //    if (!on && OpenDate.AddSeconds(1) > DateTime.Now && OpenDate != null)
-        //    {
-        //        MessageBox.Show("操作太频繁，请稍后再试 (请至少间隔1s，防止出现BUG)", "警告");
-        //        return;
-        //    }
-        //    string linkcode = tunlink.Text.Replace(" ","");
-        //    if (linkcode == "") { 
-        //        MessageBox.Show("请输入连接码", "提示");
-        //        return;
-        //    }
-        //    int id = 2;
-        //    int cport = 25674;
-        //    if (tunjoinbutton.Content.ToString() == "连接网络"){
-        //        tunbutton.IsEnabled = false;
-        //        id = int.Parse(tunip.Text.Replace(" ", ""));
-        //        cport = int.Parse(tunport.Text.Replace(" ", ""));
-        //        var connections = ConnectionParser.ParseConnections(linkcode);
-        //        sjson.getjson();
-        //        sjson.Alloff();
-        //        sjson.clearoindex();
-        //        foreach (var conn in connections)
-        //        {
-        //            string type = conn.Protocol;
-        //            if (type == "1") type = "tcp";
-        //            if (type == "2") type = "udp";
-        //            string uid = conn.UID;
-        //            int port = conn.Port;
-        //            cport = conn.CPort;
-        //            if(!sjson.Add1link(type, uid, port, cport))return;
-        //        }
-        //        Relist();
-        //    }
-        //    else
-        //    {
-        //        tunbutton.IsEnabled = true;
-        //    }
-        //    //tunnel.OpenTunnel(tunjoinbutton, id, cport);
-        //    iptext.Text = $"10.0.23.{id}";
-        //    if (over) Strapp();
-        //}
+        private void jointun(object sender, RoutedEventArgs e)
+        {
+            if (tunjoinbutton.Content.ToString() == "连接网络" && on)
+            {
+                MessageBox.Show("程序在运行，禁止操作!", "警告");
+                return;
+            }
+            if (!on && OpenDate.AddSeconds(1) > DateTime.Now && OpenDate != null)
+            {
+                MessageBox.Show("操作太频繁，请稍后再试 (请至少间隔1s，防止出现BUG)", "警告");
+                return;
+            }
+            string linkcode = tunlink.Text.Replace(" ", "");
+            if (linkcode == "")
+            {
+                MessageBox.Show("请输入连接码", "提示");
+                return;
+            }
+            int id = 2;
+            int cport = 25674;
+            if (tunjoinbutton.Content.ToString() == "连接网络")
+            {
+                tunbutton.IsEnabled = false;
+                id = int.Parse(tunip.Text.Replace(" ", ""));
+                cport = int.Parse(tunport.Text.Replace(" ", ""));
+                var connections = ConnectionParser.ParseConnections(linkcode);
+                sjson.getjson();
+                sjson.Alloff();
+                sjson.clearoindex();
+                foreach (var conn in connections)
+                {
+                    string type = conn.Protocol;
+                    if (type == "1") type = "tcp";
+                    if (type == "2") type = "udp";
+                    string uid = conn.UID;
+                    int port = conn.Port;
+                    cport = conn.CPort;
+                    if (!sjson.Add1link(type, uid, port, cport)) return;
+                }
+                Relist();
+                //eton = true;
+            }
+            else
+            {
+                tunbutton.IsEnabled = true;
+                //eton = false;
+            }
+            tunnel.OpenTunnel(tunjoinbutton, id, cport);
+            iptext.Text = $"10.0.23.{id}";
+            if (over) Strapp();
+        }
 
-        //private void copytunip(object sender, RoutedEventArgs e)
-        //{
-        //    if (Copy_text(iptext.Text))
-        //        MessageBox.Show($"复制成功： {iptext.Text} ", "提示");
-        //}
+        private void copytunip(object sender, RoutedEventArgs e)
+        {
+            if (Copy_text(iptext.Text))
+                MessageBox.Show($"复制成功： {iptext.Text} ", "提示");
+        }
 
         private void crearEtNet(object sender, RoutedEventArgs e)
         {
             //ets = new etstart(this);
             ets?.setlinkname(UID.Text);
+            newetuid.Text = UID.Text;
             ets?.Open();
         }
         private void joinEtNet(object sender, RoutedEventArgs e)
         {
             //ets = new etstart(this);
             ets?.setlinkname(etNetText.Text);
+            newetuid.Text = etNetText.Text;
             ets?.Open();
         }
 
         private void leaveEtNet(object sender, RoutedEventArgs e)
         {
             ets?.Stop();
+            newetuid.Text = "未连接";
             //ets = null;
         }
     }
