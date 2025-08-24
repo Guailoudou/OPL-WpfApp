@@ -90,8 +90,12 @@ namespace OPL_WpfApp
             }
             if (m.Contains("Only one usage of each socket address"))
             {
-                string pattern = @"(tcp|udp)\s*:\s*(\d+)";
-                Match match = Regex.Match(m, pattern);
+               
+                Match match = Regex.Match(m, @"listen\s+(tcp|udp)[\s\S]*?(?:0\.0\.0\.0|\\[::\\]|\\[\\S+\\]|localhost|\\S+):(\d+)");
+                if (!match.Success) { 
+                    string pattern = @"(tcp|udp)\s*:\s*(\d+)";
+                    match = Regex.Match(m, pattern);
+                }
 
                 if (match.Success && fsterto)
                 {
@@ -104,8 +108,11 @@ namespace OPL_WpfApp
                 }
                 else if (!fsterto)
                 {
-                    MessageBox.Show($"注意，你的计算机可能中病毒了！！\r\n根据之前的反馈统计情况，如果你每次打开都弹出该窗口，你的计算机极有可能中病毒了，有黑客正在监视你的计算机网络数据，请立即尝试使用杀毒软件\r\n请尝试使用杀毒软件进行全盘查杀，或使用 卡巴斯基病毒清除工具、360系统急救箱或火绒恶性木马专杀工具\r\n等工具进行查杀", "警告", MessageBoxButton.OK, MessageBoxImage.Hand);
+                    MessageBox.Show($"注意，你的计算机可能中病毒了！！\r\n请再尝试一次，如果一直这样根据之前的反馈统计情况，如果你每次打开都弹出该窗口，你的计算机极有可能中病毒了，有黑客正在监视你的计算机网络数据，请立即尝试使用杀毒软件\r\n请尝试使用杀毒软件进行全盘查杀，或使用 卡巴斯基病毒清除工具、360系统急救箱或火绒恶性木马专杀工具\r\n等工具进行查杀", "警告", MessageBoxButton.OK, MessageBoxImage.Hand);
+                    //MessageBox.Show($"注意，你的计算机可能中病毒了！！\r\n请再尝试一次，如果一直这样根据之前的反馈统计情况，如果你每次打开都弹出该窗口，你的计算机极有可能中病毒了，有黑客正在监视你的计算机网络数据，请立即尝试使用杀毒软件\r\n请尝试使用杀毒软件进行全盘查杀，或使用 卡巴斯基病毒清除工具、360系统急救箱或火绒恶性木马专杀工具\r\n等工具进行查杀", "警告", MessageBoxButton.OK, MessageBoxImage.Hand);
                     if (on) Strapp();
+                    sjson.config.Network.TCPPort = sjson.config.Network.TCPPort - 20;
+                    sjson.Save();
                 }
             }
             if (m.Contains("no such host"))

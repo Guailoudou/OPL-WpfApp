@@ -676,6 +676,7 @@ namespace OPL_WpfApp
             Logger.Log("-----------------------程序已开始运行请耐心等待隧道连接----------------------------","提示");
             fstert.Fill = Brushes.Orange;
             on = true;
+            fsterto = false;
             Relist();
             //StartMon();
             

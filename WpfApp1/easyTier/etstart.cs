@@ -43,7 +43,7 @@ namespace OPL_WpfApp.easyTier
             startInfo.RedirectStandardOutput = true;
             startInfo.StandardOutputEncoding = Encoding.UTF8;
             startInfo.StandardErrorEncoding = Encoding.UTF8;
-            startInfo.Arguments = "-d --network-name " + linkname + " --network-secret " + linkname + " -p tcp://public.easytier.cn:11010";
+            startInfo.Arguments = "-d --network-name " + linkname + " --network-secret " + linkname + " -p tcp://public.easytier.cn:11010 --multi-thread --enable-kcp-proxy --use-smoltcp --enable-quic-proxy";
             startInfo.RedirectStandardError = true;
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true; // 不显示新的命令行窗口
