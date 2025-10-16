@@ -42,11 +42,33 @@ namespace OPL_WpfApp
                     try
                     {
                         var currentProcess = Process.GetCurrentProcess();
-                        var uiProcess = Process.GetProcessById(int.Parse(args[2]));
-                        if (uiProcess.MainModule.FileName != currentProcess.MainModule.FileName)
-                            return;
-                        uiProcess.WaitForExit();
-                        Tunnel.Service.Remove(args[1], false);
+                        if (int.TryParse(args[2], out int processId))
+                        {
+                            try
+                            {
+                                var uiProcess = Process.GetProcessById(processId);
+                                // 继续处理
+                                if (uiProcess.MainModule == null || currentProcess.MainModule == null)
+                                {
+                                    // 如果无法获取模块信息，为安全起见，直接返回
+                                    return;
+                                }
+                                if (uiProcess.MainModule.FileName != currentProcess.MainModule.FileName)
+                                    return;
+                                uiProcess.WaitForExit();
+                                Tunnel.Service.Remove(args[1], false);
+                            }
+                            catch (ArgumentException)
+                            {
+                                // 进程不存在，直接返回
+                                return;
+                            }
+                        }
+                        //var uiProcess = Process.GetProcessById(int.Parse(args[2]));
+                        //if (uiProcess.MainModule.FileName != currentProcess.MainModule.FileName)
+                        //    return;
+                        //uiProcess.WaitForExit();
+                        //Tunnel.Service.Remove(args[1], false);
                     }
                     catch { }
                 });
@@ -91,11 +113,15 @@ namespace OPL_WpfApp
             AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
             
             set set = new set();
-            if (set.settings.Color != null && set.settings.Color != "")
+            if (set.settings?.Color != null && set.settings?.Color != "")
             {
-                ThemeManager.Current.AccentColor = set.ParseColor(set.settings.Color);
-                var color = ThemeManager.Current.AccentColor ?? Colors.Black;
-                args = args.Concat(new[] { $"-bg={color}" }).ToArray();
+                // 检查 ThemeManager.Current 是否为 null
+                if (ThemeManager.Current != null)
+                {
+                    ThemeManager.Current.AccentColor = set.ParseColor(set.settings.Color);
+                    var color = ThemeManager.Current.AccentColor ?? Colors.Black;
+                    args = args.Concat(new[] { $"-bg={color}" }).ToArray();
+                }
             }
 
             // 应用程序启动时的自定义逻辑
