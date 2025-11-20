@@ -16,7 +16,7 @@ namespace userdata
     internal class json
     {
 
-        int Ologv = 2; //openp2p日志等级
+        int Ologv = 1; //openp2p日志等级
         public Config config;
         List<int> oindex = new List<int>();
         public json()

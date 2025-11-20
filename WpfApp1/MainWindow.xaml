@@ -104,15 +104,19 @@
                     </DockPanel>
                 </TabItem.Header>
                 <Grid>
-                    <ListBox x:Name="NetworkList" Background="#FFF8F8F8" Margin="0,0,195,0"/>
-                    <Button Content="加入网络" Margin="590,214,0,0" VerticalAlignment="Top" Click="joinEtNet"/>
-                    <Button Content="退出网络" Margin="602,314,0,0" VerticalAlignment="Top" Click="leaveEtNet"/>
+                    <ListBox x:Name="NetworkList" Margin="0,0,268,0"/>
+                    <Button Content="加入网络" Margin="549,279,0,0" VerticalAlignment="Top" Click="joinEtNet"/>
+                    <Button Content="退出网络" Margin="552,314,0,0" VerticalAlignment="Top" Click="leaveEtNet"/>
 
-                    <Button Content="创建网络" Margin="590,126,0,0" VerticalAlignment="Top" Click="crearEtNet"/>
-                    <TextBox HorizontalAlignment="Left" Margin="540,177,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="180" x:Name="etNetText"/>
+                    <Button Content="创建网络" Margin="549,104,0,0" VerticalAlignment="Top" Click="crearEtNet"/>
+                    <TextBox HorizontalAlignment="Left" Margin="491,238,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="180" x:Name="etNetText"/>
                     <Label Content="测试功能&#xD;&#xA;EasyTier提供服务&#xD;&#xA;" HorizontalAlignment="Left" Margin="587,365,0,0" VerticalAlignment="Top" Foreground="#FF8B8686"/>
-                    <TextBox HorizontalAlignment="Left" Margin="540,48,0,0" TextWrapping="Wrap" Text="未连接" VerticalAlignment="Top" Width="180" IsReadOnly="True" x:Name="newetuid"/>
+                    <TextBox HorizontalAlignment="Left" Margin="502,48,0,0" TextWrapping="Wrap" Text="未连接" VerticalAlignment="Top" Width="180" IsReadOnly="True" x:Name="newetuid"/>
                     <Label Content="当前所在网络：" HorizontalAlignment="Left" Margin="540,25,0,0" VerticalAlignment="Top"/>
+                    <Label Content="节点：" HorizontalAlignment="Left" Margin="504,146,0,0" VerticalAlignment="Top"/>
+                    <TextBox HorizontalAlignment="Left" Margin="467,169,0,0" TextWrapping="Wrap" Text="tcp://public.easytier.cn:11010" VerticalAlignment="Top" Width="260" x:Name="etnode" Height="18"/>
+                    <Label Content="网络UID：" HorizontalAlignment="Left" Margin="547,220,0,0" VerticalAlignment="Top"/>
+                    <Button Content="?" Margin="485,146,0,0" VerticalAlignment="Top" Click="EThelp" Height="19" Width="17" Grid.RowSpan="1" Grid.ColumnSpan="1" Padding="0,0,0,0"/>
                 </Grid>
             </TabItem>
             <TabItem Background="{x:Null}" BorderBrush="{x:Null}" Width="80" Height="50" >
@@ -354,6 +358,6 @@
         <Button Content="启动" Margin="0,0,10,10" VerticalAlignment="Bottom" Click="Button_Click_open" x:Name="openbutton" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}" Grid.Column="1" HorizontalAlignment="Right" Height="32" Width="102"/>
         <Button Content="导出已启用隧道为连接码" Margin="0,0,516,10" VerticalAlignment="Bottom" Click="Outlist" Grid.Column="1" HorizontalAlignment="Right" Height="32" Width="193" />
         <Button Content="生成联机码" Margin="0,0,372,10" VerticalAlignment="Bottom" Click="Multput" Grid.Column="1" HorizontalAlignment="Right" Height="32" Width="125" />
-        <CheckBox Grid.Column="1" Content="多链路测试" Margin="0,0,240,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" x:Name="beta"/>
+        <!--<CheckBox Grid.Column="1" Content="多链路测试" Margin="0,0,240,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" x:Name="beta"/> -->
     </Grid>
 </Window>

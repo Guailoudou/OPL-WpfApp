@@ -1218,16 +1218,16 @@ namespace OPL_WpfApp
             {
                 Ispwarning.IsChecked = true;
             }
-            if (set.settings.beta)
-            {
-                beta.IsChecked = true;
-                opname = "openp2p23.exe";
+            //if (set.settings.beta)
+            //{
+            //    beta.IsChecked = true;
+            //    opname = "openp2p23.exe";
                 if(sjson.config.LogLevel == 2)
                 {
                     sjson.config.LogLevel = 1;
                     sjson.Save();
                 }
-            }
+            //}
             Autoup_bootn.Checked += Auto_boot;
             Autoup_bootn.Unchecked += UnAuto_boot;
 
@@ -1243,8 +1243,8 @@ namespace OPL_WpfApp
             Ispwarning.Checked += Ispwarn;
             Ispwarning.Unchecked += UnIspwarn;
 
-            beta.Checked += Isbeta;
-            beta.Unchecked += UnIsbeta;
+            //beta.Checked += Isbeta;
+            //beta.Unchecked += UnIsbeta;
 
             string newuuid;
             try
@@ -1336,31 +1336,31 @@ namespace OPL_WpfApp
             set.settings.ispwarning = false;
             set.Write();
         }
-        private void Isbeta(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("注意，这是测试，理论上大大提高了连接的稳定性，启用该功能的只能和同样启用的互联，过一段时间根据反馈稳定后，会直接全部启用，删除该按钮");
-            set set = new set();
-            set.settings.beta = true;
-            set.Write();
-            sjson.config.LogLevel = 1;
-            opname = "openp2p23.exe";
-            sjson.Save();
-            string filename = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin" , opname);
-            if (!File.Exists(filename))
-            {
-                new Updata(Net.Getmirror("https://file.gldhn.top/file/openp2p3.23.windows-386.zip"), "openp2p23.zip");
-            }
-        }
+        //private void Isbeta(object sender, RoutedEventArgs e)
+        //{
+        //    MessageBox.Show("注意，这是测试，理论上大大提高了连接的稳定性，启用该功能的只能和同样启用的互联，过一段时间根据反馈稳定后，会直接全部启用，删除该按钮");
+        //    set set = new set();
+        //    set.settings.beta = true;
+        //    set.Write();
+        //    sjson.config.LogLevel = 1;
+        //    opname = "openp2p23.exe";
+        //    sjson.Save();
+        //    string filename = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin" , opname);
+        //    if (!File.Exists(filename))
+        //    {
+        //        new Updata(Net.Getmirror("https://file.gldhn.top/file/openp2p3.23.windows-386.zip"), "openp2p23.zip");
+        //    }
+        //}
 
-        private void UnIsbeta(object sender, RoutedEventArgs e)
-        {
-            set set = new set();
-            set.settings.beta = false;
-            set.Write();
-            sjson.config.LogLevel = 2;
-            opname = "openp2p.exe";
-            sjson.Save();
-        }
+        //private void UnIsbeta(object sender, RoutedEventArgs e)
+        //{
+        //    set set = new set();
+        //    set.settings.beta = false;
+        //    set.Write();
+        //    sjson.config.LogLevel = 2;
+        //    opname = "openp2p.exe";
+        //    sjson.Save();
+        //}
 
         private void Outlist(object sender, RoutedEventArgs e)
         {
@@ -1504,16 +1504,33 @@ namespace OPL_WpfApp
         private void crearEtNet(object sender, RoutedEventArgs e)
         {
             //ets = new etstart(this);
+            //检查etnode.Text是否是tcp://或udp://开头
+            if (!etnode.Text.StartsWith("tcp://") && !etnode.Text.StartsWith("udp://"))
+            {
+                MessageBox.Show("请输入正确的节点地址", "提示");
+                return;
+            }
             ets?.setlinkname(UID.Text);
             newetuid.Text = UID.Text;
-            ets?.Open();
+            ets?.Open(etnode.Text);
         }
         private void joinEtNet(object sender, RoutedEventArgs e)
         {
             //ets = new etstart(this);
+            if (etNetText.Text == "")
+            {
+                MessageBox.Show("请输入连接码或创建房间", "提示");
+                return;
+            }
+            //检查etnode.Text是否是tcp://或udp://开头
+            if (!etnode.Text.StartsWith("tcp://") && !etnode.Text.StartsWith("udp://"))
+            {
+                MessageBox.Show("请输入正确的节点地址", "提示");
+                return;
+            }
             ets?.setlinkname(etNetText.Text);
             newetuid.Text = etNetText.Text;
-            ets?.Open();
+            ets?.Open(etnode.Text);
         }
 
         private void leaveEtNet(object sender, RoutedEventArgs e)
@@ -1522,6 +1539,18 @@ namespace OPL_WpfApp
             newetuid.Text = "未连接";
             //ets = null;
         }
+
+        private void EThelp(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("即将打开easytier官方节点监控页面\n如果你的延迟很高，你可以寻找负载较低的，最好找允许中转的，离你们近的节点填在下面\n注意你们需要使用相同的节点\n注意你们需要使用相同的节点\n节点是tcp或udp开头的，如：tcp://public.easytier.cn:11010", "提示");
+            try
+            {
+                Process.Start("https://uptime.easytier.cn/");
+            }
+            catch { }
+        }
+
+
     }
 
 }

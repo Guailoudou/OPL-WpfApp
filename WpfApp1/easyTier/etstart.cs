@@ -28,7 +28,7 @@ namespace OPL_WpfApp.easyTier
             if (!File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "easytier-windows-x86_64", name)) || !File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "easytier-windows-x86_64", infoname)))
                 new Updata(Net.Getmirror("https://file.gldhn.top/file/easytier-windows-x86_64-v2.3.2.zip"), "easytier.zip", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), true);
         }
-        public void Open()
+        public void Open(string node)
         {
             if (mainWindow.on)
             {
@@ -43,7 +43,7 @@ namespace OPL_WpfApp.easyTier
             startInfo.RedirectStandardOutput = true;
             startInfo.StandardOutputEncoding = Encoding.UTF8;
             startInfo.StandardErrorEncoding = Encoding.UTF8;
-            startInfo.Arguments = "-d --network-name " + linkname + " --network-secret " + linkname + " -p tcp://public.easytier.cn:11010 --multi-thread --enable-kcp-proxy --use-smoltcp --enable-quic-proxy";
+            startInfo.Arguments = "-d --network-name " + linkname + " --network-secret " + linkname + " -p "+ node +" --multi-thread --enable-kcp-proxy --use-smoltcp --enable-quic-proxy";
             startInfo.RedirectStandardError = true;
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true; // 不显示新的命令行窗口
