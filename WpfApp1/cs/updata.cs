@@ -53,7 +53,7 @@ namespace userdata
                     Logger.Log($"[提示]文件已成功下载到：{dsavePath}");
                     if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "updata.exe")) && name == "nvb.zip")
                         MessageBox.Show("已完成更新文件下载，建议重启以完成最后更新！", "提示");
-                    if(name== "openp2p.zip" || name == "openp2p23.zip")
+                    if(name== "openp2p.zip" || name == "openp2p21.zip")
                     {
                         string saveOPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", name);
                         if (File.Exists(saveOPath))

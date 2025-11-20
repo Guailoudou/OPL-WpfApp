@@ -648,14 +648,28 @@ namespace OPL_WpfApp
             try
             {
                 foreach (var item in net.servers)
+                {
+                    if (item.ServerName == server)
                     {
-                        if (item.ServerName == server)
+                        sjson.getjson();
+                        sjson.SetServier(item.ServerHost, item.Token);
+                        if(item.ServerName != "主节点")
                         {
-                            sjson.getjson();
-                            sjson.SetServier(item.ServerHost, item.Token);
-                            break;
+                            opname = "openp2p21.exe";
+                            sjson.config.LogLevel = 2;
+                            sjson.Save();
+                            
+
                         }
+                        else
+                        {
+                            opname = "openp2p.exe";
+                            sjson.config.LogLevel = 1;
+                            sjson.Save();
+                        }
+                        break;
                     }
+                }
             }catch (Exception ex)
             {
                 Logger.Log("[警告]未获取到节点列表" + ex.Message);
@@ -1550,7 +1564,44 @@ namespace OPL_WpfApp
             catch { }
         }
 
+        private void ServersCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string server;
+            if (ServersCombo.SelectedValue != null)
+                server = ServersCombo.SelectedValue.ToString();
+            else
+                return;
+            if(server == "System.Windows.Controls.ComboBoxItem: 获取ing") return;
+            server = server.Replace("System.Windows.Controls.ComboBoxItem: ", "");
+            Net net = new Net();
+            net.getjson();
+            //Logger.Log("[提示]已选择节点：" + server);
+            try
+            {
+                foreach (var item in net.servers)
+                {
+                    if (item.ServerName == server)
+                    {
 
+                        if (item.ServerName != "主节点")
+                        {
+                            opname = "openp2p21.exe";
+                            string filename = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", opname);
+                            if (!File.Exists(filename))
+                            {
+                                new Updata(Net.Getmirror("https://file.gldhn.top/file/openp2p-r3.21.12.windows-386.zip"), "openp2p21.zip");
+                            }
+
+                        }
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //Logger.Log("[警告]未获取到节点列表" + ex.Message);
+            }
+        }
     }
 
 }

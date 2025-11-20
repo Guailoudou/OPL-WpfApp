@@ -266,7 +266,7 @@
                     <CheckBox Content="运营商检测警告" Margin="50,148,0,0" x:Name="Ispwarning"  VerticalAlignment="Top"/>
 
                     <Button Content="自动添加安全中心排除" Margin="480,29,0,0" VerticalAlignment="Top" Width="201" Click="AddMpBotton"/>
-                    <ComboBox Margin="122,205,0,0" Width="183" x:Name="ServersCombo">
+                    <ComboBox Margin="122,205,0,0" Width="183" x:Name="ServersCombo" SelectionChanged="ServersCombo_SelectionChanged">
                         <ComboBoxItem Content="获取ing" IsSelected="True"/>
                         <ComboBoxItem Content="获节点信息中"/>
                     </ComboBox>
