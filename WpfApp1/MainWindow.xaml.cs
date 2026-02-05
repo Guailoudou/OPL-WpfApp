@@ -52,6 +52,7 @@ namespace OPL_WpfApp
         json sjson;
         tunnel tunnel = new tunnel();
         private etstart ets;
+        set set = new set();
 
         public bool on = false;
         public bool eton = false;
@@ -165,11 +166,54 @@ namespace OPL_WpfApp
             //判断是否选择的是最小化按钮
             if (this.WindowState == WindowState.Minimized)
             {
+
+                //if (set.settings.minimize)
+                //{
+                //    //隐藏任务栏区图标
+                //    this.ShowInTaskbar = false;
+                //    //图标显示在托盘区
+                //    this.notifyIcon.Visible = true;
+                //}
+
+            }
+        }
+        //监听点击关闭按钮
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // 用户点击了关闭按钮（包括 Alt+F4、任务管理器结束等）
+            // 此处可弹出确认对话框
+            if (set.settings.qusminimize)
+            {
+                var result = MessageBox.Show("是否要隐藏？\n点否直接退出\n下次不会再提醒，后续可前往设置更改", "提示", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    set.settings.minimize = true;
+                }
+                else
+                {
+                    set.settings.minimize = false;
+                }
+                set.settings.qusminimize = false;
+                set.Write();
+            }
+            
+            if (set.settings.minimize)
+            {
+                e.Cancel = true; // 取消关闭操作
+                //设置为最小化模式
+                this.WindowState = WindowState.Minimized;
                 //隐藏任务栏区图标
                 this.ShowInTaskbar = false;
                 //图标显示在托盘区
                 this.notifyIcon.Visible = true;
+                
+                return;
             }
+            
+
+            // 执行清理逻辑，如隐藏托盘图标、保存设置等
+            notifyIcon.Visible = false;
+            System.Windows.Application.Current.Shutdown();
         }
         private static string ExtractBackgroundColor(string[] args)
         {
@@ -1097,7 +1141,6 @@ namespace OPL_WpfApp
             
             SolidColorBrush color = ColorBlock.SelectColor;
             ThemeManager.Current.AccentColor = color.Color;
-            set set = new set();
             set.settings.Color = color.Color.ToString();
             set.Write();
             MessageBox.Show($"设置颜色成功{color.Color} 部分样式可能需要重启生效");
@@ -1105,7 +1148,6 @@ namespace OPL_WpfApp
 
         private void ColorPicker_ReSet(object sender, RoutedEventArgs e)
         {
-            set set = new set();
             set.settings.Color = "";
             set.Write();
             MessageBox.Show($"已重置，重启生效");
@@ -1117,7 +1159,6 @@ namespace OPL_WpfApp
             SolidColorBrush color = Border.Background as SolidColorBrush;
             ThemeManager.Current.AccentColor = color.Color;
             ColorBlock.SelectColor = color;
-            set set = new set();
             set.settings.Color = color.Color.ToString();
             set.Write();
             MessageBox.Show($"设置颜色成功{color.Color} 部分样式可能需要重启生效");
@@ -1125,7 +1166,6 @@ namespace OPL_WpfApp
 
         private void Autoup_op(object sender, RoutedEventArgs e)
         {
-            set set = new set();
             set.settings.Auto_upop = true;
             set.Write();
         }
@@ -1139,7 +1179,6 @@ namespace OPL_WpfApp
                 MessageBoxImage.Question); 
             if (result == MessageBoxResult.OK)
             {
-                set set = new set();
                 set.settings.Auto_upop = false;
                 set.Write();
             }
@@ -1153,7 +1192,6 @@ namespace OPL_WpfApp
 
         private void Autoup(object sender, RoutedEventArgs e)
         {
-            set set = new set();
             set.settings.Auto_up = true;
             set.Write();
         }
@@ -1167,7 +1205,6 @@ namespace OPL_WpfApp
                 MessageBoxImage.Question);
             if (result == MessageBoxResult.OK)
             {
-                set set = new set();
                 set.settings.Auto_up = false;
                 set.Write();
             }
@@ -1203,7 +1240,6 @@ namespace OPL_WpfApp
         }
         private void Initialization(bool temp =false)
         {
-            set set = new set();
             if (set.settings.Auto_upop)
             {
                 Autoup_opn.IsChecked = true;
@@ -1232,11 +1268,15 @@ namespace OPL_WpfApp
             {
                 Ispwarning.IsChecked = true;
             }
+            if (set.settings.minimize)
+            {
+                minimize.IsChecked = true;
+            }
             //if (set.settings.beta)
             //{
             //    beta.IsChecked = true;
             //    opname = "openp2p23.exe";
-                if(sjson.config.LogLevel == 2)
+            if (sjson.config.LogLevel == 2)
                 {
                     sjson.config.LogLevel = 1;
                     sjson.Save();
@@ -1257,6 +1297,8 @@ namespace OPL_WpfApp
             Ispwarning.Checked += Ispwarn;
             Ispwarning.Unchecked += UnIspwarn;
 
+            minimize.Checked += Minimize_ev;
+            minimize.Unchecked += Unminimize_ev;
             //beta.Checked += Isbeta;
             //beta.Unchecked += UnIsbeta;
 
@@ -1339,15 +1381,24 @@ namespace OPL_WpfApp
 
         private void Ispwarn(object sender, RoutedEventArgs e)
         {
-            set set = new set();
             set.settings.ispwarning = true;
             set.Write();
         }
 
         private void UnIspwarn(object sender, RoutedEventArgs e)
         {
-            set set = new set();
             set.settings.ispwarning = false;
+            set.Write();
+        }
+        private void Minimize_ev(object sender, RoutedEventArgs e)
+        {
+            set.settings.minimize = true;
+            set.Write();
+        }
+
+        private void Unminimize_ev(object sender, RoutedEventArgs e)
+        {
+            set.settings.minimize = false;
             set.Write();
         }
         //private void Isbeta(object sender, RoutedEventArgs e)

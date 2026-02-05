@@ -82,6 +82,8 @@ namespace userdata
         public bool Auto_up { get; set; } = true;  // 自动更新s
         public bool Auto_open { get; set; } = false; //运行后自动启动
         public bool ispwarning { get; set; } = true; // 获取isp
+        public bool minimize { get; set; } = true;  //最小化到托盘
+        public bool qusminimize { get; set; } = true;  //是否询问最小化到托盘
         public bool beta { get; set; } = false;
         public List<ispinfo> ispinfos { get; set; } = new List<ispinfo>();
     }

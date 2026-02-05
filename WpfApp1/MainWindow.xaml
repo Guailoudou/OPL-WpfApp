@@ -14,7 +14,7 @@
         ui:WindowHelper.UseModernWindowStyle="True"
         ui:TitleBar.Height="40"
         ui:TitleBar.IsIconVisible="True"
-        Title="Openp2p Launcher - 联机工具" Height="500" Width="850" MaxWidth="850" MinWidth="850" MinHeight="500" StateChanged="Window_StateChanged" Activated="Show" Loaded="Window_Loaded">
+        Title="Openp2p Launcher - 联机工具" Height="500" Width="850" MaxWidth="850" MinWidth="850" MinHeight="500" StateChanged="Window_StateChanged" Activated="Show" Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid Margin="0,0,0,1" x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="131*"/>
@@ -264,14 +264,15 @@
                     <CheckBox Content="开机自动运行主程序" Margin="50,88,0,0"  x:Name="Autoup_bootn"  VerticalAlignment="Top"/>
                     <CheckBox Content="主程序运行后自动启动" Margin="50,118,0,0" x:Name="Autoup_openn"  VerticalAlignment="Top"/>
                     <CheckBox Content="运营商检测警告" Margin="50,148,0,0" x:Name="Ispwarning"  VerticalAlignment="Top"/>
+                    <CheckBox Content="最小化在任务栏隐藏" Margin="50,178,0,0" x:Name="minimize"  VerticalAlignment="Top"/>
 
                     <Button Content="自动添加安全中心排除" Margin="480,29,0,0" VerticalAlignment="Top" Width="201" Click="AddMpBotton"/>
-                    <ComboBox Margin="122,205,0,0" Width="183" x:Name="ServersCombo" SelectionChanged="ServersCombo_SelectionChanged">
+                    <ComboBox Margin="121,318,0,0" Width="183" x:Name="ServersCombo" SelectionChanged="ServersCombo_SelectionChanged">
                         <ComboBoxItem Content="获取ing" IsSelected="True"/>
                         <ComboBoxItem Content="获节点信息中"/>
                     </ComboBox>
-                    <Label Content="节点选择" HorizontalAlignment="Left" Margin="50,212,0,0" VerticalAlignment="Top"/>
-                    <Label Content="（测试性功能，备用节点负载能力较差，仅供主节点失效时临时使用，主节点恢复后请换回主节点&#xD;&#xA;所有连接用户需要使用相同节点才可以互相连接）" HorizontalAlignment="Left" Margin="50,180,0,0" VerticalAlignment="Top" Width="447" FontSize="10" Height="25" Foreground="#FFF30000"/>
+                    <Label Content="节点选择" HorizontalAlignment="Left" Margin="49,325,0,0" VerticalAlignment="Top"/>
+                    <Label Content="（测试性功能，备用节点负载能力较差，仅供主节点失效时临时使用，主节点恢复后请换回主节点&#xD;&#xA;所有连接用户需要使用相同节点才可以互相连接）" HorizontalAlignment="Left" Margin="49,293,0,0" VerticalAlignment="Top" Width="447" FontSize="10" Height="25" Foreground="#FFF30000"/>
                     <Label Content="外观设置：" HorizontalAlignment="Left" Margin="519,90,0,0" VerticalAlignment="Top"  />
                     <ComboBox x:Name="ThemeComboBox"
                       VerticalContentAlignment="Center"
