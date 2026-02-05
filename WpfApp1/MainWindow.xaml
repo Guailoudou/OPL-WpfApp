@@ -264,7 +264,7 @@
                     <CheckBox Content="开机自动运行主程序" Margin="50,88,0,0"  x:Name="Autoup_bootn"  VerticalAlignment="Top"/>
                     <CheckBox Content="主程序运行后自动启动" Margin="50,118,0,0" x:Name="Autoup_openn"  VerticalAlignment="Top"/>
                     <CheckBox Content="运营商检测警告" Margin="50,148,0,0" x:Name="Ispwarning"  VerticalAlignment="Top"/>
-                    <CheckBox Content="最小化在任务栏隐藏" Margin="50,178,0,0" x:Name="minimize"  VerticalAlignment="Top"/>
+                    <CheckBox Content="关闭时隐藏在任务栏" Margin="50,178,0,0" x:Name="minimize"  VerticalAlignment="Top"/>
 
                     <Button Content="自动添加安全中心排除" Margin="480,29,0,0" VerticalAlignment="Top" Width="201" Click="AddMpBotton"/>
                     <ComboBox Margin="121,318,0,0" Width="183" x:Name="ServersCombo" SelectionChanged="ServersCombo_SelectionChanged">
