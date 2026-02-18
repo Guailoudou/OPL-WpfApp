@@ -133,7 +133,7 @@ namespace userdata
             if (sUID == config.Network.Node)
             {
                 Logger.Log("[错误]自己连自己？");
-                MessageBox.Show("不能自己连自己啊！！这无异于试图左脚踩右脚升天！！", "错误");
+                MessageBox.Show("不能自己连自己啊！！这无异于试图左脚踩右脚升天！！如果是别人连配置文件一起发你导致的，请在关于页面右上角点击重置按钮，以重新获取新的UID", "错误");
                 //抛出异常
                 //throw new ArgumentException("自己连自己？", "错误");
                 return false;

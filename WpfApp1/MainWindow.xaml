@@ -30,7 +30,7 @@
             <ui:TabControlHelper.TabStripFooter>
                 <Grid>
                     <Button Click="Button_help" HorizontalAlignment="Center" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}">
-                        <ui:IconAndText Icon="{x:Static ui:FluentSystemIcons.Lightbulb_20_Regular}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Theme" Content="Help"/>
+                        <ui:IconAndText Icon="{x:Static ui:FluentSystemIcons.Lightbulb_20_Regular}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Theme" Content="获取帮助"/>
                     </Button>
                 </Grid>
 
