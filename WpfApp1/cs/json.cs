@@ -46,9 +46,7 @@ namespace userdata
                     ShareBandwidth = 10,
                     ServerHost = "api.openp2p.cn",
                     ServerPort = 27183,
-                    UDPPort1 = 27182,
-                    UDPPort2 = 27183,
-                    TCPPort = 0
+                    PublicIPPort = 0
                 },
                 Apps = new List<App> { },
 
@@ -375,9 +373,7 @@ namespace userdata
         public int ShareBandwidth { get; set; }
         public string ServerHost { get; set; }
         public int ServerPort { get; set; }
-        public int UDPPort1 { get; set; }
-        public int UDPPort2 { get; set; }
-        public int TCPPort { get; set; } = 0;
+        public int PublicIPPort { get; set; } = 0;
     }
 
     public class Config

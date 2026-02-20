@@ -25,6 +25,7 @@ namespace OPL_WpfApp
     public partial class MainWindow_opl : Window
     {
         bool fsterto = false;
+        int fsterton = 0;
         public void Checkopen(string m)
         {
             if (m.Contains("autorunApp start"))
@@ -32,6 +33,7 @@ namespace OPL_WpfApp
                 Logger.Log("[提示]程序启动完毕，请耐心等待隧道连接"); //启动完毕
                 fstert.Fill = Brushes.Green;
                 fsterto = true;
+                fsterton = 0;
             }
             if (m.Contains("autorunApp end"))
             {
@@ -108,17 +110,28 @@ namespace OPL_WpfApp
                 }
                 else if (!fsterto)
                 {
-                    MessageBox.Show($"注意，你的计算机可能中病毒了！！\r\n请再尝试一次，如果一直这样根据之前的反馈统计情况，如果你每次打开都弹出该窗口，你的计算机极有可能中病毒了，有黑客正在监视你的计算机网络数据，请立即尝试使用杀毒软件\r\n请尝试使用杀毒软件进行全盘查杀，或使用 卡巴斯基病毒清除工具、360系统急救箱或火绒恶性木马专杀工具\r\n等工具进行查杀", "警告", MessageBoxButton.OK, MessageBoxImage.Hand);
+                    
+                    fsterton++;
+                    if (fsterton > 3)
+                    {
+                        MessageBox.Show($"注意，你的计算机可能中病毒了！！\r\n请再尝试一次，如果一直这样根据之前的反馈统计情况，如果你每次打开都弹出该窗口，你的计算机极有可能中病毒了，有黑客正在监视你的计算机网络数据，请立即尝试使用杀毒软件\r\n请尝试使用杀毒软件进行全盘查杀，或使用 卡巴斯基病毒清除工具、360系统急救箱或火绒恶性木马专杀工具\r\n等工具进行查杀", "警告", MessageBoxButton.OK, MessageBoxImage.Hand);
+                        if (on) Strapp();
+                        return;
+                    }
+                    
                     //MessageBox.Show($"注意，你的计算机可能中病毒了！！\r\n请再尝试一次，如果一直这样根据之前的反馈统计情况，如果你每次打开都弹出该窗口，你的计算机极有可能中病毒了，有黑客正在监视你的计算机网络数据，请立即尝试使用杀毒软件\r\n请尝试使用杀毒软件进行全盘查杀，或使用 卡巴斯基病毒清除工具、360系统急救箱或火绒恶性木马专杀工具\r\n等工具进行查杀", "警告", MessageBoxButton.OK, MessageBoxImage.Hand);
                     if (on) Strapp();
                     string protocol = match.Groups[1].Value;
                     string port = match.Groups[2].Value;
-                    if (sjson.config.Network.TCPPort.ToString() == port)
+                    Logger.Log($"[错误]: 本地端口{protocol}:{port}被占用，当前为监听连接端口");
+                    if (sjson.config.Network.PublicIPPort.ToString() == port)
                     {
-                        sjson.config.Network.TCPPort = sjson.config.Network.TCPPort - 20;
+                        if (sjson.config.Network.PublicIPPort < 5000) sjson.config.Network.PublicIPPort = 65000;
+                        sjson.config.Network.PublicIPPort = sjson.config.Network.PublicIPPort - 233;
                         sjson.Save();
                     }
-                        
+                    if (on) Strapp(true);
+
                 }
             }
             if (m.Contains("no such host"))

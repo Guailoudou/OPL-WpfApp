@@ -644,7 +644,7 @@ namespace OPL_WpfApp
 
         }
         DateTime OpenDate;
-        private void Strapp()
+        private void Strapp(bool isSys=false)
         {
             if (eton)
             {
@@ -657,6 +657,7 @@ namespace OPL_WpfApp
             //    RestartAsAdmin();
             //    return;
             //}
+            if(!isSys)
             if (!on&&OpenDate.AddSeconds(1)>DateTime.Now&&OpenDate!=null)
             {
                 MessageBox.Show("操作太频繁，请稍后再试 (请至少间隔1s，防止出现BUG)", "警告");
