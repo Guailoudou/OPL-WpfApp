@@ -282,6 +282,7 @@
     <Compile Include="cs\Check.cs" />
     <Compile Include="cs\Heart.cs" />
     <Compile Include="cs\Multicast.cs" />
+    <Compile Include="cs\Openp2pService.cs" />
     <Compile Include="cs\prcolor.cs" />
     <Compile Include="cs\AutoStartWith.cs" />
     <Compile Include="cs\set.cs" />
