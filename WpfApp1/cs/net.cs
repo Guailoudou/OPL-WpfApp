@@ -21,7 +21,7 @@ namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 69;//协议版本号
+        private static readonly int pvn = 70;//协议版本号
         public static int Getpvn()
         {
             return pvn;
@@ -34,7 +34,7 @@ namespace userdata
             string isgitee = ismirror ? "gitee镜像" : "";
             Logger.Log($"[执行]网络请求文件preset.json-{isgitee}");
             string fileurl = "https://file.gldhn.top/file/json/preset.json"; //http://127.0.0.1:85/file/json/preset.json https://file.gldhn.top/file/json/preset.json
-            fileurl = Getmirror(fileurl);
+            if(ismirror) fileurl = Getmirror(fileurl);
             set set = new set();
             HttpClient httpClient = new HttpClient();
             try
@@ -45,7 +45,7 @@ namespace userdata
                 //    Method = new HttpMethod("HEAD"),
                 //    RequestUri = new Uri("https://file.gldhn.top/")
                 //});
-
+                httpClient.Timeout = TimeSpan.FromSeconds(5);
                 HttpResponseMessage response = await httpClient.GetAsync(fileurl);
 
                 // 检查响应状态是否成功
