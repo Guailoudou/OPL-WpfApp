@@ -21,12 +21,12 @@ namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 70;//协议版本号
+        private static readonly int pvn = 71;//协议版本号
         public static int Getpvn()
         {
             return pvn;
         }
-        public static bool ismirror = true;
+        public static bool ismirror = false;
         public List<servers> servers = new List<servers>();
         public async Task GetPreset(ComboBox comboBox=null)
         {
