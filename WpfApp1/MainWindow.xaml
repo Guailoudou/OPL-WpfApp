@@ -114,7 +114,7 @@
                     <TextBox HorizontalAlignment="Left" Margin="502,48,0,0" TextWrapping="Wrap" Text="未连接" VerticalAlignment="Top" Width="180" IsReadOnly="True" x:Name="newetuid"/>
                     <Label Content="当前所在网络：" HorizontalAlignment="Left" Margin="540,25,0,0" VerticalAlignment="Top"/>
                     <Label Content="节点：" HorizontalAlignment="Left" Margin="504,146,0,0" VerticalAlignment="Top"/>
-                    <TextBox HorizontalAlignment="Left" Margin="467,169,0,0" TextWrapping="Wrap" Text="tcp://public.easytier.cn:11010" VerticalAlignment="Top" Width="260" x:Name="etnode" Height="18"/>
+                    <TextBox HorizontalAlignment="Left" Margin="467,169,0,0" TextWrapping="Wrap" Text="tcp://p.gldhn.top:11010" VerticalAlignment="Top" Width="260" x:Name="etnode" Height="18"/>
                     <Label Content="网络UID：" HorizontalAlignment="Left" Margin="547,220,0,0" VerticalAlignment="Top"/>
                     <Button Content="?" Margin="485,146,0,0" VerticalAlignment="Top" Click="EThelp" Height="19" Width="17" Grid.RowSpan="1" Grid.ColumnSpan="1" Padding="0,0,0,0"/>
                 </Grid>
