@@ -40,6 +40,7 @@ using OPL_WpfApp.cs;
 using NotifyIcon = System.Windows.Forms.NotifyIcon;
 using OPL_WpfApp.easyTier;
 using System.ComponentModel.Composition.Primitives;
+using System.Security.Cryptography.X509Certificates;
 
 namespace OPL_WpfApp
 {
@@ -53,6 +54,7 @@ namespace OPL_WpfApp
         tunnel tunnel = new tunnel();
         private etstart ets;
         set set = new set();
+        Net net = new Net();
 
         public bool on = false;
         public bool eton = false;
@@ -88,7 +90,7 @@ namespace OPL_WpfApp
 
             }else GetTheme();
             
-            Net net = new Net();
+            //Net net = new Net();
             _ = net.GetPreset(ServersCombo);
             _ = net.Getthank(thank);
             _ = net.Getnotice(notice);
@@ -688,8 +690,8 @@ namespace OPL_WpfApp
             }
             
             string server = ServersCombo.Text;
-            Net net = new Net();
-            net.getjson();
+            //Net net = new Net();
+            if(net.servers==null) net.getjson();
             try
             {
                 foreach (var item in net.servers)
@@ -1625,8 +1627,8 @@ namespace OPL_WpfApp
                 return;
             if(server == "System.Windows.Controls.ComboBoxItem: 获取ing") return;
             server = server.Replace("System.Windows.Controls.ComboBoxItem: ", "");
-            Net net = new Net();
-            net.getjson();
+            //Net net = new Net();
+            if(net.servers==null)net.getjson();
             //Logger.Log("[提示]已选择节点：" + server);
             try
             {

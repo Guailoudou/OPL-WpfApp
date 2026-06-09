@@ -61,6 +61,7 @@ namespace userdata
             config.Network.ServerHost = host;
             config.Network.Token = token;
             config.Network.User = "gldoffice";
+            Logger.Log("[执行]设置服务器-" + host);
             Save();
         }
         public void Alloff()

@@ -21,12 +21,13 @@ namespace userdata
 {
     internal class Net
     {
-        private static readonly int pvn = 72;//协议版本号
+        private static readonly int pvn = 75;//协议版本号
         public static int Getpvn()
         {
             return pvn;
         }
-        public static bool ismirror = true;
+        public static bool ismirror = false;
+        public static int retries = 0; //重试次数
         public List<servers> servers = new List<servers>();
         public async Task GetPreset(ComboBox comboBox=null)
         {
@@ -45,7 +46,7 @@ namespace userdata
                 //    Method = new HttpMethod("HEAD"),
                 //    RequestUri = new Uri("https://file.gldhn.top/")
                 //});
-                httpClient.Timeout = TimeSpan.FromSeconds(5);
+                httpClient.Timeout = TimeSpan.FromSeconds(30);
                 HttpResponseMessage response = await httpClient.GetAsync(fileurl);
 
                 // 检查响应状态是否成功
@@ -54,7 +55,11 @@ namespace userdata
                     // 获取响应内容的字符串形式
                     string contentString = await response.Content.ReadAsStringAsync();
                     Save(contentString);
-                    getjson();
+                    if (!getjson()) 
+                    {
+                        presetss = JsonConvert.DeserializeObject<Presets>(contentString);
+                        servers = presetss.servers;
+                    }
                     int v = presetss.version;
                     string ophash = presetss.ophash;
                     string opurl = presetss.opurl;
@@ -99,10 +104,10 @@ namespace userdata
                     Logger.Log($"[错误]请求{fileurl}失败，状态码：{response.StatusCode}  可尝试设置hosts来保障连接的可行性：\n172.64.32.5 file.gldhn.top\n172.64.32.5 blog.gldhn.top");
                     //Console.WriteLine($"请求失败，状态码：{response.StatusCode}");
                     Uplog.Log("获取失败");
-                    if (ismirror)
+                    if (!ismirror)
                     {
-                        ismirror = false;
-                        await GetPreset();
+                        ismirror = true;
+                        await GetPreset(comboBox);
                     }
                 }
             }
@@ -112,11 +117,22 @@ namespace userdata
             }
             catch (TaskCanceledException ex)
             {
-                Logger.Log($"[错误]请求被取消 TaskCanceledException: {ex.Message}");
+                Logger.Log($"[错误]请求被取消（超时） TaskCanceledException: {ex.Message}");
+                if (retries++ < 3)
+                {
+                    await GetPreset(comboBox);
+                    Logger.Log($"[信息]再次尝试 次数："+ retries);
+                }
+                
             }
             catch (TimeoutException ex)
             {
                 Logger.Log($"[错误]连接超时 TimeoutException: {ex.Message}");
+                if (retries++ < 3)
+                {
+                    await GetPreset(comboBox);
+                    Logger.Log($"[信息]再次尝试 次数：" + retries);
+                }
             }
             catch (SocketException ex)
             {
@@ -128,11 +144,13 @@ namespace userdata
             }
             catch (Exception ex)
             {
-                if (ismirror)
+                if (retries++ < 3)
                 {
-                    ismirror = false;
-                    await GetPreset();
-                }else
+                    ismirror = !ismirror;
+                    await GetPreset(comboBox);
+                    Logger.Log($"[信息]再次尝试 次数：" + retries);
+                }
+                else
                 Logger.Log($"[错误]请求{fileurl}过程中发生错误：{ex.Message} "  );
             }
         }
@@ -149,9 +167,14 @@ namespace userdata
             }
         }
         public Presets presetss;
-        public void getjson()
+        public bool getjson()
         {
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "preset.json");
+            if (!File.Exists(absolutePath))
+            {
+                Logger.Log($"[错误]未找到预设文件");
+                return false;
+            }
             try
             {
                 string jsonCont = File.ReadAllText(absolutePath);
@@ -164,6 +187,7 @@ namespace userdata
                 // 如果JSON格式不正确，记录错误并返回null
                 Logger.Log($"Error while deserializing JSON: {je.Message}");
             }
+            return true;
 
         }
 
@@ -242,19 +266,19 @@ namespace userdata
             {
                 Logger.Log($"[错误]请求{url}过程中发生错误：{ex.Message}");
                 text.Text = "获取失败";
-                if (ismirror)
+                if (!ismirror)
                 {
-                    ismirror = false;
+                    ismirror = true;
                     await Getnotice(text);
                 }
             }
         }
         public void addServer(ComboBox serversCombo)
         {
-            Net net = new Net();
+            //Net net = new Net();
             serversCombo.Items.Clear();
-            net.getjson();
-            foreach (var item in net.servers)
+            //if(presetss==null) net.getjson();
+            foreach (var item in this.servers)
             {
                 ComboBoxItem item1 = new ComboBoxItem();
                 item1.Content = item.ServerName;
