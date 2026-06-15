@@ -278,11 +278,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Utils\Logger.cs" />
+    <Compile Include="Utils\WindowHelper.cs" />
     <Compile Include="cs\AddMpPreference.cs" />
-    <Compile Include="cs\Check.cs" />
     <Compile Include="cs\Heart.cs" />
     <Compile Include="cs\Multicast.cs" />
-    <Compile Include="cs\prcolor.cs" />
     <Compile Include="cs\AutoStartWith.cs" />
     <Compile Include="cs\set.cs" />
     <Compile Include="cs\tun.cs" />

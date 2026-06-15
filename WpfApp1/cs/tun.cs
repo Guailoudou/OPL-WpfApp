@@ -15,7 +15,7 @@ using Tunnel;
 using userdata;
 using System;
 using System.Runtime.Remoting.Messaging;
-using static OPL_WpfApp.MainWindow_opl;
+using OPL_WpfApp.Utils;
 using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Threading;

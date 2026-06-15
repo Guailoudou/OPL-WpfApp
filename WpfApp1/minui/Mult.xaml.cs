@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static OPL_WpfApp.MainWindow_opl;
+using OPL_WpfApp.Utils;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 using userdata;
 using System.ComponentModel.Composition.Primitives;
@@ -32,12 +32,7 @@ namespace OPL_WpfApp.minui
         public Mult()
         {
             InitializeComponent();
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            double screenHeight = SystemParameters.PrimaryScreenHeight;
-            double windowWidth = this.Width;
-            double windowHeight = this.Height;
-            this.Left = (screenWidth - windowWidth) / 2;
-            this.Top = (screenHeight - windowHeight) / 2;
+            WindowHelper.CenterOnScreen(this);
             this.Closing += ClosingMult;
             _ = Getport();
 
@@ -99,7 +94,7 @@ namespace OPL_WpfApp.minui
             UserData userData = new UserData();
             string UID = userData.UID;
             string output = $"{UID}:{port}";
-            if (Copy_text(output))
+            if (MainWindow_opl.Copy_text(output))
                 MessageBox.Show("已经复制快捷联机码，请粘贴给需要连接的好友", "提示");
             this.Close();
         }

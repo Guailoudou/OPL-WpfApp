@@ -69,49 +69,64 @@ namespace updata
             {
                 if (File.Exists(zipPath) && Directory.Exists(extractPath))
                 {
+                    string tempDir = Path.Combine(extractPath, "opl_update_temp");
                     try
                     {
-                        // 使用ZipFile.OpenRead打开zip文件，这样不会锁定文件
+                        // 先清理可能残留的临时目录
+                        if (Directory.Exists(tempDir))
+                            Directory.Delete(tempDir, true);
+
+                        // 第一步：解压到临时目录
                         using (ZipArchive archive = ZipFile.OpenRead(zipPath))
                         {
                             foreach (ZipArchiveEntry entry in archive.Entries)
                             {
-                                // 构建解压后文件的完整路径
-                                string fullFilePath = Path.Combine(extractPath, entry.FullName);
+                                string fullFilePath = Path.Combine(tempDir, entry.FullName);
 
-                                // 确保目录存在
                                 if (entry.FullName.EndsWith("/"))
                                 {
                                     Directory.CreateDirectory(fullFilePath);
                                 }
                                 else
                                 {
-                                    // 如果文件已存在，则删除旧文件以准备覆盖
-                                    if (File.Exists(fullFilePath))
-                                    {
-                                        File.Delete(fullFilePath);
-                                    }
-
-                                    // 解压文件到指定路径
+                                    Directory.CreateDirectory(Path.GetDirectoryName(fullFilePath));
                                     using (Stream inputStream = entry.Open())
-                                    using (FileStream outputStream = new FileStream(fullFilePath, FileMode.CreateNew))
+                                    using (FileStream outputStream = new FileStream(fullFilePath, FileMode.Create))
                                     {
                                         inputStream.CopyTo(outputStream);
                                     }
                                 }
                             }
                         }
+
+                        // 第二步：全部解压成功后才覆盖到目标目录
+                        foreach (string file in Directory.GetFiles(tempDir, "*", SearchOption.AllDirectories))
+                        {
+                            string relativePath = file.Substring(tempDir.Length + 1);
+                            string destPath = Path.Combine(extractPath, relativePath);
+                            Directory.CreateDirectory(Path.GetDirectoryName(destPath));
+                            if (File.Exists(destPath))
+                                File.Delete(destPath);
+                            File.Move(file, destPath);
+                        }
+
+                        // 清理临时目录
+                        Directory.Delete(tempDir, true);
+
                         if (oldopl != "OPL_WpfApp.exe" && oldopl != "")
                         {
-                            File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, oldopl));
-                            File.Move(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "OPL_WpfApp.exe"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, oldopl));
+                            File.Delete(Path.Combine(extractPath, oldopl));
+                            File.Move(Path.Combine(extractPath, "OPL_WpfApp.exe"), Path.Combine(extractPath, oldopl));
                         }
                         Console.WriteLine("解压完成，更新完毕。已可关闭本窗口，再次启动即为最新版，更新内容请关注关于-日志");
                         File.Delete(zipPath);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"解压过程中发生错误: {ex.Message}");
+                        Console.WriteLine($"解压过程中发生错误，请尝试手动移动opl_update_temp中的文件替换主程序文件: {ex.Message}");
+                        Thread.Sleep(5000);
+                        // 清理临时目录
+                        //try { if (Directory.Exists(tempDir)) Directory.Delete(tempDir, true); } catch { }
                     }
                 }
                 else

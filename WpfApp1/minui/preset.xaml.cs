@@ -10,7 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using static OPL_WpfApp.MainWindow_opl;
+using OPL_WpfApp.Utils;
 using userdata;
 //using System.Windows.Shapes;
 
@@ -26,12 +26,7 @@ namespace OPL_WpfApp
         public preset()
         {
             InitializeComponent();
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            double screenHeight = SystemParameters.PrimaryScreenHeight;
-            double windowWidth = this.Width;
-            double windowHeight = this.Height;
-            this.Left = (screenWidth - windowWidth) / 2;
-            this.Top = (screenHeight - windowHeight) / 2;
+            WindowHelper.CenterOnScreen(this);
             
             if (!File.Exists(absolutePath))
             {

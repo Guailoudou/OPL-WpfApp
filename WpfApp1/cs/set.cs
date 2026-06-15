@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Newtonsoft.Json;
-using static OPL_WpfApp.MainWindow_opl;
+using OPL_WpfApp.Utils;
 
 namespace userdata 
 { 
@@ -86,6 +86,7 @@ namespace userdata
         public bool qusminimize { get; set; } = true;  //是否询问最小化到托盘
         public bool beta { get; set; } = false;
         public List<ispinfo> ispinfos { get; set; } = new List<ispinfo>();
+        public string LastNoticeTime { get; set; } = ""; // 上次已读公告的时间
     }
     
     public class ispinfo

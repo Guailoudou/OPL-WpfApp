@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static OPL_WpfApp.MainWindow_opl;
+using OPL_WpfApp.Utils;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace OPL_WpfApp.cs

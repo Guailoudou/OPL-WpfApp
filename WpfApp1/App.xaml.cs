@@ -18,7 +18,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using userdata;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
-using static OPL_WpfApp.MainWindow_opl;
+using OPL_WpfApp.Utils;
 using System.Runtime.InteropServices;
 using System.Text;
 

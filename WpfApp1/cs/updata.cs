@@ -7,7 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using static OPL_WpfApp.MainWindow_opl;
+using OPL_WpfApp.Utils;
+using OPL_WpfApp;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 namespace userdata
 {
@@ -60,7 +61,7 @@ namespace userdata
                         {
                             OPL_WpfApp.App.ExtractZipAndOverwrite(saveOPath, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"));
                         }
-                        over = true;
+                        MainWindow_opl.over = true;
                         Logger.Log($"[提示]已完成关键文件下载！可以启动程序了");
                     }
                     if (iszip)

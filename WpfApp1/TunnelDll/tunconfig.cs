@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Path = System.IO.Path;
 using Newtonsoft.Json;
-using static OPL_WpfApp.MainWindow_opl;
+using OPL_WpfApp.Utils;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 namespace Tunnel
 {

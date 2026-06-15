@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using static OPL_WpfApp.MainWindow_opl;
+using OPL_WpfApp.Utils;
 
 namespace OPL_WpfApp.easyTier
 {
@@ -155,7 +155,7 @@ namespace OPL_WpfApp.easyTier
 
         private void OnCopyButtonClick(object sender, RoutedEventArgs e)
         {
-            if(Copy_text(IpAddress))MessageBox.Show("已复制到剪贴板");
+            if (MainWindow_opl.Copy_text(IpAddress)) MessageBox.Show("已复制到剪贴板");
             try
             {
                 Clipboard.SetText(IpAddress);

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
-using static OPL_WpfApp.MainWindow_opl;
+using OPL_WpfApp.Utils;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 namespace userdata
 {
@@ -201,6 +201,26 @@ namespace userdata
             getjson();
             Logger.Log($"[执行]删除隧道 序号:{index} - {config.Apps[index].ToString()}");
             config.Apps.RemoveAt(index);
+            Save();
+        }
+        public void moveUp(int index)
+        {
+            if (index <= 0 || config.Apps == null || index >= config.Apps.Count) return;
+            getjson();
+            var temp = config.Apps[index];
+            config.Apps[index] = config.Apps[index - 1];
+            config.Apps[index - 1] = temp;
+            Logger.Log($"[执行]上移隧道 序号:{index} -> {index - 1}");
+            Save();
+        }
+        public void moveDown(int index)
+        {
+            if (config.Apps == null || index < 0 || index >= config.Apps.Count - 1) return;
+            getjson();
+            var temp = config.Apps[index];
+            config.Apps[index] = config.Apps[index + 1];
+            config.Apps[index + 1] = temp;
+            Logger.Log($"[执行]下移隧道 序号:{index} -> {index + 1}");
             Save();
         }
         public void onapp(int index) //开启app

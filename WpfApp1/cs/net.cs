@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 using System.Security.Policy;
 using System.Windows;
 using System.Security.Cryptography;
-using static OPL_WpfApp.MainWindow_opl;
+using OPL_WpfApp.Utils;
 using System.IO;
 using System.Windows.Controls;
 using System.Net.Sockets;
@@ -91,7 +91,7 @@ namespace userdata
                         {
                             new Updata(Getmirror(presetss.opurl), "openp2p.zip");
                             Logger.Log("[提示]你的openp2p不是最新版本哦~ 开始后台下载更新包");
-                            over = false;
+                            MainWindow_opl.over = false;
                             //MessageBox.Show("将开始关键文件下载~ 开始后台下载更新包", "提示");
                         }
                         
@@ -231,7 +231,7 @@ namespace userdata
                 //}
             }
         }
-        public async Task Getnotice(TextBox text)
+        public async Task<List<notice>> Getnotice(TextBox text)
         {
             Logger.Log($"[信息]开始获取公告...");
             string url = "https://file.gldhn.top/file/json/notice.json";
@@ -259,6 +259,7 @@ namespace userdata
                     }
                     info = "********************************OPL公告*********************************\n" + info;
                     text.Text = info;
+                    return notices.notices;
 
                 }
             }
@@ -269,9 +270,10 @@ namespace userdata
                 if (!ismirror)
                 {
                     ismirror = true;
-                    await Getnotice(text);
+                    return await Getnotice(text);
                 }
             }
+            return null;
         }
         public void addServer(ComboBox serversCombo)
         {

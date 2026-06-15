@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using OPL_WpfApp.Utils;
 
 namespace OPL_WpfApp.minui
 {
@@ -23,12 +24,7 @@ namespace OPL_WpfApp.minui
         public copy_ui(string text)
         {
             InitializeComponent();
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            double screenHeight = SystemParameters.PrimaryScreenHeight;
-            double windowWidth = this.Width;
-            double windowHeight = this.Height;
-            this.Left = (screenWidth - windowWidth) / 2;
-            this.Top = (screenHeight - windowHeight) / 2;
+            WindowHelper.CenterOnScreen(this);
             copybox.Text = text;
 
         }
