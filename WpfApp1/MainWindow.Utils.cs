@@ -146,44 +146,6 @@ namespace OPL_WpfApp
             addMpPreference.AddMp(absolutePath);
         }
 
-        DateTime SayTime = DateTime.Now;
-        private void Redaysay(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (SayTime.AddSeconds(3) > DateTime.Now)
-            {
-                MessageBox.Show("获取频率过快！！间隔需要至少 3s", "警告");
-                return;
-            }
-            _ = GetsayText(false);
-            SayTime = DateTime.Now;
-        }
-
-        private void copysss_Click(object sender, RoutedEventArgs e)
-        {
-            if(Copy_text(daysay.Text))
-                MessageBox.Show("复制成功", "提示");
-        }
-
-        public async Task GetsayText(bool oo = true)
-        {
-            HttpClient httpClient = new HttpClient();
-            try
-            {
-                if (oo) Logger.Log("[提示] 获取一言 -UAPI 公益 API 提供数据支持");
-                HttpResponseMessage response = await httpClient.GetAsync("https://uapis.cn/api/say");
-                if (response.IsSuccessStatusCode)
-                {
-                    string contentString = await response.Content.ReadAsStringAsync();
-                    daysay.Text = contentString;
-                }
-            }
-            catch (Exception ex)
-            {
-                daysay.Text = "获取失败";
-                Logger.Log("[错误] 获取每日一句失败：" + ex.Message);
-            }
-        }
-
         /// <summary>
         /// 获取公告并检查是否有新公告，有则弹窗展示
         /// </summary>

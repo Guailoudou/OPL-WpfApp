@@ -1,4 +1,4 @@
-﻿﻿using iNKORE.UI.WPF.Modern;
+﻿﻿﻿using iNKORE.UI.WPF.Modern;
 using iNKORE.UI.WPF.Modern.Controls;
 using System;
 using System.Windows;
@@ -53,7 +53,6 @@ namespace OPL_WpfApp
             _ = net.GetPreset(ServersCombo);
             _ = net.Getthank(thank);
             _ = CheckAndShowNewNotices();
-            _ = GetsayText();
             Relist();
             UID.Text = sjson.config.Network.Node;
             share.Text = sjson.config.Network.ShareBandwidth.ToString();
