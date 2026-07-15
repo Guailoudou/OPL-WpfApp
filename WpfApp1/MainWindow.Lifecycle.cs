@@ -17,6 +17,7 @@ namespace OPL_WpfApp
         /// </summary>
         private void Show(object sender, EventArgs e)
         {
+            this.Show();
             this.ShowInTaskbar = true;
             this.WindowState = WindowState.Normal;
         }
@@ -63,8 +64,8 @@ namespace OPL_WpfApp
             if (set.settings.minimize)
             {
                 e.Cancel = true;
-                this.WindowState = WindowState.Minimized;
                 this.ShowInTaskbar = false;
+                this.Hide();
                 this.notifyIcon.Visible = true;
                 return;
             }
