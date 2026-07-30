@@ -109,15 +109,15 @@ jobs:
         Compress-Archive -Path "build-output\WpfApp1\bin\Release\OPL_WpfApp.exe" -DestinationPath $zipName -Force
         Write-Host "ZIP created: $zipName"
 
-    - name: Calculate SHA1
+    - name: Calculate MD5
       if: steps.check.outputs.should_publish == 'true'
-      id: sha1
+      id: md5
       shell: pwsh
       run: |
         $zipName = "${{ steps.check.outputs.zipname }}"
-        $sha1 = (Get-FileHash -Path $zipName -Algorithm SHA1).Hash.ToLower()
-        Write-Host "SHA1: $sha1"
-        echo "sha1=$sha1" >> $env:GITHUB_OUTPUT
+        $md5 = (Get-FileHash -Path $zipName -Algorithm MD5).Hash.ToLower()
+        Write-Host "MD5: $md5"
+        echo "md5=$md5" >> $env:GITHUB_OUTPUT
 
     - name: Clone urlfile repository
       if: steps.check.outputs.should_publish == 'true'
@@ -152,7 +152,9 @@ jobs:
         $json.uphash = $sha1
         $json.upurl = $upurl
 
-        $json | ConvertTo-Json -Depth 100 | Set-Content $presetPath -NoNewline
+        # 输出紧凑格式（无换行无缩进）
+        $jsonString = $json | ConvertTo-Json -Depth 100 -Compress
+        Set-Content $presetPath -Value $jsonString -NoNewline
 
         Write-Host "Updated preset.json:"
         Write-Host "  version: $pvn"
