@@ -142,14 +142,14 @@ jobs:
       run: |
         $version = "${{ steps.check.outputs.version }}"
         $pvn = "${{ steps.check.outputs.pvn }}"
-        $sha1 = "${{ steps.sha1.outputs.sha1 }}"
+        $md5 = "${{ steps.md5.outputs.md5 }}"
         $upurl = "https://file.gldhn.top/file/uppack/$version-$pvn.zip"
 
         $presetPath = "urlfile-repo\file\json\preset.json"
         $json = Get-Content $presetPath -Raw | ConvertFrom-Json
 
         $json.version = $pvn
-        $json.uphash = $sha1
+        $json.uphash = $md5
         $json.upurl = $upurl
 
         # 输出紧凑格式（无换行无缩进）
@@ -158,7 +158,7 @@ jobs:
 
         Write-Host "Updated preset.json:"
         Write-Host "  version: $pvn"
-        Write-Host "  uphash: $sha1"
+        Write-Host "  uphash: $md5"
         Write-Host "  upurl: $upurl"
 
     - name: Commit and push to urlfile
