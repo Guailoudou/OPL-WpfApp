@@ -1,0 +1,180 @@
+name: Build and Publish
+
+on:
+  push:
+    branches: [ "master" ]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'LICENSE'
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v2
+
+    - name: Restore NuGet packages
+      run: nuget restore "OPL WpfApp.sln"
+
+    - name: Build solution
+      run: msbuild /p:Configuration=Release /p:Platform="Any CPU" "OPL WpfApp.sln"
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-output
+        path: |
+          WpfApp1\bin\Release\OPL_WpfApp.exe
+          updata\bin\Release\updata.exe
+        retention-days: 7
+
+  publish:
+    # 仅在 push 到 master 时执行发布
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # ====== 版本检查：读取代码 pvn 并与 preset.json 比较 ======
+    - name: Check if publish is needed
+      id: check
+      shell: pwsh
+      run: |
+        # 读取代码中的更新号
+        $netCs = Get-Content "WpfApp1\cs\net.cs" -Raw
+        $pvn = [int][regex]::Match($netCs, 'pvn\s*=\s*(\d+)').Groups[1].Value
+
+        # 读取代码中的版本号
+        $assemblyInfo = Get-Content "WpfApp1\Properties\AssemblyInfo.cs" -Raw
+        $version = [regex]::Match($assemblyInfo, '\[assembly:\s+AssemblyFileVersion\("([^"]+)"\)\]').Groups[1].Value
+
+        Write-Host "代码更新号 (pvn): $pvn"
+        Write-Host "代码版本号: $version"
+
+        # 从远程获取 preset.json 中的 version
+        $presetUrl = "https://raw.githubusercontent.com/Guailoudou/urlfile/master/file/json/preset.json"
+        try {
+          $response = Invoke-RestMethod -Uri $presetUrl
+          $remotePvn = [int]$response.version
+          Write-Host "远程更新号 (preset.json version): $remotePvn"
+        } catch {
+          Write-Host "⚠️ 无法获取远程 preset.json，将执行发布..."
+          $remotePvn = -1
+        }
+
+        # 输出变量
+        echo "pvn=$pvn" >> $env:GITHUB_OUTPUT
+        echo "version=$version" >> $env:GITHUB_OUTPUT
+        echo "zipname=$version-$pvn.zip" >> $env:GITHUB_OUTPUT
+
+        # 比较：代码 pvn > 远程 pvn 才发布
+        if ($pvn -gt $remotePvn) {
+          Write-Host "✅ $pvn > $remotePvn，需要发布"
+          echo "should_publish=true" >> $env:GITHUB_OUTPUT
+        } else {
+          Write-Host "⏭️ $pvn <= $remotePvn，跳过发布"
+          echo "should_publish=false" >> $env:GITHUB_OUTPUT
+        }
+
+    # ====== 以下所有步骤仅在需要发布时执行 ======
+
+    - name: Download build artifacts
+      if: steps.check.outputs.should_publish == 'true'
+      uses: actions/download-artifact@v4
+      with:
+        name: build-output
+        path: build-output
+
+    - name: Create ZIP package
+      if: steps.check.outputs.should_publish == 'true'
+      shell: pwsh
+      run: |
+        $zipName = "${{ steps.check.outputs.zipname }}"
+        Write-Host "Creating $zipName..."
+        Compress-Archive -Path "build-output\*" -DestinationPath $zipName -Force
+        Write-Host "ZIP created: $zipName"
+
+    - name: Calculate SHA1
+      if: steps.check.outputs.should_publish == 'true'
+      id: sha1
+      shell: pwsh
+      run: |
+        $zipName = "${{ steps.check.outputs.zipname }}"
+        $sha1 = (Get-FileHash -Path $zipName -Algorithm SHA1).Hash.ToLower()
+        Write-Host "SHA1: $sha1"
+        echo "sha1=$sha1" >> $env:GITHUB_OUTPUT
+
+    - name: Clone urlfile repository
+      if: steps.check.outputs.should_publish == 'true'
+      shell: pwsh
+      run: |
+        git clone https://github.com/Guailoudou/urlfile.git urlfile-repo
+        cd urlfile-repo
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Copy files to urlfile
+      if: steps.check.outputs.should_publish == 'true'
+      shell: pwsh
+      run: |
+        $zipName = "${{ steps.check.outputs.zipname }}"
+        Copy-Item $zipName "urlfile-repo\file\uppack\$zipName"
+        Write-Host "Copied $zipName to urlfile-repo\file\uppack\"
+
+    - name: Update preset.json
+      if: steps.check.outputs.should_publish == 'true'
+      shell: pwsh
+      run: |
+        $version = "${{ steps.check.outputs.version }}"
+        $pvn = "${{ steps.check.outputs.pvn }}"
+        $sha1 = "${{ steps.sha1.outputs.sha1 }}"
+        $upurl = "https://file.gldhn.top/file/uppack/$version-$pvn.zip"
+
+        $presetPath = "urlfile-repo\file\json\preset.json"
+        $json = Get-Content $presetPath -Raw | ConvertFrom-Json
+
+        $json.version = $pvn
+        $json.uphash = $sha1
+        $json.upurl = $upurl
+
+        $json | ConvertTo-Json -Depth 100 | Set-Content $presetPath -NoNewline
+
+        Write-Host "Updated preset.json:"
+        Write-Host "  version: $pvn"
+        Write-Host "  uphash: $sha1"
+        Write-Host "  upurl: $upurl"
+
+    - name: Commit and push to urlfile
+      if: steps.check.outputs.should_publish == 'true'
+      shell: pwsh
+      env:
+        URLFILE_TOKEN: ${{ secrets.URLFILE_TOKEN }}
+      run: |
+        cd urlfile-repo
+        $version = "${{ steps.check.outputs.version }}"
+        $pvn = "${{ steps.check.outputs.pvn }}"
+
+        git add .
+        git commit -m "更新版本 $version-$pvn"
+
+        # 使用 token 推送
+        $remoteUrl = "https://x-access-token:$env:URLFILE_TOKEN@github.com/Guailoudou/urlfile.git"
+        git remote set-url origin $remoteUrl
+        git push origin master
+
+        Write-Host "✅ Published version $version-$pvn"

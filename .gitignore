@@ -370,3 +370,8 @@ FodyWeavers.xsd
 /WpfApp1/openp2p386.dll
 /OPENP2P/Class1.cs
 /OPENP2P
+
+更新发布流程.md
+publish.js
+package.json
+package-lock.json
