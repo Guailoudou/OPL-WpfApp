@@ -175,6 +175,6 @@ jobs:
         # 使用 token 推送
         $remoteUrl = "https://x-access-token:$env:URLFILE_TOKEN@github.com/Guailoudou/urlfile.git"
         git remote set-url origin $remoteUrl
-        git push origin master
+        git push origin main
 
         Write-Host "✅ Published version $version-$pvn"
