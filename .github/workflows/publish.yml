@@ -106,7 +106,7 @@ jobs:
       run: |
         $zipName = "${{ steps.check.outputs.zipname }}"
         Write-Host "Creating $zipName..."
-        Compress-Archive -Path "build-output\*" -DestinationPath $zipName -Force
+        Compress-Archive -Path "build-output\WpfApp1\bin\Release\OPL_WpfApp.exe" -DestinationPath $zipName -Force
         Write-Host "ZIP created: $zipName"
 
     - name: Calculate SHA1
