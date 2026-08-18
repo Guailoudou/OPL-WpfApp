@@ -59,7 +59,7 @@ namespace OPL_WpfApp
 
                     grid.Children.Add(new Label
                     {
-                        Content = app.AppName + "隧道",
+                        Content = app.AppName,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         Margin = new Thickness(10, 3, 0, 0),
                         VerticalAlignment = VerticalAlignment.Top
