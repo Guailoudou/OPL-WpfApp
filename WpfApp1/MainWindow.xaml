@@ -35,6 +35,18 @@
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
+        <Style x:Key="SettingRow" TargetType="Grid">
+            <Setter Property="Margin" Value="0,7"/>
+        </Style>
+        <Style x:Key="SettingLabel" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="SettingSwitch" TargetType="ui:ToggleSwitch">
+            <Setter Property="OnContent" Value=""/>
+            <Setter Property="OffContent" Value=""/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
         <Style x:Key="NavHeader" TargetType="StackPanel">
             <Setter Property="Orientation" Value="Horizontal"/>
             <Setter Property="Width" Value="174"/>
@@ -49,8 +61,9 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TabControl BorderBrush="{x:Null}" TabStripPlacement="Left" Margin="8,8,8,0"
-                    ui:TabControlHelper.IsAddTabButtonVisible="False">
+        <TabControl x:Name="MainTabs" BorderBrush="{x:Null}" TabStripPlacement="Left" Margin="8,8,8,0"
+                    ui:TabControlHelper.IsAddTabButtonVisible="False"
+                    SelectionChanged="MainTabs_SelectionChanged">
             <ui:TabControlHelper.TabStripFooter>
                 <Button Click="Button_help" Width="194" Height="48" Margin="10" Padding="14,10"
                         AutomationProperties.Name="获取帮助">
@@ -246,7 +259,10 @@
                     <Border Grid.Row="2" Style="{StaticResource Card}" Padding="16" Margin="0,12,0,0">
                         <Grid>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <Ellipse x:Name="tunellipse" Fill="Gray" Stroke="#667F7F7F" Width="12" Height="12" Margin="0,0,8,0"/>
+                            <Grid x:Name="tunHaloHost" Width="12" Height="20" Margin="0,0,8,0">
+                                <Ellipse x:Name="tunellipse" Fill="Gray" Stroke="#667F7F7F" Width="12" Height="12"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
                             <TextBlock Grid.Column="1" Text="组网状态" VerticalAlignment="Center"/>
                             <Label Grid.Column="2" x:Name="tunspeed" Content="流量信息" VerticalAlignment="Center" Margin="16,0"/>
                             <TextBox Grid.Column="3" x:Name="iptext" IsReadOnly="True" Width="180" Margin="0,0,8,0"/>
@@ -295,46 +311,272 @@
                 <TabItem.Header><StackPanel Style="{StaticResource NavHeader}"><ui:FontIcon Icon="{x:Static ui:FluentSystemIcons.Settings_20_Regular}" Margin="0,0,10,0"/><TextBlock Text="设置" VerticalAlignment="Center"/></StackPanel></TabItem.Header>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid Margin="24,16,16,16">
-                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                         <TextBlock Text="设置" Style="{StaticResource PageTitle}"/>
-                        <Grid Grid.Row="1">
+                        <Grid Grid.Row="1" VerticalAlignment="Top">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <Border Style="{StaticResource Card}">
-                                <StackPanel>
-                                    <TextBlock Text="启动与维护" Style="{StaticResource SectionTitle}"/>
-                                    <CheckBox x:Name="Autoup_opn" Content="校验 openp2p 文件" Margin="0,6"/>
-                                    <CheckBox x:Name="Autoup_etn" Content="自动更新 EasyTier 核心" Margin="0,6"/>
-                                    <CheckBox x:Name="Autoupn" Content="自动更新主程序" Margin="0,6"/>
-                                    <CheckBox x:Name="Autoup_bootn" Content="开机自动运行" Margin="0,6"/>
-                                    <CheckBox x:Name="Autoup_openn" Content="启动程序后自动开启服务" Margin="0,6"/>
-                                    <CheckBox x:Name="Ispwarning" Content="显示运营商检测警告" Margin="0,6"/>
-                                    <CheckBox x:Name="minimize" Content="关闭窗口时最小化到托盘" Margin="0,6"/>
-                                    <CheckBox x:Name="CleanLogCheck" Content="退出时清理日志缓存" Margin="0,6"/>
-                                    <Button Content="添加 Windows 安全中心排除项" Click="AddMpBotton" Margin="0,16,0,0"/>
-                                </StackPanel>
-                            </Border>
-                            <StackPanel Grid.Column="2">
+
+                            <!-- 左列 -->
+                            <StackPanel>
                                 <Border Style="{StaticResource Card}" Margin="0,0,0,12">
                                     <StackPanel>
-                                        <TextBlock Text="连接节点" Style="{StaticResource SectionTitle}"/>
-                                        <TextBlock Text="参与者必须使用相同节点。备用节点仅建议在主节点失效时临时使用。" Style="{StaticResource Caption}" Margin="0,0,0,12"/>
-                                        <ComboBox x:Name="ServersCombo" SelectionChanged="ServersCombo_SelectionChanged"><ComboBoxItem Content="正在获取节点…" IsSelected="True"/></ComboBox>
+                                        <TextBlock Text="启动与维护" Style="{StaticResource SectionTitle}"/>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="校验 openp2p 文件" Style="{StaticResource SettingLabel}"/>
+                                                <TextBlock Text="启动时校验核心文件完整性并自动修复" Style="{StaticResource Caption}"/>
+                                            </StackPanel>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="Autoup_opn" Style="{StaticResource SettingSwitch}" Toggled="Autoup_opn_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="自动更新 EasyTier 核心" Style="{StaticResource SettingLabel}"/>
+                                                <TextBlock Text="保持 EasyTier 与服务端兼容" Style="{StaticResource Caption}"/>
+                                            </StackPanel>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="Autoup_etn" Style="{StaticResource SettingSwitch}" Toggled="Autoup_etn_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="自动更新主程序" Style="{StaticResource SettingLabel}"/>
+                                                <TextBlock Text="有新版本时自动下载更新" Style="{StaticResource Caption}"/>
+                                            </StackPanel>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="Autoupn" Style="{StaticResource SettingSwitch}" Toggled="Autoupn_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="开机自动运行" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="Autoup_bootn" Style="{StaticResource SettingSwitch}" Toggled="Autoup_bootn_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="启动程序后自动开启服务" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="Autoup_openn" Style="{StaticResource SettingSwitch}" Toggled="Autoup_openn_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="启动后最小化到托盘" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="MinimizeOnStartupToggle" Style="{StaticResource SettingSwitch}" Toggled="MinimizeOnStartup_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="关闭窗口时最小化到托盘" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="minimize" Style="{StaticResource SettingSwitch}" Toggled="minimize_Toggled"/>
+                                        </Grid>
+                                        <Button Content="添加 Windows 安全中心排除项" Click="AddMpBotton" Margin="0,12,0,0" HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <TextBlock Text="通知与提示" Style="{StaticResource SectionTitle}"/>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="显示运营商检测警告" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="Ispwarning" Style="{StaticResource SettingSwitch}" Toggled="Ispwarning_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="新公告弹窗提醒" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="NoticePopupToggle" Style="{StaticResource SettingSwitch}" Toggled="NoticePopup_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="托盘气泡通知" Style="{StaticResource SettingLabel}"/>
+                                                <TextBlock Text="服务连接/断开时弹出气泡提醒" Style="{StaticResource Caption}"/>
+                                            </StackPanel>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="TrayBalloonToggle" Style="{StaticResource SettingSwitch}" Toggled="TrayBalloon_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="隧道连成时弹窗提醒" Style="{StaticResource SettingLabel}"/>
+                                                <TextBlock Text="联机成功后主动弹出提示窗" Style="{StaticResource Caption}"/>
+                                            </StackPanel>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="ToastTunnelToggle" Style="{StaticResource SettingSwitch}" Toggled="ToastTunnel_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="关闭窗口时询问处理方式" Style="{StaticResource SettingLabel}"/>
+                                                <TextBlock Text="开启后每次关闭都会询问隐藏或退出" Style="{StaticResource Caption}"/>
+                                            </StackPanel>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="AskOnCloseToggle" Style="{StaticResource SettingSwitch}" Toggled="AskOnClose_Toggled"/>
+                                        </Grid>
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource Card}">
                                     <StackPanel>
-                                        <TextBlock Text="外观" Style="{StaticResource SectionTitle}"/>
-                                        <TextBlock Text="应用主题" Style="{StaticResource Caption}"/>
-                                        <ComboBox x:Name="ThemeComboBox" SelectionChanged="ThemeComboBox_SelectionChanged" Margin="0,4,0,16">
-                                            <ComboBoxItem Content="跟随系统" x:Name="Theme_auto"/><ComboBoxItem Content="浅色" x:Name="Theme_Light"/><ComboBoxItem Content="深色" x:Name="Theme_Dark"/>
-                                        </ComboBox>
-                                        <TextBlock Text="强调色" Style="{StaticResource Caption}"/>
+                                        <TextBlock Text="日志与缓存" Style="{StaticResource SectionTitle}"/>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="写入日志文件" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="FileLogToggle" Style="{StaticResource SettingSwitch}" Toggled="FileLog_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="日志显示时间戳" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="TimestampToggle" Style="{StaticResource SettingSwitch}" Toggled="Timestamp_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="退出时清理日志缓存" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="CleanLogCheck" Style="{StaticResource SettingSwitch}" Toggled="CleanLog_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="140"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="界面日志最大行数" Style="{StaticResource SettingLabel}"/>
+                                            <ComboBox Grid.Column="1" x:Name="LogLinesCombo" SelectionChanged="LogLinesCombo_SelectionChanged">
+                                                <ComboBoxItem Content="100"/><ComboBoxItem Content="300"/><ComboBoxItem Content="500"/><ComboBoxItem Content="1000"/><ComboBoxItem Content="2000"/>
+                                            </ComboBox>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="后台时暂缓日志刷新" Style="{StaticResource SettingLabel}"/>
+                                                <TextBlock Text="窗口隐藏时只缓冲不刷新界面，显著降低占用" Style="{StaticResource Caption}"/>
+                                            </StackPanel>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="BackgroundLogToggle" Style="{StaticResource SettingSwitch}" Toggled="BackgroundLog_Toggled"/>
+                                        </Grid>
+                                        <Button Content="导出日志成压缩包" Click="ExportLog" Margin="0,12,0,0" HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- 右列 -->
+                            <StackPanel Grid.Column="2">
+                                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <TextBlock Text="外观与动效" Style="{StaticResource SectionTitle}"/>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="140"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="应用主题" Style="{StaticResource SettingLabel}"/>
+                                            <ComboBox Grid.Column="1" x:Name="ThemeComboBox" SelectionChanged="ThemeComboBox_SelectionChanged">
+                                                <ComboBoxItem Content="跟随系统" x:Name="Theme_auto"/><ComboBoxItem Content="浅色" x:Name="Theme_Light"/><ComboBoxItem Content="深色" x:Name="Theme_Dark"/>
+                                            </ComboBox>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="140"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="界面字号" Style="{StaticResource SettingLabel}"/>
+                                            <ComboBox Grid.Column="1" x:Name="UiFontCombo" SelectionChanged="UiFontCombo_SelectionChanged">
+                                                <ComboBoxItem Content="特小 (12)"/><ComboBoxItem Content="偏小 (13)"/><ComboBoxItem Content="标准 (14)"/><ComboBoxItem Content="偏大 (16)"/><ComboBoxItem Content="特大 (18)"/>
+                                            </ComboBox>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="140"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="窗口背景材质" Style="{StaticResource SettingLabel}"/>
+                                                <TextBlock Text="无材质可进一步降低 GPU 占用" Style="{StaticResource Caption}"/>
+                                            </StackPanel>
+                                            <ComboBox Grid.Column="1" x:Name="BackdropCombo" SelectionChanged="BackdropCombo_SelectionChanged">
+                                                <ComboBoxItem Content="Mica"/><ComboBoxItem Content="Acrylic"/><ComboBoxItem Content="无材质"/>
+                                            </ComboBox>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="界面动画效果" Style="{StaticResource SettingLabel}"/>
+                                                <TextBlock Text="关闭后页面切换瞬时完成，低配机器推荐" Style="{StaticResource Caption}"/>
+                                            </StackPanel>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="AnimToggle" Style="{StaticResource SettingSwitch}" Toggled="Anim_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="紧凑导航栏（仅图标）" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="CompactNavToggle" Style="{StaticResource SettingSwitch}" Toggled="CompactNav_Toggled"/>
+                                        </Grid>
+                                        <TextBlock Text="强调色" Style="{StaticResource Caption}" Margin="0,8,0,0"/>
                                         <test:ColorPicker x:Name="ColorBlock" SelectColor="Black" Height="40" Margin="0,4,0,12"/>
                                         <Grid>
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                             <Button Content="应用颜色" Click="ColorPicker_Set" Style="{StaticResource {x:Static ui:ThemeKeys.AccentButtonStyleKey}}"/>
                                             <Button Grid.Column="2" Content="恢复系统配色" Click="ColorPicker_ReSet"/>
                                         </Grid>
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <TextBlock Text="性能与资源" Style="{StaticResource SectionTitle}"/>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="140"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="运行模式" Style="{StaticResource SettingLabel}"/>
+                                                <TextBlock Text="影响状态刷新频率与后台占用" Style="{StaticResource Caption}"/>
+                                            </StackPanel>
+                                            <ComboBox Grid.Column="1" x:Name="PerfModeCombo" SelectionChanged="PerfModeCombo_SelectionChanged">
+                                                <ComboBoxItem Content="高性能"/><ComboBoxItem Content="平衡"/><ComboBoxItem Content="省电"/>
+                                            </ComboBox>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="140"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="状态刷新间隔" Style="{StaticResource SettingLabel}"/>
+                                            <ComboBox Grid.Column="1" x:Name="EtPollCombo" SelectionChanged="EtPollCombo_SelectionChanged">
+                                                <ComboBoxItem Content="2 秒"/><ComboBoxItem Content="5 秒"/><ComboBoxItem Content="10 秒"/><ComboBoxItem Content="30 秒"/>
+                                            </ComboBox>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="140"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="流量刷新间隔" Style="{StaticResource SettingLabel}"/>
+                                            <ComboBox Grid.Column="1" x:Name="TrafficPollCombo" SelectionChanged="TrafficPollCombo_SelectionChanged">
+                                                <ComboBoxItem Content="1 秒"/><ComboBoxItem Content="2 秒"/><ComboBoxItem Content="5 秒"/>
+                                            </ComboBox>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="最小化时回收内存" Style="{StaticResource SettingLabel}"/>
+                                                <TextBlock Text="触发 GC 并清空工作集，托盘驻留占用 &lt;10MB" Style="{StaticResource Caption}"/>
+                                            </StackPanel>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="TrimMinimizeToggle" Style="{StaticResource SettingSwitch}" Toggled="TrimMinimize_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="隐藏到托盘后深度回收" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="AggressiveTrimToggle" Style="{StaticResource SettingSwitch}" Toggled="AggressiveTrim_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="联机期间阻止系统休眠" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="KeepAwakeToggle" Style="{StaticResource SettingSwitch}" Toggled="KeepAwake_Toggled"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource Card}">
+                                    <StackPanel>
+                                        <TextBlock Text="连接细节" Style="{StaticResource SectionTitle}"/>
+                                        <TextBlock Text="参与者必须使用相同节点。备用节点仅建议在主节点失效时临时使用。" Style="{StaticResource Caption}" Margin="0,0,0,8"/>
+                                        <ComboBox x:Name="ServersCombo" SelectionChanged="ServersCombo_SelectionChanged" Margin="0,0,0,12"><ComboBoxItem Content="正在获取节点…" IsSelected="True"/></ComboBox>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="140"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="新建隧道默认协议" Style="{StaticResource SettingLabel}"/>
+                                            <ComboBox Grid.Column="1" x:Name="DefaultProtocolCombo" SelectionChanged="DefaultProtocolCombo_SelectionChanged">
+                                                <ComboBoxItem Content="tcp"/><ComboBoxItem Content="udp"/>
+                                            </ComboBox>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="创建组网后自动复制联机码" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="AutoCopyCodeToggle" Style="{StaticResource SettingSwitch}" Toggled="AutoCopyCode_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="关闭所有隧道前二次确认" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="ConfirmCloseAllToggle" Style="{StaticResource SettingSwitch}" Toggled="ConfirmCloseAll_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="流量人性化显示（KB/MB）" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="HumanTrafficToggle" Style="{StaticResource SettingSwitch}" Toggled="HumanTraffic_Toggled"/>
+                                        </Grid>
+                                        <Grid Style="{StaticResource SettingRow}">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="使用 Beta 更新通道" Style="{StaticResource SettingLabel}"/>
+                                            <ui:ToggleSwitch Grid.Column="1" x:Name="BetaToggle" Style="{StaticResource SettingSwitch}" Toggled="Beta_Toggled"/>
+                                        </Grid>
+                                        <TextBlock Text="EasyTier 高级启动参数（附加到核心命令行，谨慎修改）" Style="{StaticResource Caption}" Margin="0,8,0,4"/>
+                                        <TextBox x:Name="EtArgsBox" LostFocus="EtArgsBox_LostFocus" ToolTip="例如：--disable-encryption"/>
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
@@ -365,7 +607,10 @@
         <Border Grid.Row="1" BorderBrush="#327F7F7F" BorderThickness="0,1,0,0" Padding="16,10">
             <Grid>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                <Ellipse x:Name="fstert" Fill="Gray" Stroke="#667F7F7F" Width="10" Height="10" Margin="0,0,8,0"/>
+                <Grid x:Name="fstertHaloHost" Width="10" Height="22" Margin="0,0,8,0">
+                    <Ellipse x:Name="fstert" Fill="Gray" Stroke="#667F7F7F" Width="10" Height="10"
+                             VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
                 <TextBlock Grid.Column="1" x:Name="ServiceStatusText" Text="服务未启动" VerticalAlignment="Center"/>
                 <Label Grid.Column="2" x:Name="ver" Content="v1.0.1.9" Padding="12,0,0,0" VerticalAlignment="Center"
                        Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>

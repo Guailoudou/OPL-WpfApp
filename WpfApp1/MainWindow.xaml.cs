@@ -44,11 +44,16 @@ namespace OPL_WpfApp
         public MainWindow_opl(string[] args)
         {
             InitializeComponent();
+            Logger logger = new Logger(richOutput); // 最先初始化日志，保证后续任何异常都能被真实记录
+            // —— 性能与动效基础设施（需在首次日志/动画前生效）——
+            ApplyUiPreferences();
+            PerformanceManager.Attach(this);
+            MotionHelper.AttachHalo(fstertHaloHost, fstert);
+            MotionHelper.AttachHalo(tunHaloHost, tunellipse);
             if (set.settings.EasyTierPeers != null)
                 foreach (string peer in set.settings.EasyTierPeers)
                     EasyTierPeersList.Items.Add(peer);
             WindowHelper.CenterOnScreen(this);
-            Logger logger = new Logger(richOutput);
             Uplog uplog = new Uplog(uplogbox);
             userData = new userdata.UserData();
             sjson = new userdata.json();

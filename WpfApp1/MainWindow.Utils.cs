@@ -169,16 +169,20 @@ namespace OPL_WpfApp
             if (newNotices.Count == 0)
                 return;
 
-            string msgTitle = newNotices.Count == 1
-                ? "📢 有新的公告"
-                : $"📢 有 {newNotices.Count} 条新公告";
-            string msgContent = "";
-            foreach (var item in newNotices)
+            // 新公告提醒开关：关闭时仍记录已读，只是不弹窗
+            if (set.settings.NoticePopup)
             {
-                msgContent += $"【{item.title}】({item.time})\n{item.content}\n\n";
-            }
+                string msgTitle = newNotices.Count == 1
+                    ? "📢 有新的公告"
+                    : $"📢 有 {newNotices.Count} 条新公告";
+                string msgContent = "";
+                foreach (var item in newNotices)
+                {
+                    msgContent += $"【{item.title}】({item.time})\n{item.content}\n\n";
+                }
 
-            MessageBox.Show(msgContent.TrimEnd(), msgTitle);
+                MessageBox.Show(msgContent.TrimEnd(), msgTitle);
+            }
 
             set.settings.LastNoticeTime = newNotices[newNotices.Count - 1].time;
             set.Write();

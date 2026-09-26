@@ -228,6 +228,15 @@ namespace OPL_WpfApp
 
         private void CloseAll(object sender, RoutedEventArgs e)
         {
+            if (set.settings.ConfirmBeforeCloseAll)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                    "确定要关闭全部隧道吗？关闭后所有连接将断开。",
+                    "确认",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Question);
+                if (result != MessageBoxResult.OK) return;
+            }
             sjson.Alloff();
             Relist();
         }

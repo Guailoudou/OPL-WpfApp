@@ -33,6 +33,24 @@ namespace OPL_WpfApp
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.Activate();
+            // 启动后自动最小化到托盘（后台资源占用优化：隐藏后会自动回收内存）
+            if (set.settings.MinimizeOnStartup)
+            {
+                this.ShowInTaskbar = false;
+                this.Hide();
+                this.notifyIcon.Visible = true;
+            }
+        }
+
+        /// <summary>托盘气泡通知（受“托盘气泡通知”设置控制）</summary>
+        private void ShowTrayTip(string title, string message)
+        {
+            try
+            {
+                if (set.settings.TrayBalloonTip && notifyIcon != null)
+                    notifyIcon.ShowBalloonTip(2500, title, message, System.Windows.Forms.ToolTipIcon.Info);
+            }
+            catch { }
         }
 
         /// <summary>
