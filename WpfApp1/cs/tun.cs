@@ -125,13 +125,39 @@ public class tunnel
                     rx += peer.RxBytes;
                     tx += peer.TxBytes;
                 }
+                string speedText = FormatTraffic(rx, tx);
                 tunspeed.Dispatcher.Invoke(() =>
                 {
-                    tunspeed.Content = String.Format("{0} RX, {1} TX", rx, tx);
+                    tunspeed.Content = speedText;
                 });
-                Thread.Sleep(1000);
+                // 刷新间隔由“性能与资源”设置控制，后台时自动放缓，降低空转开销
+                Thread.Sleep(TimeSpan.FromSeconds(OPL_WpfApp.Utils.PerformanceManager.ScaleSeconds(
+                    userdata.settings.Safe.TrafficPollSeconds)));
             }
             catch { adapter = null; }
         }
+    }
+
+    /// <summary>流量显示格式化（仅影响展示文本，不改变采集逻辑）</summary>
+    private static string FormatTraffic(ulong rx, ulong tx)
+    {
+        if (!userdata.settings.Safe.HumanReadableTraffic)
+            return String.Format("{0} RX, {1} TX", rx, tx);
+        return String.Format("{0} RX, {1} TX", HumanBytes(rx), HumanBytes(tx));
+    }
+
+    private static string HumanBytes(ulong bytes)
+    {
+        string[] units = { "B", "KB", "MB", "GB", "TB", "PB" };
+        double value = bytes;
+        int unit = 0;
+        while (value >= 1024 && unit < units.Length - 1)
+        {
+            value /= 1024;
+            unit++;
+        }
+        return unit == 0
+            ? string.Format("{0:0} {1}", value, units[unit])
+            : string.Format("{0:0.##} {1}", value, units[unit]);
     }
 }
