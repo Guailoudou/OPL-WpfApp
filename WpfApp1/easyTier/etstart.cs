@@ -54,6 +54,10 @@ namespace OPL_WpfApp.easyTier
             startInfo.Arguments = "-d --network-name \"" + safeLinkName + "\" --network-secret \"" +
                 safeLinkName + "\" -p \"" + node +
                 "\" --multi-thread --enable-kcp-proxy --use-smoltcp --enable-quic-proxy";
+            // 高级用户在设置中追加的可选参数（默认为空，不影响原有行为）
+            string extraArgs = settings.Safe.EasyTierExtraArgs;
+            if (!string.IsNullOrWhiteSpace(extraArgs))
+                startInfo.Arguments += " " + extraArgs.Trim();
             startInfo.RedirectStandardError = true;
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true; // 不显示新的命令行窗口
@@ -115,6 +119,7 @@ namespace OPL_WpfApp.easyTier
                     process.Start();
                     process.BeginOutputReadLine();
                     process.BeginErrorReadLine();
+                    OPL_WpfApp.Utils.PerformanceManager.ApplyKeepAwake(settings.Safe.KeepAwake);
                     _ = DelayCheck();
                     MessageBox.Show("网络启动成功，请等待大约5-8s，左侧会出现连接到网络的设备，如果你是创建网络的，请发送你的uid给其他用户加入网络");
                     //process.WaitForExit();
@@ -154,6 +159,7 @@ namespace OPL_WpfApp.easyTier
             mainWindow.NetworkList.Items.Clear();
             mainWindow.on=false;
             mainWindow.eton = false;
+            if (!mainWindow.on) OPL_WpfApp.Utils.PerformanceManager.ApplyKeepAwake(false);
         }
         public void setlinkname(string linkname)
         {
@@ -166,7 +172,8 @@ namespace OPL_WpfApp.easyTier
             
             while (mainWindow.on)
             {
-                await Task.Delay(5 * 1000);
+                // 刷新间隔受“状态刷新间隔”设置与运行模式控制，后台时自动放缓
+                await Task.Delay(OPL_WpfApp.Utils.PerformanceManager.ScaleSeconds(settings.Safe.EtPollSeconds) * 1000);
                 //Logger.Log("正在检查节点状态...");
                 string output = "";
                 Action actionOnMainThread = () =>
