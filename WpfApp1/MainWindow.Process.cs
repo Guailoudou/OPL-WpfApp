@@ -118,6 +118,7 @@ namespace OPL_WpfApp
             ServiceStatusText.Text = "正在连接";
             on = true;
             fsterto = false;
+            PerformanceManager.ApplyKeepAwake(set.settings.KeepAwake);
             Relist();
         }
 
@@ -201,6 +202,8 @@ namespace OPL_WpfApp
             Multicast.Stop();
             state.Clear();
             on = false;
+            if (!eton) PerformanceManager.ApplyKeepAwake(false);
+            if (!PerformanceManager.UiVisible) PerformanceManager.TrimMemory();
             Relist();
             _ = Woplog();
         }
@@ -223,6 +226,7 @@ namespace OPL_WpfApp
                 ServiceStatusText.Text = "服务已连接";
                 fsterto = true;
                 fsterton = 0;
+                ShowTrayTip("OpenP2P Launcher", "服务已连接，可以开始联机");
             }
             if (m.Contains("autorunApp end"))
             {
@@ -230,6 +234,7 @@ namespace OPL_WpfApp
                 fstert.Fill = Brushes.Orange;
                 ServiceStatusText.Text = "连接已中断";
                 fsterto = false;
+                ShowTrayTip("OpenP2P Launcher", "服务连接已中断，请检查网络");
             }
             if (m.Contains("LISTEN ON PORT"))
             {
@@ -246,6 +251,8 @@ namespace OPL_WpfApp
                         string[] parts = portInfo.Split(':');
                         string type = parts[0];
                         int port = int.Parse(parts[1]);
+                        if (set.settings.ToastOnTunnelConnected)
+                            ShowTrayTip("隧道已连成", "隧道 " + portInfo + " 连接成功，可以开始游戏了");
                         if (type == "tcp")
                         {
                             tcps.Add(new TcpClientWithKeepAlive("127.0.0.1", port));
