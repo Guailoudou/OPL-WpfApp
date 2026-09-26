@@ -25,6 +25,8 @@ namespace OPL_WpfApp
         {
             InitializeComponent();
             WindowHelper.CenterOnScreen(this);
+            // 新建隧道默认协议（设置→连接细节）
+            type.SelectedIndex = settings.Safe.DefaultProtocol == "udp" ? 1 : 0;
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
