@@ -340,10 +340,21 @@ namespace OPL_WpfApp
 
         void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-           MessageBox.Show($"出现未经处理的异常，如果影响到看功能的使用，可以的话，请将该页面截图或日志给开发者，这有助于解决这个问题: \nMessage:{e.Exception.Message}\nSource: {e.Exception.Source}\nStack Trace: {e.Exception.StackTrace}");
+            // 展开 InnerException 链，避免真实根因被外层异常遮蔽（如 XamlParseException）
+            string detail = "";
+            Exception ex = e.Exception;
+            while (ex != null)
+            {
+                detail += $"\nMessage: {ex.Message}\nSource: {ex.Source}\nStack Trace: {ex.StackTrace}";
+                ex = ex.InnerException;
+                if (ex != null) detail += "\n---- 内部异常 ----";
+            }
+            MessageBox.Show($"出现未经处理的异常，如果影响到看功能的使用，可以的话，请将该页面截图或日志给开发者，这有助于解决这个问题: {detail}");
             Logger.Log($"Message: {e.Exception.Message}","错误");
             Logger.Log($"Source: {e.Exception.Source}", "错误");
             Logger.Log($"Stack Trace: {e.Exception.StackTrace}", "错误");
+            if (e.Exception.InnerException != null)
+                Logger.Log($"InnerException: {e.Exception.InnerException}", "错误");
             e.Handled = true;
         }
         
