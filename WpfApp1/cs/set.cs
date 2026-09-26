@@ -19,6 +19,7 @@ namespace userdata
             settings = new settings();
             if (File.Exists(filePath)) Read();
             else Write();
+            settings.Instance = settings; // 供全局只读访问（日志/性能模块等）
         }
         public void Read()
         {
@@ -91,6 +92,49 @@ namespace userdata
         public List<string> EasyTierPeers { get; set; } = new List<string> { "tcp://p.gldhn.top:11010" };
         public List<ispinfo> ispinfos { get; set; } = new List<ispinfo>();
         public string LastNoticeTime { get; set; } = ""; // 上次已读公告的时间
+
+        // ==================== 外观与交互 ====================
+        public bool Animations { get; set; } = true;            // 界面动画效果总开关
+        public string Backdrop { get; set; } = "Mica";          // 窗口背景材质：Mica / Acrylic / None
+        public double UiFontSize { get; set; } = 14;            // 界面字号
+        public bool CompactNav { get; set; } = false;           // 紧凑导航栏（仅图标）
+        public bool AutoHideLogOnBackground { get; set; } = true; // 后台时暂缓日志界面刷新
+
+        // ==================== 性能与资源 ====================
+        public string PerfMode { get; set; } = "Balanced";      // 运行模式：HighPerformance / Balanced / PowerSave
+        public bool TrimOnMinimize { get; set; } = true;        // 最小化时回收内存
+        public bool AggressiveTrim { get; set; } = true;        // 隐藏到托盘后深度回收工作集
+        public int EtPollSeconds { get; set; } = 5;             // EasyTier 节点状态刷新间隔（秒）
+        public int TrafficPollSeconds { get; set; } = 1;        // 虚拟网卡流量刷新间隔（秒）
+        public bool KeepAwake { get; set; } = false;            // 联机期间阻止系统休眠
+
+        // ==================== 日志与缓存 ====================
+        public bool FileLogEnabled { get; set; } = true;        // 写日志文件开关
+        public int UiLogMaxLines { get; set; } = 300;           // 界面日志最大保留行数
+        public bool TimestampInLog { get; set; } = true;        // 日志显示时间戳
+
+        // ==================== 通知与提示 ====================
+        public bool NoticePopup { get; set; } = true;           // 新公告弹窗提醒
+        public bool TrayBalloonTip { get; set; } = true;        // 托盘气泡通知（服务状态变化）
+        public bool MinimizeOnStartup { get; set; } = false;    // 启动后最小化到托盘
+        public bool ToastOnTunnelConnected { get; set; } = false; // 隧道连成时弹出提醒
+
+        // ==================== 连接细节 ====================
+        public string DefaultProtocol { get; set; } = "tcp";    // 新建隧道默认协议
+        public bool AutoCopyLinkCode { get; set; } = true;      // 创建组网后自动复制联机码
+        public bool HumanReadableTraffic { get; set; } = true;  // 流量以 KB/MB 人性化显示
+        public bool ConfirmBeforeCloseAll { get; set; } = true; // 关闭所有隧道前二次确认
+        public string EasyTierExtraArgs { get; set; } = "";     // EasyTier 高级启动参数（追加）
+
+        /// <summary>全局设置快照（只读用途），未初始化时返回默认值实例</summary>
+        [JsonIgnore]
+        public static settings Instance { get; internal set; }
+        [JsonIgnore]
+        public static settings Safe => Instance ?? new settings();
+
+        /// <summary>运行模式对应的轮询间隔倍率</summary>
+        [JsonIgnore]
+        public double PollFactor => PerfMode == "HighPerformance" ? 0.5 : PerfMode == "PowerSave" ? 3 : 1;
     }
     
     public class ispinfo
