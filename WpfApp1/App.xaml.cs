@@ -104,11 +104,11 @@ namespace OPL_WpfApp
                 mutex.ReleaseMutex();
             }
             string OPPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin","openp2p.exe");
+            Exception elevationError = null;
             if (!IsProcessElevated())
             {
                 // 重启进程并请求管理员权限
-                RestartAsAdmin();
-                return;
+                elevationError = RestartAsAdmin();
             }
             AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
             
@@ -127,6 +127,8 @@ namespace OPL_WpfApp
             // 应用程序启动时的自定义逻辑
             var mainWindow = new MainWindow_opl(args);
             mainWindow.Show();
+            if (elevationError != null)
+                ShowElevationFailure(mainWindow, elevationError);
             string savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "nvb.zip");
             if (File.Exists(savePath))
             {
@@ -278,27 +280,84 @@ namespace OPL_WpfApp
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-        public static void RestartAsAdmin()
+        public static Exception RestartAsAdmin()
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.UseShellExecute = true;
-            startInfo.WorkingDirectory = Environment.CurrentDirectory;
-            startInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
-            startInfo.Verb = "runas"; // 请求管理员权限
-
             try
             {
-                Process.Start(startInfo);
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.UseShellExecute = true;
+                startInfo.WorkingDirectory = Environment.CurrentDirectory;
+                startInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
+                startInfo.Verb = "runas"; // 请求管理员权限
+
+                using (var elevatedProcess = Process.Start(startInfo))
+                {
+                    if (elevatedProcess == null)
+                        throw new InvalidOperationException("Windows 未能启动管理员进程。");
+                }
                 Environment.Exit(0); // 退出当前进程
+                return null;
             }
-            catch (System.ComponentModel.Win32Exception)
+            catch (Exception error)
             {
-                Logger.Log("The operation was cancelled by the user.");
+                return error;
             }
-            catch (Exception e)
+        }
+
+        private static string GetElevationFailureMessage(Exception error)
+        {
+            int? errorCode = (error as System.ComponentModel.Win32Exception)?.NativeErrorCode;
+            string reason;
+            switch (errorCode)
             {
-                Logger.Log("Error: " + e.Message);
+                case 1223:
+                    reason = "管理员授权被取消或未完成。需要使用上述功能时，请重新启动程序并允许授权；如提示输入管理员账号，请提供有效凭据。";
+                    break;
+                case 8235:
+                    reason = "可能启用了“只提升签名并验证的可执行文件”策略，当前软件没有签名。个人电脑如果误开启了该策略，可在win+r打开运行，输入 secpol.msc  然后→“本地策略”→“安全选项”中，将“用户账户控制：只提升签名并验证的可执行文件”设为“已禁用”，再尝试启动。";
+                    break;
+                default:
+                    reason = "可能受到账号权限、安全软件或系统管理策略限制。请查看拦截记录，或将下方错误详情提供给开发者或系统管理员。";
+                    break;
             }
+
+            return "程序将以普通权限继续运行，部分功能可能受到影响。\n\n" +
+                "可能受影响的功能\n" +
+                "• OpenP2P 端口转发：自动添加防火墙规则可能失败，导致部分连接受阻；如果已经放行，仍可能正常使用。\n" +
+                "• WireGuard 网络：创建、连接或关闭网络可能失败。\n" +
+                "• EasyTier 组网：可能无法创建虚拟网卡或完成网络配置。\n" +
+                "• 自动添加 Windows 安全中心排除项：可能失败。\n" +
+                "• 配置保存、日志和自动更新：如果程序位于受保护目录，可能无法写入文件。\n\n" +
+                "本次失败原因及解决方法\n" + reason + "\n\n" +
+                "错误详情\n错误信息：" + error.Message + "\n错误代码：" +
+                (errorCode.HasValue ? errorCode.Value.ToString(CultureInfo.InvariantCulture) : $"HRESULT 0x{error.HResult:X8}");
+        }
+
+        private static void ShowElevationFailure(Window owner, Exception error)
+        {
+            string message = GetElevationFailureMessage(error);
+            Logger.Log("未能获取管理员权限。" + message, "警告");
+            var dialog = new MessageBox
+            {
+                Owner = owner,
+                Title = "未能获取管理员权限",
+                Caption = "未能获取管理员权限",
+                MessageBoxButtons = MessageBoxButton.OK,
+                OKButtonText = "确定，继续运行",
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Content = new System.Windows.Controls.ScrollViewer
+                {
+                    MaxHeight = Math.Max(200, SystemParameters.WorkArea.Height - 240),
+                    VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto,
+                    Content = new System.Windows.Controls.TextBlock
+                    {
+                        Text = message,
+                        TextWrapping = TextWrapping.Wrap,
+                        MaxWidth = Math.Min(560, SystemParameters.WorkArea.Width - 120)
+                    }
+                }
+            };
+            dialog.ShowDialog();
         }
         // 窗口操作相关
         [DllImport("user32.dll", SetLastError = true)]
