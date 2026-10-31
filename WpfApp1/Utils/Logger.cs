@@ -11,7 +11,8 @@ namespace OPL_WpfApp.Utils
     public class Logger
     {
         private static TextBox _output;
-        private static string _logFilePath;
+        private static string _logFilePath =
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin", "log", "opl.log");
 
         public Logger(TextBox output, bool useOplLog = true)
         {
@@ -33,7 +34,6 @@ namespace OPL_WpfApp.Utils
 
         public static void Log(string message, string level)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(_logFilePath));
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
             string outMessage = string.IsNullOrEmpty(level)
                 ? $"[{timestamp}]{message}{Environment.NewLine}"
